@@ -10,10 +10,12 @@ if (!defined('DO_AN_CHUYEN_NGANH'))
     define('DO_AN_CHUYEN_NGANH', 'do_an_chuyen_nganh');
 
 if (!defined('GENERATE_POST_TYPE'))
-    define('GENERATE_POST_TYPE', 'generate_post_type');
+    define('GENERATE_POST_TYPE', 'generate_do_an_post_type');
 
 if (!defined('DO_AN_META_BOX'))
     define('DO_AN_META_BOX', 'do_an_meta_box');
+
+// Menu
 
 if (!defined('MENU_QUAN_LY_DO_AN'))
     define('MENU_QUAN_LY_DO_AN', 'Quản lý Đồ án');

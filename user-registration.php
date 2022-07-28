@@ -31,9 +31,9 @@ define('UR_PLUGIN_MODELS_DIR', UR_PLUGIN_DIR . '/models');
 
 define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/forms');
 
-require_once UR_PATH . '/includes/generate-post-type.php';
+require_once UR_PATH . '/includes/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
 require_once UR_PATH . '/includes/hook-filter.php';
 require_once UR_PLUGIN_PAGES_DIR . '/form1.php';
 
-init_post_type();
+init_ur_do_an();

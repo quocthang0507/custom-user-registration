@@ -2,29 +2,60 @@
 
 require_once 'Constants.php';
 
-class DoAn
+class ur_DoAn
 {
-    public static function post_type_to_array($post_id)
+    private $ID;
+    private $post_title;
+    private $description;
+    private $instructor;
+    private $max_students;
+    private $references;
+    private $start_date;
+    private $end_date;
+    private $schoolyear;
+    private $class;
+
+    public function __construct($post_id, $post_title)
+    {
+        $this->ID = $post_id;
+        $this->post_title = $post_title;
+    }
+
+    public function __construct($_POST)
+    {
+        $this->title = sanitize_text_field($_POST['post_title']);
+        $this->description = sanitize_text_field($_POST['description']);
+        $this->instructor = sanitize_text_field($_POST['instructor']);
+        $this->max_students = sanitize_text_field($_POST['max_students']);
+        $this->references = sanitize_text_field($_POST['references']);
+        $this->start_date = sanitize_text_field($_POST['start_date']);
+        $this->end_date = sanitize_text_field($_POST['end_date']);
+        $this->schoolyear = sanitize_text_field($_POST['schoolyear']);
+        $this->semester = sanitize_text_field($_POST['semester']);
+        $this->class = sanitize_text_field($_POST['class']);
+    }
+
+    private static function post_type_to_array($post_id)
     {
         $data = get_post($post_id);
         $metadata = (object)get_post_meta($post_id);
         return self::get_post_type_to_array($data, $metadata);
     }
 
-    public static function get_post_type_to_array($post, $metadata)
+    private static function get_post_type_to_array($post, $metadata)
     {
         $result = array(
             'ID' => $post->ID,
-            'TenDeTai' => $post->post_title,
-            'MoTa' => $metadata->description[0],
-            'GVHD' => $metadata->instructor[0],
-            'SoSV' => $metadata->max_students[0],
-            'TaiLieuThamKhao' => $metadata->references[0],
-            'NgayBatDau' => DateTime::createFromFormat('d/m/Y', $metadata->start_date[0]),
-            'NgayKetThuc' => DateTime::createFromFormat('d/m/Y', $metadata->end_date[0]),
-            'NamHoc' => $metadata->schoolyear[0],
-            'HocKy' => $metadata->semester[0],
-            'Lop' => $metadata->class[0],
+            'post_title' => $post->post_title,
+            'description' => $metadata->description[0],
+            'instructor' => $metadata->instructor[0],
+            'max_students' => $metadata->max_students[0],
+            'references' => $metadata->references[0],
+            'start_date' => DateTime::createFromFormat('d/m/Y', $metadata->start_date[0]),
+            'end_date' => DateTime::createFromFormat('d/m/Y', $metadata->end_date[0]),
+            'schoolyear' => $metadata->schoolyear[0],
+            'semester' => $metadata->semester[0],
+            'class' => $metadata->class[0],
         );
 
         return $result;
@@ -85,22 +116,26 @@ class DoAn
     {
         try {
             // Update post title
-            $data = array(
-                'ID' => $post_id,
-                'post_title' => $title,
-            );
-            wp_update_post($data);
+            if ($title != null) {
+                $data = array(
+                    'ID' => $post_id,
+                    'post_title' => $title,
+                );
+                wp_update_post($data);
+            }
 
             // Update metadata post
-            update_post_meta($post_id, 'description', $metadata->description);
-            update_post_meta($post_id, 'instructor', $metadata->instructor);
-            update_post_meta($post_id, 'max_students', $metadata->max_students);
-            update_post_meta($post_id, 'references', $metadata->references);
-            update_post_meta($post_id, 'start_date', $metadata->start_date);
-            update_post_meta($post_id, 'end_date', $metadata->end_date);
-            update_post_meta($post_id, 'schoolyear', $metadata->schoolyear);
-            update_post_meta($post_id, 'semester', $metadata->semester);
-            update_post_meta($post_id, 'class', $metadata->class);
+            if ($metadata != null) {
+                update_post_meta($post_id, 'description', $metadata->description);
+                update_post_meta($post_id, 'instructor', $metadata->instructor);
+                update_post_meta($post_id, 'max_students', $metadata->max_students);
+                update_post_meta($post_id, 'references', $metadata->references);
+                update_post_meta($post_id, 'start_date', $metadata->start_date);
+                update_post_meta($post_id, 'end_date', $metadata->end_date);
+                update_post_meta($post_id, 'schoolyear', $metadata->schoolyear);
+                update_post_meta($post_id, 'semester', $metadata->semester);
+                update_post_meta($post_id, 'class', $metadata->class);
+            }
         } catch (Exception $e) {
             return false;
         }

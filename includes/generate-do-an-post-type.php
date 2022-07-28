@@ -1,14 +1,15 @@
 <?php
 
 require_once UR_PLUGIN_MODELS_DIR . 'Constants.php';
+require_once UR_PLUGIN_MODELS_DIR . 'DoAn.php';
 
-function init_post_type()
+function init_ur_do_an()
 {
     add_action('init', GENERATE_POST_TYPE);
 }
 
 if (!function_exists(GENERATE_POST_TYPE)) {
-    function generate_post_type()
+    function generate_do_an_post_type()
     {
         $label = array(
             'name' => MENU_QUAN_LY_DO_AN, // Tên post type số nhiều
@@ -41,4 +42,30 @@ if (!function_exists(GENERATE_POST_TYPE)) {
         );
         register_post_type('DoAn', $args);
     }
+}
+
+function ur_do_an_update($post_id)
+{
+    if (
+        isset($_POST['post_title']) &&
+        isset($_POST['description']) &&
+        isset($_POST['instructor']) &&
+        isset($_POST['max_students']) &&
+        isset($_POST['references']) &&
+        isset($_POST['start_date']) &&
+        isset($_POST['end_date']) &&
+        isset($_POST['schoolyear']) &&
+        isset($_POST['semester']) &&
+        isset($_POST['class'])
+    ) {
+        $data = new ur_DoAn($_POST);
+        return ur_DoAn::update_do_an($post_id, '', $data);
+    }
+    return false;
+}
+
+function ur_do_an_output()
+{
+    $id = get_the_ID();
+    
 }
