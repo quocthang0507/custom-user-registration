@@ -15,15 +15,10 @@ class ur_DoAn
     private $schoolyear;
     private $class;
 
-    public function __construct($post_id, $post_title)
-    {
-        $this->ID = $post_id;
-        $this->post_title = $post_title;
-    }
-
     public function __construct($_POST)
     {
-        $this->title = sanitize_text_field($_POST['post_title']);
+        $this->ID = sanitize_text_field($_POST['ID']);
+        $this->post_title = sanitize_text_field($_POST['post_title']);
         $this->description = sanitize_text_field($_POST['description']);
         $this->instructor = sanitize_text_field($_POST['instructor']);
         $this->max_students = sanitize_text_field($_POST['max_students']);
@@ -35,33 +30,29 @@ class ur_DoAn
         $this->class = sanitize_text_field($_POST['class']);
     }
 
-    private static function post_type_to_array($post_id)
+    public function __construct($post, $metadata)
+    {
+        $this->ID = $post->ID;
+        $this->post_title = $post->post_title;
+        $this->description = $metadata->description[0];
+        $this->instructor = $metadata->instructor[0];
+        $this->max_students = $metadata->max_students[0];
+        $this->references = $metadata->references[0];
+        $this->start_date = $metadata->start_date[0];
+        $this->end_date = $metadata->end_date[0];
+        $this->schoolyear = $metadata->schoolyear[0];
+        $this->semester = $metadata->semester[0];
+        $this->class = $metadata->class[0];
+    }
+
+    public static function get_do_an_by_id($post_id)
     {
         $data = get_post($post_id);
         $metadata = (object)get_post_meta($post_id);
-        return self::get_post_type_to_array($data, $metadata);
+        return new ur_DoAn($data, $metadata);
     }
 
-    private static function get_post_type_to_array($post, $metadata)
-    {
-        $result = array(
-            'ID' => $post->ID,
-            'post_title' => $post->post_title,
-            'description' => $metadata->description[0],
-            'instructor' => $metadata->instructor[0],
-            'max_students' => $metadata->max_students[0],
-            'references' => $metadata->references[0],
-            'start_date' => DateTime::createFromFormat('d/m/Y', $metadata->start_date[0]),
-            'end_date' => DateTime::createFromFormat('d/m/Y', $metadata->end_date[0]),
-            'schoolyear' => $metadata->schoolyear[0],
-            'semester' => $metadata->semester[0],
-            'class' => $metadata->class[0],
-        );
-
-        return $result;
-    }
-
-    public static function get_do_an($loai_do_an, $nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an($loai_do_an, $nam_hoc, $hoc_ky, $lop)
     {
         $args = array(
             'post_type' => $loai_do_an,
@@ -90,21 +81,21 @@ class ur_DoAn
         $posts = $query->posts;
         $result = array();
         foreach ($posts as $post) {
-            $arr = self::post_type_to_array($post->ID);
+            $arr = self::get_do_an_by_id($post->ID);
             if ($arr != null)
                 array_push($result, $arr);
         }
         return $result;
     }
 
-    public static function get_do_an_chuyen_nganh($nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an_chuyen_nganh($nam_hoc, $hoc_ky, $lop)
     {
-        return self::get_do_an(DO_AN_CHUYEN_NGANH, $nam_hoc, $hoc_ky, $lop);
+        return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $nam_hoc, $hoc_ky, $lop);
     }
 
-    public static function get_do_an_co_so($nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an_co_so($nam_hoc, $hoc_ky, $lop)
     {
-        return self::get_do_an(DO_AN_CO_SO, $nam_hoc, $hoc_ky, $lop);
+        return self::get_list_do_an(DO_AN_CO_SO, $nam_hoc, $hoc_ky, $lop);
     }
 
     public static function insert_do_an($post)

@@ -67,5 +67,13 @@ function ur_do_an_update($post_id)
 function ur_do_an_output()
 {
     $id = get_the_ID();
-    
 }
+?>
+<form>
+    <div>
+        <div class="item">
+            <span class="title mr-4">Tên đồ án</span>
+            <input class="input-data form-control" name="title" value="<?php echo $title; ?>" />
+        </div>
+    </div>
+</form>
