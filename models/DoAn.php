@@ -15,34 +15,36 @@ class ur_DoAn
     private $schoolyear;
     private $class;
 
-    public function __construct($_POST)
-    {
-        $this->ID = sanitize_text_field($_POST['ID']);
-        $this->post_title = sanitize_text_field($_POST['post_title']);
-        $this->description = sanitize_text_field($_POST['description']);
-        $this->instructor = sanitize_text_field($_POST['instructor']);
-        $this->max_students = sanitize_text_field($_POST['max_students']);
-        $this->references = sanitize_text_field($_POST['references']);
-        $this->start_date = sanitize_text_field($_POST['start_date']);
-        $this->end_date = sanitize_text_field($_POST['end_date']);
-        $this->schoolyear = sanitize_text_field($_POST['schoolyear']);
-        $this->semester = sanitize_text_field($_POST['semester']);
-        $this->class = sanitize_text_field($_POST['class']);
-    }
-
+    /**
+     * PHP doesn't have overloading
+     */
     public function __construct($post, $metadata)
     {
-        $this->ID = $post->ID;
-        $this->post_title = $post->post_title;
-        $this->description = $metadata->description[0];
-        $this->instructor = $metadata->instructor[0];
-        $this->max_students = $metadata->max_students[0];
-        $this->references = $metadata->references[0];
-        $this->start_date = $metadata->start_date[0];
-        $this->end_date = $metadata->end_date[0];
-        $this->schoolyear = $metadata->schoolyear[0];
-        $this->semester = $metadata->semester[0];
-        $this->class = $metadata->class[0];
+        if ($metadata == null) {
+            $this->ID = sanitize_text_field($post['ID']);
+            $this->post_title = sanitize_text_field($post['post_title']);
+            $this->description = sanitize_text_field($post['description']);
+            $this->instructor = sanitize_text_field($post['instructor']);
+            $this->max_students = sanitize_text_field($post['max_students']);
+            $this->references = sanitize_text_field($post['references']);
+            $this->start_date = sanitize_text_field($post['start_date']);
+            $this->end_date = sanitize_text_field($post['end_date']);
+            $this->schoolyear = sanitize_text_field($post['schoolyear']);
+            $this->semester = sanitize_text_field($post['semester']);
+            $this->class = sanitize_text_field($post['class']);
+        } else {
+            $this->ID = $post->ID;
+            $this->post_title = $post->post_title;
+            $this->description = $metadata->description[0];
+            $this->instructor = $metadata->instructor[0];
+            $this->max_students = $metadata->max_students[0];
+            $this->references = $metadata->references[0];
+            $this->start_date = $metadata->start_date[0];
+            $this->end_date = $metadata->end_date[0];
+            $this->schoolyear = $metadata->schoolyear[0];
+            $this->semester = $metadata->semester[0];
+            $this->class = $metadata->class[0];
+        }
     }
 
     public static function get_do_an_by_id($post_id)
@@ -88,9 +90,27 @@ class ur_DoAn
         return $result;
     }
 
+    public static function get_all_do_an_chuyen_nganh()
+    {
+        $args = array(
+            'post-type' => DO_AN_CHUYEN_NGANH,
+            'post-status' => 'publish',
+        );
+        return get_posts($args);
+    }
+
     public static function get_list_do_an_chuyen_nganh($nam_hoc, $hoc_ky, $lop)
     {
         return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $nam_hoc, $hoc_ky, $lop);
+    }
+
+    public static function get_all_do_an_co_so()
+    {
+        $args = array(
+            'post-type' => DO_AN_CO_SO,
+            'post-status' => 'publish',
+        );
+        return get_posts($args);
     }
 
     public static function get_list_do_an_co_so($nam_hoc, $hoc_ky, $lop)

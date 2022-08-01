@@ -1,20 +1,34 @@
 <?php
 
-require_once UR_PLUGIN_MODELS_DIR . 'Constants.php';
-require_once UR_PLUGIN_MODELS_DIR . 'DoAn.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
+require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
+require_once UR_PLUGIN_INCLUDES . './utils.php';
 
 function init_ur_do_an()
 {
-    add_action('init', GENERATE_POST_TYPE);
+    add_action('init', GENERATE_DO_AN_POST_TYPE);
+    add_action('add_meta_boxes_ur_do_an', DO_AN_METABOX);
+    add_action('save_post_ur_do_an', 'ur_do_an_update');
 }
 
-if (!function_exists(GENERATE_POST_TYPE)) {
+function ur_do_an_metabox()
+{
+    add_meta_box('ur_do_an_info', 'Thông tin Đồ án', 'ur_do_an_output');
+}
+
+if (!function_exists(GENERATE_DO_AN_POST_TYPE)) {
     function generate_do_an_post_type()
     {
         $label = array(
             'name' => MENU_QUAN_LY_DO_AN, // Tên post type số nhiều
             'singular_name' => MENU_QUAN_LY_DO_AN, // Tên post type số ít
-            'add_new' => __(MENU_THEM_DO_AN),
+            'add_new' => __(MENU_ADD_DO_AN), // Hiện trên menu
+            'add_new_item' => __(MENU_ADD_DO_AN), // Hiện trên tiêu đề trang
+            'edit_item' => __(MENU_EDIT_DO_AN),
+            'new_item' => __(MENU_ADD_DO_AN),
+            'not_found' => __(MENU_NOT_FOUND_DO_AN),
+            'not_found_in_trash' => __(MENU_NOT_FOUND_TRASH_DO_AN),
+            'all_items' => __(MENU_ALL_DO_AN),
         );
         $args = array(
             'labels' => $label, // Gọi các label ở trên
@@ -24,7 +38,7 @@ if (!function_exists(GENERATE_POST_TYPE)) {
                 'author'
             ),
             'taxanomies' => array('categories', 'post_tag'), // Sử dụng taxanomy phân loại nội dung
-            'register_meta_box_cb' => DO_AN_META_BOX,
+            'register_meta_box_cb' => DO_AN_METABOX,
             'hierarchical' => false, // False thì post type này giống như Post, true thì giống như Page 
             'public' => true, // Kích hoạt post type
             'show_ui' => true, // Hiển thị
@@ -32,7 +46,7 @@ if (!function_exists(GENERATE_POST_TYPE)) {
             'show_in_nav_menus' => true, // Hiển thị trong Appearance -> Menus
             'show_in_admin_bar' => true, // Hiển thị trên thanh Admin bar màu đen.
             'menu_position' => 5, // Thứ tự vị trí hiển thị trong menu (tay trái)
-            'menu_icon' => 'data:image/png;base64,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', // Đường dẫn tới icon sẽ hiển thị
+            'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJVcGxvYWRlZCB0byBzdmdyZXBvLmNvbSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiIHZpZXdCb3g9IjAgMCAzMiAzMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzIgMzI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQoJLnB1Y2hpcHVjaGlfZWVue2ZpbGw6IzExMTkxODt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InB1Y2hpcHVjaGlfZWVuIiBkPSJNMjYsMUg2QzQuOSwxLDQsMS45LDQsM3YyNmMwLDEuMSwwLjksMiwyLDJoMjBjMS4xLDAsMi0wLjksMi0yVjNDMjgsMS45LDI3LjEsMSwyNiwxeiBNMTAsMjMNCgljLTAuNTUyLDAtMS0wLjQ0OC0xLTFjMC0wLjU1MiwwLjQ0OC0xLDEtMXMxLDAuNDQ4LDEsMUMxMSwyMi41NTIsMTAuNTUyLDIzLDEwLDIzeiBNMTAsMTljLTAuNTUyLDAtMS0wLjQ0OC0xLTENCgljMC0wLjU1MiwwLjQ0OC0xLDEtMXMxLDAuNDQ4LDEsMUMxMSwxOC41NTIsMTAuNTUyLDE5LDEwLDE5eiBNMTAsMTVjLTAuNTUyLDAtMS0wLjQ0OC0xLTFjMC0wLjU1MiwwLjQ0OC0xLDEtMXMxLDAuNDQ4LDEsMQ0KCUMxMSwxNC41NTIsMTAuNTUyLDE1LDEwLDE1eiBNMTAsMTFjLTAuNTUyLDAtMS0wLjQ0OC0xLTFjMC0wLjU1MiwwLjQ0OC0xLDEtMXMxLDAuNDQ4LDEsMUMxMSwxMC41NTIsMTAuNTUyLDExLDEwLDExeiBNMjIsMjNoLTgNCgljLTAuNTUyLDAtMS0wLjQ0OC0xLTFzMC40NDgtMSwxLTFoOGMwLjU1MiwwLDEsMC40NDgsMSwxUzIyLjU1MiwyMywyMiwyM3ogTTIyLDE5aC04Yy0wLjU1MiwwLTEtMC40NDgtMS0xczAuNDQ4LTEsMS0xaDgNCgljMC41NTIsMCwxLDAuNDQ4LDEsMVMyMi41NTIsMTksMjIsMTl6IE0yMiwxNWgtOGMtMC41NTIsMC0xLTAuNDQ4LTEtMXMwLjQ0OC0xLDEtMWg4YzAuNTUyLDAsMSwwLjQ0OCwxLDFTMjIuNTUyLDE1LDIyLDE1eiBNMjIsMTENCgloLThjLTAuNTUyLDAtMS0wLjQ0OC0xLTFzMC40NDgtMSwxLTFoOGMwLjU1MiwwLDEsMC40NDgsMSwxUzIyLjU1MiwxMSwyMiwxMXoiLz4NCjwvc3ZnPg==', // Đường dẫn tới icon sẽ hiển thị
             'can_export' => true, // Có thể export nội dung bằng Tools -> Export
             'has_archive' => true, // Cho phép lưu trữ (month, date, year)
             'exclude_from_search' => false, // Loại bỏ khỏi kết quả tìm kiếm
@@ -40,7 +54,7 @@ if (!function_exists(GENERATE_POST_TYPE)) {
             'capability_type' => 'post',
             'rewrite' => array('slug' => 'do_an'), //
         );
-        register_post_type('DoAn', $args);
+        register_post_type('ur_do_an', $args);
     }
 }
 
@@ -67,13 +81,72 @@ function ur_do_an_update($post_id)
 function ur_do_an_output()
 {
     $id = get_the_ID();
-}
+    $description = get_post_meta($id, "description", true);
+    $instructor = get_post_meta($id, "instructor", true);
+    $max_students = get_post_meta($id, "max_students", true);
+    $references = get_post_meta($id, "references", true);
+    $start_date = get_post_meta($id, "start_date", true);
+    $end_date = get_post_meta($id, "end_date", true);
+    $schoolyear = get_post_meta($id, "schoolyear", true);
+    $semester = get_post_meta($id, "semester", true);
+    $class = get_post_meta($id, "class", true);
+
 ?>
-<form>
-    <div>
-        <div class="item">
-            <span class="title mr-4">Tên đồ án</span>
-            <input class="input-data form-control" name="title" value="<?php echo $title; ?>" />
+    <!--Metabox hiển thị khi phía dưới ở trang Thêm mới Đồ án-->
+    <form>
+        <div class="ur_do_an_detail">
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" name="description" rows="4" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
+            </div>
+            <div class="form-group">
+                <label>Giảng viên hướng dẫn</label>
+                <input class="form-control" type="text" name="instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
+            </div>
+            <div class="form-group">
+                <label>Số sinh viên tối đa</label>
+                <input class="form-control" type="number" name="max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
+            </div>
+            <div class="form-group">
+                <label>Tài liệu tham khảo</label>
+                <textarea class="form-control" name="references" rows="4" aria-label="Tài liệu tham khảo" title="Tài liệu tham khảo"><?php echo $references; ?></textarea>
+            </div>
+            <div class="form-group">
+                <label>Ngày bắt đầu đăng ký</label>
+                <input class="form-control" type="date" name="start_date" value="<?php echo dmy2ymd($start_date); ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+            </div>
+            <div class="form-group">
+                <label>Ngày kết thúc đăng ký</label>
+                <input class="form-control" type="date" name="end_date" value="<?php echo dmy2ymd($end_date); ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+            </div>
+            <div class="form-group">
+                <label>Năm học</label>
+                <select class="form-control" name="schoolyear" aria-label="Năm học" title="Năm học">
+                    <?php
+                    $year = date('Y');
+                    for ($i = 0; $i < 10; $i++) {
+                        $value = $year - $i . '-' . $year - $i + 1;
+                        if ($schoolyear == $value)
+                            echo '<option value="' . $value . '" selected>' . $value . '</option>';
+                        else
+                            echo '<option value="' . $value . '">' . $value . '</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Học kỳ</label>
+                <select class="form-control" name="semester" aria-label="Học kỳ" title="Học kỳ">
+                    <option value="HK1" <?php echo $semester == 'HK1' ? 'selected' : '' ?>>HK1</option>
+                    <option value="HK2" <?php echo $semester == 'HK2' ? 'selected' : '' ?>>HK2</option>
+                    <option value="HK3" <?php echo $semester == 'HK3' ? 'selected' : '' ?>>HK3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Lớp</label>
+                <input class="form-control" type="text" name="class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+<?php
+}
