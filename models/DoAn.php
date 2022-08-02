@@ -29,8 +29,8 @@ class ur_DoAn
             $this->instructor = sanitize_text_field($post['instructor']);
             $this->max_students = sanitize_text_field($post['max_students']);
             $this->references = sanitize_text_field($post['references']);
-            $this->start_date = ymd2dmy(sanitize_text_field($post['start_date']));
-            $this->end_date = ymd2dmy(sanitize_text_field($post['end_date']));
+            $this->start_date = sanitize_text_field($post['start_date']);
+            $this->end_date = sanitize_text_field($post['end_date']);
             $this->schoolyear = sanitize_text_field($post['schoolyear']);
             $this->semester = sanitize_text_field($post['semester']);
             $this->class = sanitize_text_field($post['class']);

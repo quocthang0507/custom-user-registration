@@ -122,11 +122,11 @@ function ur_do_an_output()
             </div>
             <div class="form-group">
                 <label>Ngày bắt đầu đăng ký</label>
-                <input class="form-control" type="date" name="start_date" value="<?php echo dmy2ymd($start_date); ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+                <input class="form-control" type="datetime-local" name="start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
             </div>
             <div class="form-group">
                 <label>Ngày kết thúc đăng ký</label>
-                <input class="form-control" type="date" name="end_date" value="<?php echo dmy2ymd($end_date); ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+                <input class="form-control" type="datetime-local" name="end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
             </div>
             <div class="form-group">
                 <label>Năm học</label>
