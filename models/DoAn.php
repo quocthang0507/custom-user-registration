@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Constants.php';
+require_once UR_PLUGIN_INCLUDES . '/utils.php';
 
 class ur_DoAn
 {
@@ -14,6 +15,7 @@ class ur_DoAn
     private $end_date;
     private $schoolyear;
     private $class;
+    private $type;
 
     /**
      * PHP doesn't have overloading
@@ -27,11 +29,12 @@ class ur_DoAn
             $this->instructor = sanitize_text_field($post['instructor']);
             $this->max_students = sanitize_text_field($post['max_students']);
             $this->references = sanitize_text_field($post['references']);
-            $this->start_date = sanitize_text_field($post['start_date']);
-            $this->end_date = sanitize_text_field($post['end_date']);
+            $this->start_date = ymd2dmy(sanitize_text_field($post['start_date']));
+            $this->end_date = ymd2dmy(sanitize_text_field($post['end_date']));
             $this->schoolyear = sanitize_text_field($post['schoolyear']);
             $this->semester = sanitize_text_field($post['semester']);
             $this->class = sanitize_text_field($post['class']);
+            $this->type = sanitize_text_field($post['type']);
         } else {
             $this->ID = $post->ID;
             $this->post_title = $post->post_title;
@@ -44,6 +47,7 @@ class ur_DoAn
             $this->schoolyear = $metadata->schoolyear[0];
             $this->semester = $metadata->semester[0];
             $this->class = $metadata->class[0];
+            $this->type = $metadata->type[0];
         }
     }
 
@@ -57,7 +61,7 @@ class ur_DoAn
     public static function get_list_do_an($loai_do_an, $nam_hoc, $hoc_ky, $lop)
     {
         $args = array(
-            'post_type' => $loai_do_an,
+            'post_type' => UR_DO_AN,
             'post_status' => 'publish',
             'posts_per_page' => -1,
             'meta_query' => array(
@@ -76,7 +80,12 @@ class ur_DoAn
                     'key' => 'class',
                     'value' => $lop,
                     'compare' => '='
-                )
+                ),
+                array(
+                    'key' => 'type',
+                    'value' => $loai_do_an,
+                    'compare' => '='
+                ),
             )
         );
         $query = new WP_Query($args);
@@ -93,8 +102,16 @@ class ur_DoAn
     public static function get_all_do_an_chuyen_nganh()
     {
         $args = array(
-            'post-type' => DO_AN_CHUYEN_NGANH,
-            'post-status' => 'publish',
+            'post-type' => UR_DO_AN,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => 'type',
+                    'value' => DO_AN_CHUYEN_NGANH,
+                    'compare' => '='
+                )
+            )
         );
         return get_posts($args);
     }
@@ -107,8 +124,16 @@ class ur_DoAn
     public static function get_all_do_an_co_so()
     {
         $args = array(
-            'post-type' => DO_AN_CO_SO,
-            'post-status' => 'publish',
+            'post-type' => UR_DO_AN,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => 'type',
+                    'value' => DO_AN_CO_SO,
+                    'compare' => '='
+                )
+            )
         );
         return get_posts($args);
     }
@@ -146,6 +171,7 @@ class ur_DoAn
                 update_post_meta($post_id, 'schoolyear', $metadata->schoolyear);
                 update_post_meta($post_id, 'semester', $metadata->semester);
                 update_post_meta($post_id, 'class', $metadata->class);
+                update_post_meta($post_id, 'type', $metadata->type);
             }
         } catch (Exception $e) {
             return false;

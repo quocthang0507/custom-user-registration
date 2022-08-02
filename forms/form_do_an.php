@@ -106,9 +106,9 @@ function custom_registration_function()
     );
 }
 
-add_shortcode('ur_form1', 'custom_registration_form1_shortcode');
+add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
 
-function custom_registration_form1_shortcode()
+function custom_registration_form_do_an_shortcode()
 {
     ob_start();
     custom_registration_function();

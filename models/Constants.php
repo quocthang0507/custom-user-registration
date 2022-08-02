@@ -15,6 +15,9 @@ if (!defined('GENERATE_DO_AN_POST_TYPE'))
 if (!defined('DO_AN_METABOX'))
     define('DO_AN_METABOX', 'ur_do_an_metabox');
 
+if (!defined('UR_DO_AN'))
+    define('UR_DO_AN', 'ur_do_an');
+
 // Menu và các trang quản trị
 
 if (!defined('MENU_QUAN_LY_DO_AN'))

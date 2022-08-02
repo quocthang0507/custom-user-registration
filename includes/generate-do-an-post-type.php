@@ -7,8 +7,8 @@ require_once UR_PLUGIN_INCLUDES . './utils.php';
 function init_ur_do_an()
 {
     add_action('init', GENERATE_DO_AN_POST_TYPE);
-    add_action('add_meta_boxes_ur_do_an', DO_AN_METABOX);
-    add_action('save_post_ur_do_an', 'ur_do_an_update');
+    add_action('add_meta_boxes_' . UR_DO_AN, DO_AN_METABOX);
+    add_action('save_post_' . UR_DO_AN, 'ur_do_an_save');
 }
 
 function ur_do_an_metabox()
@@ -54,11 +54,11 @@ if (!function_exists(GENERATE_DO_AN_POST_TYPE)) {
             'capability_type' => 'post',
             'rewrite' => array('slug' => 'do_an'), //
         );
-        register_post_type('ur_do_an', $args);
+        register_post_type(UR_DO_AN, $args);
     }
 }
 
-function ur_do_an_update($post_id)
+function ur_do_an_save($post_id)
 {
     if (
         isset($_POST['post_title']) &&
@@ -70,9 +70,10 @@ function ur_do_an_update($post_id)
         isset($_POST['end_date']) &&
         isset($_POST['schoolyear']) &&
         isset($_POST['semester']) &&
-        isset($_POST['class'])
+        isset($_POST['class']) &&
+        isset($_POST['type'])
     ) {
-        $data = new ur_DoAn($_POST);
+        $data = new ur_DoAn($_POST, null);
         return ur_DoAn::update_do_an($post_id, '', $data);
     }
     return false;
@@ -90,11 +91,19 @@ function ur_do_an_output()
     $schoolyear = get_post_meta($id, "schoolyear", true);
     $semester = get_post_meta($id, "semester", true);
     $class = get_post_meta($id, "class", true);
+    $type = get_post_meta($id, "type", true);
 
 ?>
     <!--Metabox hiển thị khi phía dưới ở trang Thêm mới Đồ án-->
     <form>
         <div class="ur_do_an_detail">
+            <div class="form-group">
+                <label>Loại đồ án</label>
+                <select class="form-control" name="type" aria-label="Loại đồ án" title="Loại đồ án">
+                    <option value="<?php echo DO_AN_CO_SO; ?>" <?php echo $type == DO_AN_CO_SO ? 'selected' : ''; ?>>Đồ án cơ sở</option>
+                    <option value="<?php echo DO_AN_CHUYEN_NGANH; ?>" <?php echo $type == DO_AN_CHUYEN_NGANH ? 'selected' : ''; ?>>Đồ án chuyên ngành</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label>Mô tả</label>
                 <textarea class="form-control" name="description" rows="4" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
