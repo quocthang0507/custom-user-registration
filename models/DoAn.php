@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Constants.php';
-require_once UR_PLUGIN_INCLUDES . '/utils.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
 class ur_DoAn
 {

@@ -33,11 +33,11 @@ define('UR_PLUGIN_VIEWS_DIR', UR_PLUGIN_DIR . '/views');
 
 define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/forms');
 
-define('UR_PLUGIN_CSS', UR_PLUGIN_DIR . '/css');
+define('UR_PLUGIN_CSS_DIR', UR_PLUGIN_DIR . '/css');
 
-define('UR_PLUGIN_INCLUDES', UR_PATH . '/includes');
+define('UR_PLUGIN_INCLUDES_DIR', UR_PATH . '/includes');
 
-require_once UR_PLUGIN_INCLUDES . '/generate-do-an-post-type.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
 require_once UR_PATH . '/includes/hook-filter.php';
 require_once UR_PLUGIN_PAGES_DIR . '/form_do_an.php';
