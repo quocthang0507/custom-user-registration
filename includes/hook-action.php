@@ -19,6 +19,10 @@ function custom_columns($column)
 {
     global $post;
     switch ($column) {
+        case 'instructor':
+            $instructor = get_post_meta($post->ID, 'instructor', true);
+            echo $instructor;
+            break;
         case 'type':
             $type = get_post_meta($post->ID, 'type', true);
             if ($type == DO_AN_CO_SO)
@@ -33,6 +37,9 @@ function custom_columns($column)
         case 'end_date':
             $date = get_post_meta($post->ID, 'end_date', true);
             echo date_to_string($date);
+            break;
+        case 'status':
+            echo '0';
             break;
     }
 }

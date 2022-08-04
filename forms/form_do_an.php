@@ -1,7 +1,8 @@
 <?php
 
-function registration_form($first_name, $last_name, $student_id, $student_class)
+function registration_form()
 {
+    $user = wp_get_current_user();
     echo '
     <style>
         div {
@@ -17,20 +18,48 @@ function registration_form($first_name, $last_name, $student_id, $student_class)
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
         <div>
             <label for="first_name">First name <strong>*</strong> </label>
-            <input type="text" name="first_name" value="' . (isset($_POST['first_name']) ? $first_name : null) . '";
+            <input type="text" name="first_name" value="' . $user->user_firstname . '" readonly disabled>
         </div>
         <div>
             <label for="last_name">Last name <strong>*</strong> </label>
-            <input type="text" name="last_name" value="' . (isset($_POST['last_name']) ? $last_name : null) . '";
+            <input type="text" name="last_name" value="' . $user->user_lastname . '" readonly disabled>
         </div>
         <div>
             <label for="student_id">Student ID <strong>*</strong> </label>
-            <input type="text" name="student_id" value="' . (isset($_POST['student_id']) ? $student_id : null) . '";
+            <input type="text" name="student_id" value="' . $user->user_login . '" readonly disabled>
+        </div>
+        <div>
+            <label for="student_id">Email<strong>*</strong> </label>
+            <input type="email" name="email" value="' . $user->user_email . '" readonly disabled>
         </div>
         <div>
             <label for="student_class">Class <strong>*</strong> </label>
-            <input type="text" name="student_class" value="' . (isset($_POST['student_class']) ? $student_class : null) . '";
+            <select name="student_class">
+                <option value="CTK43-PM">CTK43-PM</option>
+                <option value="CTK44A">CTK44A</option>
+                <option value="CTK44B">CTK44B</option>
+            </select>
         </div>
+        <div>
+            <label for="type">Type <strong>*</strong> </label>
+            <select name="student_class">
+                <option value="do-an-chuyen-nganh">Đồ án chuyên ngành</option>
+                <option value="do-an-co-so">Đồ án cơ sở</option>
+            </select>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Tên đề tài</th>
+                <th>Mô tả/yêu cầu đề tài</th>
+                <th>Giảng viên hướng dẫn</th>
+                <th>Số sinh viên tối đa</th>
+                <th>Tài liệu tham khảo</th>
+                <th>Trạng thái đăng ký</th>
+            </tr>
+            <tr>
+
+            </tr>
+        </table>
         <input type="submit" name="submit" value="Register"/>
     </form>
     ';
@@ -98,12 +127,7 @@ function custom_registration_function()
         );
     }
 
-    registration_form(
-        $first_name,
-        $last_name,
-        $student_id,
-        $student_class
-    );
+    registration_form();
 }
 
 add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
@@ -111,6 +135,10 @@ add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
 function custom_registration_form_do_an_shortcode()
 {
     ob_start();
-    custom_registration_function();
+    if (is_user_logged_in()) {
+        custom_registration_function();
+    } else {
+        echo 'Bạn phải đăng nhập để thực hiện chức năng này!';
+    }
     return ob_get_clean();
 }
