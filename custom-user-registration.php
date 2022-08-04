@@ -29,6 +29,8 @@ define('UR_PLUGIN_DIR', untrailingslashit(dirname(UR_PLUGIN)));
 
 define('UR_PLUGIN_MODELS_DIR', UR_PLUGIN_DIR . '/models');
 
+define('UR_PLUGIN_VIEWS_DIR', UR_PLUGIN_DIR . '/views');
+
 define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/forms');
 
 define('UR_PLUGIN_CSS', UR_PLUGIN_DIR . '/css');
