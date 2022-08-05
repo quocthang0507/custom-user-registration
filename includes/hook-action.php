@@ -91,15 +91,21 @@ function show_admin_notices()
 function add_custom_scripts()
 {
     global $current_screen;
+    global $start_date, $end_date;
     switch ($current_screen->post_type) {
         case 'ur_do_an':
 ?>
             <script type="text/javascript">
                 jQuery(document).ready(function($) {
-                    let change_date_div = $("<div class='alignleft actions'>" +
-                        "<a>Hello</a>" +
-                        "</div>");
-                    change_date_div.insertAfter('.bulkactions');
+                    let change_date_div = $(
+                        '<div class="alignleft actions" style="display: none;" id="change_datetime">' +
+                        '<label>Ngày bắt đầu:</label>' +
+                        '<input class="form-control" type="datetime-local" name="start_date" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" value="<?php echo $start_date; ?>">' +
+                        '<label>Ngày bắt đầu:</label>' +
+                        '<input class="form-control" type="datetime-local" name="end_date" aria-label="Ngày kết thúc" title="Ngày kết thúc" value="<?php echo $end_date; ?>">' +
+                        '</div>'
+                    );
+                    change_date_div.insertAfter('#bulk-action-selector-top');
                 });
             </script>
 <?php

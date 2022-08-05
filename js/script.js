@@ -15,3 +15,13 @@ function createButton(title, cls, css, func) {
     t.onclick = func;
     return t;
 }
+
+jQuery(document).ready(function ($) {
+    $('#bulk-action-selector-top,#bulk-action-selector-bottom').on('change', function () {
+        if (this.value == 'change-datetime') {
+            $('#change_datetime').show();
+        } else {
+            $('#change_datetime').hide();
+        }
+    });
+});

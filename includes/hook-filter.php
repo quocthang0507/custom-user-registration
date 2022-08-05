@@ -89,10 +89,11 @@ function add_bulk_action($bulk_actions)
  */
 function change_datetime($redirect_url, $action, $post_ids)
 {
-    if ($action == 'change-datetime') {
+    global $start_date, $end_date;
+    if ($action == 'change-datetime' && isset($start_date) && isset($end_date)) {
         foreach ($post_ids as $post_id) {
-            update_post_meta($post_id, 'start_date', '');
-            update_post_meta($post_id, 'end_date', '');
+            update_post_meta($post_id, 'start_date', $start_date);
+            update_post_meta($post_id, 'end_date', $end_date);
         }
         $redirect_url = add_query_arg('changed-datetime', count($post_ids), $redirect_url);
     }
