@@ -1,39 +1,43 @@
 <?php
 
+require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
+
+add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
+
 function registration_form()
 {
     $user = wp_get_current_user();
-    echo '
+    $list_do_an = ur_DoAn::get_all_do_an_co_so();
+
+?>
     <style>
         div {
             margin-bottom: 2px;
         }
+
         input {
             margin-bottom: 4px;
         }
     </style>
-    ';
-
-    echo '
-    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
+    <form action="' . $_SERVER['REQUEST_URI'] . '" method="POST">
         <div>
-            <label for="first_name">First name <strong>*</strong> </label>
-            <input type="text" name="first_name" value="' . $user->user_firstname . '" readonly disabled>
+            <label for="last_name">Họ và tên đệm</label>
+            <input type="text" name="last_name" value="<?php echo $user->user_lastname; ?>" readonly disabled>
         </div>
         <div>
-            <label for="last_name">Last name <strong>*</strong> </label>
-            <input type="text" name="last_name" value="' . $user->user_lastname . '" readonly disabled>
+            <label for="first_name">Tên</label>
+            <input type="text" name="first_name" value="<?php echo $user->user_firstname; ?>" readonly disabled>
         </div>
         <div>
-            <label for="student_id">Student ID <strong>*</strong> </label>
-            <input type="text" name="student_id" value="' . $user->user_login . '" readonly disabled>
+            <label for="student_id">Mã số sinh viên</label>
+            <input type="text" name="student_id" value="<?php echo $user->user_login; ?>" readonly disabled>
         </div>
         <div>
-            <label for="student_id">Email<strong>*</strong> </label>
-            <input type="email" name="email" value="' . $user->user_email . '" readonly disabled>
+            <label for="student_id">Địa chỉ email</label>
+            <input type="email" name="email" value="<?php echo $user->user_email; ?>" readonly disabled>
         </div>
         <div>
-            <label for="student_class">Class <strong>*</strong> </label>
+            <label for="student_class">Lớp</label>
             <select name="student_class">
                 <option value="CTK43-PM">CTK43-PM</option>
                 <option value="CTK44A">CTK44A</option>
@@ -41,12 +45,13 @@ function registration_form()
             </select>
         </div>
         <div>
-            <label for="type">Type <strong>*</strong> </label>
+            <label for="type">Loại đồ án</label>
             <select name="student_class">
                 <option value="do-an-chuyen-nganh">Đồ án chuyên ngành</option>
                 <option value="do-an-co-so">Đồ án cơ sở</option>
             </select>
         </div>
+        <h3>DANH SÁCH ĐỀ TÀI CÓ THỂ ĐĂNG KÝ</h3>
         <table class="table">
             <tr>
                 <th>Tên đề tài</th>
@@ -56,81 +61,29 @@ function registration_form()
                 <th>Tài liệu tham khảo</th>
                 <th>Trạng thái đăng ký</th>
             </tr>
-            <tr>
-
-            </tr>
+            <?php
+            foreach ($list_do_an as $do_an) {
+                echo '<td>' . $do_an->post_title . '</td>';
+                echo '<td>' . $do_an->description . '</td>';
+                echo '<td>' . $do_an->instructor . '</td>';
+                echo '<td>' . $do_an->max_students . '</td>';
+                echo '<td>' . $do_an->references . '</td>';
+                echo '<td>' . 0 . '</td>';
+            }
+            ?>
         </table>
-        <input type="submit" name="submit" value="Register"/>
+        <input type="submit" name="submit" value="Đăng ký ngay" />
     </form>
-    ';
-}
-
-function validation($first_name, $last_name, $student_id, $student_class)
-{
-    global $reg_errors;
-    $reg_errors = new WP_Error;
-
-    if (empty($first_name) || empty($last_name) || empty($student_id) || empty($student_class)) {
-        $reg_errors->add('field', 'Required form field is missing');
-    }
-
-    //... 
-
-    if (is_wp_error($reg_errors)) {
-        foreach ($reg_errors->get_error_messages() as $error) {
-            echo '
-            <div>
-                <strong>Error:</strong>' .
-                $error . '<br/>
-            </div>
-            ';
-        }
-    }
-}
-
-function complete_registration()
-{
-    global $reg_errors, $first_name, $last_name, $student_id, $student_class;
-    if (1 > count($reg_errors->get_error_messages())) {
-        $userdata = array(
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'student_id' => $student_id,
-            'student_class' => $student_class,
-        );
-        $user = wp_insert_user($userdata);
-        echo 'Completed. Go to <a href="' . get_site_url() . '>home page</a>';
-    }
+<?php
 }
 
 function custom_registration_function()
 {
     if (isset($_POST['submit'])) {
-        validation(
-            $_POST['first_name'],
-            $_POST['last_name'],
-            $_POST['student_id'],
-            $_POST['student_class']
-        );
-
-        global $first_name, $last_name, $student_id, $student_class;
-        $first_name = sanitize_text_field($_POST['first_name']);
-        $last_name = sanitize_text_field($_POST['last_name']);
-        $student_id = sanitize_text_field($_POST['student_id']);
-        $student_class = sanitize_text_field($_POST['student_class']);
-
-        complete_registration(
-            $first_name,
-            $last_name,
-            $student_id,
-            $student_class
-        );
+        return;
     }
-
     registration_form();
 }
-
-add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
 
 function custom_registration_form_do_an_shortcode()
 {

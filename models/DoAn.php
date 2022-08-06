@@ -88,6 +88,7 @@ class ur_DoAn
                 ),
             )
         );
+        // Cách 1
         $query = new WP_Query($args);
         $posts = $query->posts;
         $result = array();
@@ -102,7 +103,7 @@ class ur_DoAn
     public static function get_all_do_an_chuyen_nganh()
     {
         $args = array(
-            'post-type' => UR_DO_AN,
+            'post_type' => UR_DO_AN,
             'post_status' => 'publish',
             'posts_per_page' => -1,
             'meta_query' => array(
@@ -113,7 +114,15 @@ class ur_DoAn
                 )
             )
         );
-        return get_posts($args);
+        // Cách 2
+        $posts = get_posts($args);
+        $result = array();
+        foreach ($posts as $post) {
+            $arr = self::get_do_an_by_id($post->ID);
+            if ($arr != null)
+                array_push($result, $arr);
+        }
+        return $result;
     }
 
     public static function get_list_do_an_chuyen_nganh($nam_hoc, $hoc_ky, $lop)
@@ -124,7 +133,7 @@ class ur_DoAn
     public static function get_all_do_an_co_so()
     {
         $args = array(
-            'post-type' => UR_DO_AN,
+            'post_type' => UR_DO_AN,
             'post_status' => 'publish',
             'posts_per_page' => -1,
             'meta_query' => array(
