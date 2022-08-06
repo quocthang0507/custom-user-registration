@@ -52,6 +52,7 @@ if (!function_exists(GENERATE_DO_AN_POST_TYPE)) {
             'exclude_from_search' => false, // Loại bỏ khỏi kết quả tìm kiếm
             'publicly_queryable' => true, // Hiển thị các tham số trong query, phải đặt true
             'capability_type' => 'post',
+            'publicly_queryable' => false, // Không hiện nút View trong danh sách
             'rewrite' => array('slug' => 'do_an'), //
         );
         register_post_type(UR_DO_AN, $args);
