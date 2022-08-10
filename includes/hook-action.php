@@ -69,31 +69,31 @@ function custom_columns($column)
 {
     global $post;
     switch ($column) {
-        case 'instructor':
+        case UR_DO_AN . '_instructor':
             // get_post_meta( int $post_id, string $key = '', bool $single = false )
-            $instructor = get_post_meta($post->ID, 'instructor', true);
+            $instructor = get_post_meta($post->ID, UR_DO_AN . '_instructor', true);
             echo $instructor;
             break;
-        case 'type':
-            $type = get_post_meta($post->ID, 'type', true);
+        case UR_DO_AN . '_type':
+            $type = get_post_meta($post->ID, UR_DO_AN . '_type', true);
             if ($type == DO_AN_CO_SO)
                 echo 'Đồ án cơ sở';
             else if ($type == DO_AN_CHUYEN_NGANH)
                 echo 'Đồ án chuyên ngành';
             break;
-        case 'class':
-            $class = get_post_meta($post->ID, 'class', true);
+        case UR_DO_AN . '_class':
+            $class = get_post_meta($post->ID, UR_DO_AN . '_class', true);
             echo $class;
             break;
-        case 'start_date':
-            $date = get_post_meta($post->ID, 'start_date', true);
+        case UR_DO_AN . '_start_date':
+            $date = get_post_meta($post->ID, UR_DO_AN . '_start_date', true);
             echo date_to_string($date);
             break;
-        case 'end_date':
-            $date = get_post_meta($post->ID, 'end_date', true);
+        case UR_DO_AN . '_end_date':
+            $date = get_post_meta($post->ID, UR_DO_AN . '_end_date', true);
             echo date_to_string($date);
             break;
-        case 'status':
+        case UR_DO_AN . '_status':
             echo '0';
             break;
     }
@@ -106,15 +106,29 @@ function add_sub_menus()
 {
     add_submenu_page(
         'edit.php?post_type=ur_do_an',
-        'Danh sách đăng ký',
-        'Danh sách đăng ký',
+        INFO_DO_AN,
+        INFO_DO_AN,
+        'manage_options',
+        'ur_do_an-info',
+        'link_to_info_page',
+    );
+    add_submenu_page(
+        'edit.php?post_type=ur_do_an',
+        REGISTERED_DO_AN,
+        REGISTERED_DO_AN,
         'manage_options',
         'ur_do_an-result',
-        'result_page',
+        'link_to_result_page',
     );
 }
 
-function result_page()
+function link_to_info_page()
+{
+    do_action('ur_do_an_info_start');
+    include UR_PLUGIN_VIEWS_DIR . '/do-an-info.php';
+}
+
+function link_to_result_page()
 {
     do_action('ur_do_an_result_start');
     include UR_PLUGIN_VIEWS_DIR . '/do-an-result.php';
@@ -144,9 +158,9 @@ function add_custom_scripts()
                     let change_date_div = $(
                         '<div class="alignleft actions" style="display: none;" id="change_datetime">' +
                         '<label>Ngày bắt đầu:</label>' +
-                        '<input class="form-control" type="datetime-local" name="start_date" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" value="">' +
+                        '<input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" value="">' +
                         '<label>Ngày bắt đầu:</label>' +
-                        '<input class="form-control" type="datetime-local" name="end_date" aria-label="Ngày kết thúc" title="Ngày kết thúc" value="">' +
+                        '<input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" aria-label="Ngày kết thúc" title="Ngày kết thúc" value="">' +
                         '</div>'
                     );
                     change_date_div.insertAfter('#bulk-action-selector-top');
@@ -162,35 +176,35 @@ function change_quick_edit($column_name, $post_type, $taxanomy)
     global $post;
 
     $id = $post->ID;
-    $instructor = get_post_meta($id, 'instructor', true);
-    $type = get_post_meta($id, 'type', true);
-    $start_date = get_post_meta($id, 'start_date', true);
-    $end_date = get_post_meta($id, 'end_date', true);
+    $instructor = get_post_meta($id, UR_DO_AN . '_instructor', true);
+    $type = get_post_meta($id, UR_DO_AN . '_type', true);
+    $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
+    $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
 
     if ($post_type == UR_DO_AN) {
         switch ($column_name) {
-            case 'instructor':
+            case UR_DO_AN . '_instructor':
             ?>
                 <fieldset class="inline-edit-col-right" id="edit-instructor">
                     <div class="inline-edit-col">
                         <div class="inline-edit-group wp-clearfix">
                             <label class="inline-edit-instructor alignleft">
                                 <span class="title">Giảng viên hướng dẫn:</span>
-                                <input type="text" name="instructor" class="inline-edit-instructor-input" value="<?php echo $instructor; ?>">
+                                <input type="text" name="<?php echo UR_DO_AN; ?>_instructor" class="inline-edit-instructor-input" value="<?php echo $instructor; ?>">
                             </label>
                         </div>
                     </div>
                 </fieldset>
             <?php
                 break;
-            case 'type':
+            case UR_DO_AN . '_type':
             ?>
                 <fieldset class="inline-edit-col-right" id="edit-type">
                     <div class="inline-edit-col">
                         <div class="inline-edit-group wp-clearfix">
                             <label class="inline-edit-group alignleft">
                                 <span class="title">Loại:</span>
-                                <select name="type" class="inline-edit-instructor-input">
+                                <select name="<?php echo UR_DO_AN; ?>_type" class="inline-edit-instructor-input">
                                     <option value="<?php echo DO_AN_CO_SO; ?>" <?php echo $type == DO_AN_CO_SO ? 'selected' : ''; ?>>Đồ án cơ sở</option>
                                     <option value="<?php echo DO_AN_CHUYEN_NGANH; ?>" <?php echo $type == DO_AN_CHUYEN_NGANH ? 'selected' : ''; ?>>Đồ án chuyên ngành</option>
                                 </select>
@@ -200,28 +214,28 @@ function change_quick_edit($column_name, $post_type, $taxanomy)
                 </fieldset>
             <?php
                 break;
-            case 'start_date':
+            case UR_DO_AN . '_start_date':
             ?>
                 <fieldset class="inline-edit-col-right" id="edit-start-date">
                     <div class="inline-edit-col">
                         <div class="inline-edit-group wp-clearfix">
                             <label class="inline-edit-group alignleft">
                                 <span class="title">Ngày bắt đầu đăng ký:</span>
-                                <input class="inline-edit-start-date-input" type="datetime-local" name="start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+                                <input class="inline-edit-start-date-input" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
                             </label>
                         </div>
                     </div>
                 </fieldset>
             <?php
                 break;
-            case 'end_date':
+            case UR_DO_AN . '_end_date':
             ?>
                 <fieldset class="inline-edit-col-right" id="edit-end-date">
                     <div class="inline-edit-col">
                         <div class="inline-edit-group wp-clearfix">
                             <label class="inline-edit-group alignleft">
                                 <span class="title">Ngày kết thúc đăng ký:</span>
-                                <input class="inline-edit-end-date-input" type="datetime-local" name="end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+                                <input class="inline-edit-end-date-input" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
                             </label>
                         </div>
                     </div>
@@ -239,14 +253,14 @@ function save_quick_edit($post_id)
         return;
     }
 
-    $instructor = !empty($_POST['instructor']) ? $_POST['instructor'] : '';
-    $type = !empty($_POST['type']) ? $_POST['type'] : '';
-    $start_date = !empty($_POST['start_date']) ? $_POST['start_date'] : '';
-    $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : '';
+    $instructor = !empty($_POST[UR_DO_AN . '_instructor']) ? $_POST[UR_DO_AN . '_instructor'] : '';
+    $type = !empty($_POST[UR_DO_AN . '_type']) ? $_POST[UR_DO_AN . '_type'] : '';
+    $start_date = !empty($_POST[UR_DO_AN . '_start_date']) ? $_POST[UR_DO_AN . '_start_date'] : '';
+    $end_date = !empty($_POST[UR_DO_AN . '_end_date']) ? $_POST[UR_DO_AN . '_end_date'] : '';
 
-    update_post_meta($post_id, 'instructor', $instructor);
-    update_post_meta($post_id, 'type', $type);
-    update_post_meta($post_id, 'start_date', $start_date);
-    update_post_meta($post_id, 'end_date', $end_date);
+    update_post_meta($post_id, UR_DO_AN . '_instructor', $instructor);
+    update_post_meta($post_id, UR_DO_AN . '_type', $type);
+    update_post_meta($post_id, UR_DO_AN . '_start_date', $start_date);
+    update_post_meta($post_id, UR_DO_AN . '_end_date', $end_date);
 }
 ?>

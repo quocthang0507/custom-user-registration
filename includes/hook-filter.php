@@ -50,12 +50,12 @@ function customize_columns_in_ur_do_an($columns)
 
     // Add new columns
     $column_type = array(
-        'instructor' => 'Giảng viên hướng dẫn',
-        'type' => 'Loại đồ án',
-        'class' => 'Lớp',
-        'start_date' => 'Ngày bắt đầu đăng ký',
-        'end_date' => 'Ngày kết thúc đăng ký',
-        'status' => 'Trạng thái đã đăng ký'
+        UR_DO_AN . '_instructor' => 'Giảng viên hướng dẫn',
+        UR_DO_AN . '_type' => 'Loại đồ án',
+        UR_DO_AN . '_class' => 'Lớp',
+        UR_DO_AN . '_start_date' => 'Ngày bắt đầu đăng ký',
+        UR_DO_AN . '_end_date' => 'Ngày kết thúc đăng ký',
+        UR_DO_AN . '_status' => 'Trạng thái đã đăng ký'
     );
     return array_slice($columns, 0, 6, true) + $column_type + array_slice($columns, 6, NULL, true);
 }
@@ -65,12 +65,12 @@ function customize_columns_in_ur_do_an($columns)
  */
 function sortable_columns_ur_do_an($columns)
 {
-    $columns['instructor'] = 'instructor';
-    $columns['type'] = 'type';
-    $columns['class'] = 'class';
-    $columns['start_date'] = 'start_date';
-    $columns['end_date'] = 'end_date';
-    $columns['status'] = 'status';
+    $columns[UR_DO_AN . '_instructor'] = UR_DO_AN . '_instructor';
+    $columns[UR_DO_AN . '_type'] = UR_DO_AN . '_type';
+    $columns[UR_DO_AN . '_class'] = UR_DO_AN . '_class';
+    $columns[UR_DO_AN . '_start_date'] = UR_DO_AN . '_start_date';
+    $columns[UR_DO_AN . '_end_date'] = UR_DO_AN . '_end_date';
+    $columns[UR_DO_AN . '_status'] = UR_DO_AN . '_status';
     return $columns;
 }
 
@@ -79,36 +79,38 @@ function sortable_columns_ur_do_an($columns)
  */
 function sort_columns_ur_do_an($vars)
 {
-    if (isset($vars['orderby']) && 'type' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'type',
-            'orderby' => 'meta_value'
-        ));
-    } else if (isset($vars['orderby']) && 'class' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'class',
-            'orderby' => 'meta_value'
-        ));
-    } else if (isset($vars['orderby']) && 'start_date' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'start_date',
-            'orderby' => 'meta_value_num'
-        ));
-    } else if (isset($vars['orderby']) && 'end_date' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'end_date',
-            'orderby' => 'meta_value_num'
-        ));
-    } else if (isset($vars['orderby']) && 'status' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'status',
-            'orderby' => 'meta_value_num'
-        ));
-    } else if (isset($vars['orderby']) && 'instructor' == $vars['orderby']) {
-        $vars = array_merge($vars, array(
-            'meta_key' => 'instructor',
-            'orderby' => 'meta_value'
-        ));
+    if (isset($vars['orderby'])) {
+        if (UR_DO_AN . '_type' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_type',
+                'orderby' => 'meta_value'
+            ));
+        } else if (UR_DO_AN . '_class' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_class',
+                'orderby' => 'meta_value'
+            ));
+        } else if (UR_DO_AN . '_start_date' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_start_date',
+                'orderby' => 'meta_value_num'
+            ));
+        } else if (UR_DO_AN . '_end_date' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_end_date',
+                'orderby' => 'meta_value_num'
+            ));
+        } else if (UR_DO_AN . '_status' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_status',
+                'orderby' => 'meta_value_num'
+            ));
+        } else if (UR_DO_AN . '_instructor' == $vars['orderby']) {
+            $vars = array_merge($vars, array(
+                'meta_key' => UR_DO_AN . '_instructor',
+                'orderby' => 'meta_value'
+            ));
+        }
     }
     return $vars;
 }
@@ -127,15 +129,15 @@ function add_bulk_action($bulk_actions)
  */
 function change_datetime($redirect_url, $action, $post_ids)
 {
-    $start_date = $_GET['start_date'];
-    $end_date = $_GET['end_date'];
+    $start_date = $_GET[UR_DO_AN . '_start_date'];
+    $end_date = $_GET[UR_DO_AN . '_end_date'];
 
     $redirect_url = remove_query_arg(array('change-datetime'), $redirect_url);
 
     if ($action == 'change-datetime' && isset($start_date) && isset($end_date)) {
         foreach ($post_ids as $post_id) {
-            update_post_meta($post_id, 'start_date', $start_date);
-            update_post_meta($post_id, 'end_date', $end_date);
+            update_post_meta($post_id, UR_DO_AN . '_start_date', $start_date);
+            update_post_meta($post_id, UR_DO_AN . '_end_date', $end_date);
         }
         $redirect_url = add_query_arg('changed_datetime', count($post_ids), $redirect_url);
     }

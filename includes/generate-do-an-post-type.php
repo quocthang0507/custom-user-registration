@@ -39,7 +39,7 @@ if (!function_exists(GENERATE_DO_AN_POST_TYPE)) {
         );
         $args = array(
             'labels' => $label, // Gọi các label ở trên
-            'description' => DESCRIPTION_DO_AN, // Mô tả
+            UR_DO_AN . 'description' => DESCRIPTION_DO_AN, // Mô tả
             'supports' => array( // Các tính năng được hỗ trợ trong post type
                 'title',
                 'author'
@@ -70,19 +70,19 @@ function ur_do_an_save($post_id)
 {
     if (
         isset($_POST['post_title']) &&
-        isset($_POST['description']) &&
-        isset($_POST['instructor']) &&
-        isset($_POST['max_students']) &&
-        isset($_POST['references']) &&
-        isset($_POST['start_date']) &&
-        isset($_POST['end_date']) &&
-        isset($_POST['schoolyear']) &&
-        isset($_POST['semester']) &&
-        isset($_POST['class']) &&
-        isset($_POST['type'])
+        isset($_POST[UR_DO_AN . '_description']) &&
+        isset($_POST[UR_DO_AN . '_instructor']) &&
+        isset($_POST[UR_DO_AN . '_max_students']) &&
+        isset($_POST[UR_DO_AN . '_references']) &&
+        isset($_POST[UR_DO_AN . '_start_date']) &&
+        isset($_POST[UR_DO_AN . '_end_date']) &&
+        isset($_POST[UR_DO_AN . '_schoolyear']) &&
+        isset($_POST[UR_DO_AN . '_semester']) &&
+        isset($_POST[UR_DO_AN . '_class']) &&
+        isset($_POST[UR_DO_AN . '_type'])
     ) {
         $data = new ur_DoAn($_POST, null);
-        return ur_DoAn::update_do_an($post_id, '', $data);
+        return ur_DoAn::update_do_an($post_id, null, $data);
     }
     return false;
 }
@@ -90,16 +90,16 @@ function ur_do_an_save($post_id)
 function ur_do_an_output()
 {
     $id = get_the_ID();
-    $description = get_post_meta($id, "description", true);
-    $instructor = get_post_meta($id, "instructor", true);
-    $max_students = get_post_meta($id, "max_students", true);
-    $references = get_post_meta($id, "references", true);
-    $start_date = get_post_meta($id, "start_date", true);
-    $end_date = get_post_meta($id, "end_date", true);
-    $schoolyear = get_post_meta($id, "schoolyear", true);
-    $semester = get_post_meta($id, "semester", true);
-    $class = get_post_meta($id, "class", true);
-    $type = get_post_meta($id, "type", true);
+    $description = get_post_meta($id, UR_DO_AN . '_description', true);
+    $instructor = get_post_meta($id, UR_DO_AN . '_instructor', true);
+    $max_students = get_post_meta($id, UR_DO_AN . '_max_students', true);
+    $references = get_post_meta($id, UR_DO_AN . '_references', true);
+    $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
+    $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
+    $schoolyear = get_post_meta($id, UR_DO_AN . '_schoolyear', true);
+    $semester = get_post_meta($id, UR_DO_AN . '_semester', true);
+    $class = get_post_meta($id, UR_DO_AN . '_class', true);
+    $type = get_post_meta($id, UR_DO_AN . '_type', true);
 
 ?>
     <!--Metabox hiển thị khi phía dưới ở trang Thêm mới Đồ án-->
@@ -107,43 +107,43 @@ function ur_do_an_output()
         <div class="ur_do_an_detail">
             <div class="mb-1">
                 <label class="form-label">Loại đồ án</label>
-                <select class="form-control" name="type" aria-label="Loại đồ án" title="Loại đồ án">
+                <select class="form-control" name="<?php echo UR_DO_AN; ?>_type" aria-label="Loại đồ án" title="Loại đồ án">
                     <option value="<?php echo DO_AN_CO_SO; ?>" <?php echo $type == DO_AN_CO_SO ? 'selected' : ''; ?>>Đồ án cơ sở</option>
                     <option value="<?php echo DO_AN_CHUYEN_NGANH; ?>" <?php echo $type == DO_AN_CHUYEN_NGANH ? 'selected' : ''; ?>>Đồ án chuyên ngành</option>
                 </select>
             </div>
             <div class="mb-1">
                 <label class="form-label">Mô tả</label>
-                <textarea class="form-control" name="description" rows="5" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
+                <textarea class="form-control" name="<?php echo UR_DO_AN; ?>_description" rows="5" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
             </div>
             <div class="row mb-1">
                 <div class="col">
                     <label class="form-label">Giảng viên hướng dẫn</label>
-                    <input class="form-control" type="text" name="instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
+                    <input class="form-control" type="text" name="<?php echo UR_DO_AN; ?>_instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
                 </div>
                 <div class="col">
                     <label class="form-label">Số sinh viên tối đa</label>
-                    <input class="form-control" type="number" name="max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
+                    <input class="form-control" type="number" name="<?php echo UR_DO_AN; ?>_max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
                 </div>
             </div>
             <div class="mb-1">
                 <label class="form-label">Tài liệu tham khảo</label>
-                <textarea class="form-control" name="references" rows="5" aria-label="Tài liệu tham khảo" title="Tài liệu tham khảo"><?php echo $references; ?></textarea>
+                <textarea class="form-control" name="<?php echo UR_DO_AN; ?>_references" rows="5" aria-label="Tài liệu tham khảo" title="Tài liệu tham khảo"><?php echo $references; ?></textarea>
             </div>
             <div class="row mb-1">
                 <div class="col">
                     <label class="form-label">Ngày bắt đầu đăng ký</label>
-                    <input class="form-control" type="datetime-local" name="start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
                 </div>
                 <div class="col">
                     <label class="form-label">Ngày kết thúc đăng ký</label>
-                    <input class="form-control" type="datetime-local" name="end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
                 </div>
             </div>
             <div class="row mb-1">
                 <div class="col">
                     <label class="form-label">Năm học</label>
-                    <select class="form-control" name="schoolyear" aria-label="Năm học" title="Năm học">
+                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_schoolyear" aria-label="Năm học" title="Năm học">
                         <?php
                         $year = date('Y');
                         for ($i = 0; $i < 10; $i++) {
@@ -158,7 +158,7 @@ function ur_do_an_output()
                 </div>
                 <div class="col">
                     <label class="form-label">Học kỳ</label>
-                    <select class="form-control" name="semester" aria-label="Học kỳ" title="Học kỳ">
+                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_semester" aria-label="Học kỳ" title="Học kỳ">
                         <option value="HK1" <?php echo $semester == 'HK1' ? 'selected' : '' ?>>HK1</option>
                         <option value="HK2" <?php echo $semester == 'HK2' ? 'selected' : '' ?>>HK2</option>
                         <option value="HK3" <?php echo $semester == 'HK3' ? 'selected' : '' ?>>HK3</option>
@@ -166,7 +166,7 @@ function ur_do_an_output()
                 </div>
                 <div class="col">
                     <label class="form-label">Lớp</label>
-                    <input class="form-control" type="text" name="class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
+                    <input class="form-control" type="text" name="<?php echo UR_DO_AN; ?>_class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
                 </div>
             </div>
         </div>

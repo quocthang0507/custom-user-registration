@@ -31,7 +31,7 @@ define('UR_PLUGIN_MODELS_DIR', UR_PLUGIN_DIR . '/models');
 
 define('UR_PLUGIN_VIEWS_DIR', UR_PLUGIN_DIR . '/views');
 
-define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/forms');
+define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/form_shortcodes');
 
 define('UR_PLUGIN_CSS_DIR', UR_PLUGIN_DIR . '/css');
 
@@ -40,6 +40,6 @@ define('UR_PLUGIN_INCLUDES_DIR', UR_PATH . '/includes');
 require_once UR_PLUGIN_INCLUDES_DIR . '/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
 require_once UR_PATH . '/includes/hook-filter.php';
-require_once UR_PLUGIN_PAGES_DIR . '/form_do_an.php';
+require_once UR_PLUGIN_PAGES_DIR . '/do_an.php';
 
 init_ur_do_an();

@@ -25,6 +25,9 @@ if (!defined('DO_AN_METABOX'))
 if (!defined('UR_DO_AN'))
     define('UR_DO_AN', 'ur_do_an');
 
+if (!defined('UR_INSTRUCTORS_META_KEY'))
+    define('UR_INSTRUCTORS_META_KEY', 'ur_instructors');
+
 // Menu và các trang quản trị
 
 if (!defined('MENU_QUAN_LY_DO_AN'))
@@ -47,3 +50,9 @@ if (!defined('MENU_ALL_DO_AN'))
 
 if (!defined('DESCRIPTION_DO_AN'))
     define('DESCRIPTION_DO_AN', 'Quản lý Đồ án');
+
+if (!defined('REGISTERED_DO_AN'))
+    define('REGISTERED_DO_AN', 'Danh sách đăng ký');
+
+if (!defined('INFO_DO_AN'))
+    define('INFO_DO_AN', 'Lớp & GVHD');
