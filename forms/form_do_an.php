@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * User view: Form đăng ký đồ án
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
 require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 
 add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
@@ -29,8 +36,12 @@ function registration_form()
             <input type="text" name="first_name" value="<?php echo $user->user_firstname; ?>" readonly disabled>
         </div>
         <div>
-            <label for="student_id">Mã số sinh viên</label>
+            <label for="student_id">Tên đăng nhập</label>
             <input type="text" name="student_id" value="<?php echo $user->user_login; ?>" readonly disabled>
+        </div>
+        <div>
+            <label for="student_id">Mã số sinh viên</label>
+            <input type="text" name="student_id" value="<?php echo $user->user_registration_student_id; ?>" readonly disabled>
         </div>
         <div>
             <label for="student_id">Địa chỉ email</label>

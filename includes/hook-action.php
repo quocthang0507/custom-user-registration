@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Hook actions
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
+/**
  * Actions are the hooks that the WordPress core launches at specific points during execution, 
  * or when specific events occur. Plugins can specify that one or more of its PHP functions 
  * are executed at these points, using the Action API.
@@ -47,9 +54,12 @@ function load_plugin_css_js()
     // css
     wp_register_style('style', plugins_url('custom-user-registration/css/style.css'), __FILE__);
     wp_enqueue_style('style');
+    wp_register_style('bootstrap', plugins_url('custom-user-registration/css/bootstrap.min.css'), __FILE__);
+    wp_enqueue_style('bootstrap');
 
     // js
     wp_enqueue_script('script', plugins_url('custom-user-registration/js/script.js'), __FILE__);
+    wp_enqueue_script('bootstrap', plugins_url('custom-user-registration/js/bootstrap.min.js'), __FILE__);
 }
 
 /**
@@ -221,13 +231,15 @@ function change_quick_edit($column_name, $post_type, $taxanomy)
 function save_quick_edit($post_id)
 {
     // check inlint edit nonce
-    if (!wp_verify_nonce($_POST['_inline_edit'], 'inlineeditnonce')) {
+    if (isset($_POST['_inline_edit']) && !wp_verify_nonce($_POST['_inline_edit'], 'inlineeditnonce')) {
         return;
     }
+
     $instructor = !empty($_POST['instructor']) ? $_POST['instructor'] : '';
     $type = !empty($_POST['type']) ? $_POST['type'] : '';
     $start_date = !empty($_POST['start_date']) ? $_POST['start_date'] : '';
     $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : '';
+
     update_post_meta($post_id, 'instructor', $instructor);
     update_post_meta($post_id, 'type', $type);
     update_post_meta($post_id, 'start_date', $start_date);

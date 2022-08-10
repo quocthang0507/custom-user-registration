@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Utilities
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
+/**
  * Returns a new string from datetime
  */
 function date_to_string($rfc_3339)

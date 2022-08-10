@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Class DoAn
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
 require_once 'Constants.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 

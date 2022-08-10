@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Hook filter
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
+/**
  * WordPress offers filter hooks to allow plugins to modify various types of internal data at runtime.
  * A plugin can modify data by binding a callback to a filter hook. When the filter is later applied, 
  * each bound callback is run in order of priority, and given the opportunity to modify a value by returning a new value.

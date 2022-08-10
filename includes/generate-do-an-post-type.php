@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Tạo Custom Post Type đăng ký đồ án
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 require_once UR_PLUGIN_INCLUDES_DIR . './utils.php';
@@ -98,63 +105,69 @@ function ur_do_an_output()
     <!--Metabox hiển thị khi phía dưới ở trang Thêm mới Đồ án-->
     <form>
         <div class="ur_do_an_detail">
-            <div class="form-group">
-                <label>Loại đồ án</label>
+            <div class="mb-1">
+                <label class="form-label">Loại đồ án</label>
                 <select class="form-control" name="type" aria-label="Loại đồ án" title="Loại đồ án">
                     <option value="<?php echo DO_AN_CO_SO; ?>" <?php echo $type == DO_AN_CO_SO ? 'selected' : ''; ?>>Đồ án cơ sở</option>
                     <option value="<?php echo DO_AN_CHUYEN_NGANH; ?>" <?php echo $type == DO_AN_CHUYEN_NGANH ? 'selected' : ''; ?>>Đồ án chuyên ngành</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>Mô tả</label>
-                <textarea class="form-control" name="description" rows="4" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
+            <div class="mb-1">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control" name="description" rows="5" aria-label="Mô tả" title="Mô tả"><?php echo $description; ?></textarea>
             </div>
-            <div class="form-group">
-                <label>Giảng viên hướng dẫn</label>
-                <input class="form-control" type="text" name="instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
+            <div class="row mb-1">
+                <div class="col">
+                    <label class="form-label">Giảng viên hướng dẫn</label>
+                    <input class="form-control" type="text" name="instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
+                </div>
+                <div class="col">
+                    <label class="form-label">Số sinh viên tối đa</label>
+                    <input class="form-control" type="number" name="max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Số sinh viên tối đa</label>
-                <input class="form-control" type="number" name="max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
+            <div class="mb-1">
+                <label class="form-label">Tài liệu tham khảo</label>
+                <textarea class="form-control" name="references" rows="5" aria-label="Tài liệu tham khảo" title="Tài liệu tham khảo"><?php echo $references; ?></textarea>
             </div>
-            <div class="form-group">
-                <label>Tài liệu tham khảo</label>
-                <textarea class="form-control" name="references" rows="4" aria-label="Tài liệu tham khảo" title="Tài liệu tham khảo"><?php echo $references; ?></textarea>
+            <div class="row mb-1">
+                <div class="col">
+                    <label class="form-label">Ngày bắt đầu đăng ký</label>
+                    <input class="form-control" type="datetime-local" name="start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+                </div>
+                <div class="col">
+                    <label class="form-label">Ngày kết thúc đăng ký</label>
+                    <input class="form-control" type="datetime-local" name="end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Ngày bắt đầu đăng ký</label>
-                <input class="form-control" type="datetime-local" name="start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
-            </div>
-            <div class="form-group">
-                <label>Ngày kết thúc đăng ký</label>
-                <input class="form-control" type="datetime-local" name="end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
-            </div>
-            <div class="form-group">
-                <label>Năm học</label>
-                <select class="form-control" name="schoolyear" aria-label="Năm học" title="Năm học">
-                    <?php
-                    $year = date('Y');
-                    for ($i = 0; $i < 10; $i++) {
-                        $value = $year - $i . '-' . $year - $i + 1;
-                        if ($schoolyear == $value)
-                            echo '<option value="' . $value . '" selected>' . $value . '</option>';
-                        else
-                            echo '<option value="' . $value . '">' . $value . '</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Học kỳ</label>
-                <select class="form-control" name="semester" aria-label="Học kỳ" title="Học kỳ">
-                    <option value="HK1" <?php echo $semester == 'HK1' ? 'selected' : '' ?>>HK1</option>
-                    <option value="HK2" <?php echo $semester == 'HK2' ? 'selected' : '' ?>>HK2</option>
-                    <option value="HK3" <?php echo $semester == 'HK3' ? 'selected' : '' ?>>HK3</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Lớp</label>
-                <input class="form-control" type="text" name="class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
+            <div class="row mb-1">
+                <div class="col">
+                    <label class="form-label">Năm học</label>
+                    <select class="form-control" name="schoolyear" aria-label="Năm học" title="Năm học">
+                        <?php
+                        $year = date('Y');
+                        for ($i = 0; $i < 10; $i++) {
+                            $value = $year - $i . '-' . $year - $i + 1;
+                            if ($schoolyear == $value)
+                                echo '<option value="' . $value . '" selected>' . $value . '</option>';
+                            else
+                                echo '<option value="' . $value . '">' . $value . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-label">Học kỳ</label>
+                    <select class="form-control" name="semester" aria-label="Học kỳ" title="Học kỳ">
+                        <option value="HK1" <?php echo $semester == 'HK1' ? 'selected' : '' ?>>HK1</option>
+                        <option value="HK2" <?php echo $semester == 'HK2' ? 'selected' : '' ?>>HK2</option>
+                        <option value="HK3" <?php echo $semester == 'HK3' ? 'selected' : '' ?>>HK3</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-label">Lớp</label>
+                    <input class="form-control" type="text" name="class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
+                </div>
             </div>
         </div>
     </form>

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Constants
+ * 
+ * @version  1.0.0
+ * @package CustomUserRegistration
+ */
+
 if (!defined('REGISTER_FORM_ACTION'))
     define('REGISTER_FORM_ACTION', 'register_form');
 
