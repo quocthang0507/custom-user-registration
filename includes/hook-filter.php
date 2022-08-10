@@ -52,6 +52,7 @@ function customize_columns_in_ur_do_an($columns)
     $column_type = array(
         'instructor' => 'Giảng viên hướng dẫn',
         'type' => 'Loại đồ án',
+        'class' => 'Lớp',
         'start_date' => 'Ngày bắt đầu đăng ký',
         'end_date' => 'Ngày kết thúc đăng ký',
         'status' => 'Trạng thái đã đăng ký'
@@ -66,6 +67,7 @@ function sortable_columns_ur_do_an($columns)
 {
     $columns['instructor'] = 'instructor';
     $columns['type'] = 'type';
+    $columns['class'] = 'class';
     $columns['start_date'] = 'start_date';
     $columns['end_date'] = 'end_date';
     $columns['status'] = 'status';
@@ -80,6 +82,11 @@ function sort_columns_ur_do_an($vars)
     if (isset($vars['orderby']) && 'type' == $vars['orderby']) {
         $vars = array_merge($vars, array(
             'meta_key' => 'type',
+            'orderby' => 'meta_value'
+        ));
+    } else if (isset($vars['orderby']) && 'class' == $vars['orderby']) {
+        $vars = array_merge($vars, array(
+            'meta_key' => 'class',
             'orderby' => 'meta_value'
         ));
     } else if (isset($vars['orderby']) && 'start_date' == $vars['orderby']) {

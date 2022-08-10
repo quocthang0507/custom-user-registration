@@ -7,6 +7,8 @@
  * @package CustomUserRegistration
  */
 
+require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
+
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
@@ -17,26 +19,42 @@ if (!defined('ABSPATH')) {
     <h1 class="wp-heading-inline">Danh sách đăng ký đồ án</h1>
 
     <form method="POST" action="" enctype="multipart/form-data">
-        Tìm kiếm theo:
-        <fieldset class="inline-edit-col-left" id="edit-instructor">
-            <div class="inline-edit-col">
-                <div class="inline-edit-group wp-clearfix">
-                    <label class="inline-edit-instructor alignleft">
-                        <span class="title">Giảng viên hướng dẫn:</span>
-                        <input type="text" name="instructor" class="inline-edit-instructor-input" value="">
-                    </label>
+        <div class="card">
+            Tìm kiếm theo:
+            <div class="card-body">
+                <div class="row mb-1">
+                    <div class="col">
+                        <label for="instructor" class="form-label">Giảng viên hướng dẫn:</label>
+                        <input type="text" id="instructor" name="instructor" class="inline-edit-instructor-input">
+                    </div>
+                    <div class="col">
+                        <label for="type" class="form-label">Loại đồ án:</label>
+                        <select class="form-control" name="type">
+                            <option value="0">Tất cả</option>
+                            <option value="<?php echo DO_AN_CO_SO ?>">Đồ án cơ sở</option>
+                            <option value="<?php echo DO_AN_CHUYEN_NGANH ?>">Đồ án chuyên ngành</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col">
+                        <label for="class" class="form-label">Lớp:</label>
+                        <select class="form-control" name="class">
+                            <option value="0">Tất cả</option>
+                            <option value="CTK42-PM">CTK42-PM</option>
+                            <option value="CTK42-MMT">CTK42-MMT</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="semester" class="form-label">Học kỳ:</label>
+                        <select class="form-control" name="class">
+                            <option value="0">Tất cả</option>
+                            <option value="HK1">HK1</option>
+                            <option value="HK2">HK2</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </fieldset>
-        <fieldset class="inline-edit-col-right" id="edit-instructor">
-            <div class="inline-edit-col">
-                <div class="inline-edit-group wp-clearfix">
-                    <label class="inline-edit-instructor alignleft">
-                        <span class="title">Giảng viên hướng dẫn:</span>
-                        <input type="text" name="instructor" class="inline-edit-instructor-input" value="">
-                    </label>
-                </div>
-            </div>
-        </fieldset>
+        </div>
     </form>
 </div>

@@ -81,6 +81,10 @@ function custom_columns($column)
             else if ($type == DO_AN_CHUYEN_NGANH)
                 echo 'Đồ án chuyên ngành';
             break;
+        case 'class':
+            $class = get_post_meta($post->ID, 'class', true);
+            echo $class;
+            break;
         case 'start_date':
             $date = get_post_meta($post->ID, 'start_date', true);
             echo date_to_string($date);
