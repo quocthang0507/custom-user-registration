@@ -69,14 +69,14 @@ class ur_DoAn
         }
     }
 
-    public static function get_do_an_by_id($post_id)
+    public static function get_do_an_by_id(int $post_id)
     {
         $post = get_post($post_id);
         $metadata = (object)get_post_meta($post_id);
         return new ur_DoAn($post, $metadata);
     }
 
-    public static function get_list_do_an($loai_do_an, $nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an(string $loai_do_an, string $nam_hoc, string $hoc_ky, string $lop)
     {
         $args = array(
             'post_type' => UR_DO_AN,
@@ -143,7 +143,7 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_list_do_an_chuyen_nganh($nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an_chuyen_nganh(string $nam_hoc, string $hoc_ky, string $lop)
     {
         return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $nam_hoc, $hoc_ky, $lop);
     }
@@ -172,7 +172,7 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_list_do_an_co_so($nam_hoc, $hoc_ky, $lop)
+    public static function get_list_do_an_co_so(string $nam_hoc, string $hoc_ky, string $lop)
     {
         return self::get_list_do_an(DO_AN_CO_SO, $nam_hoc, $hoc_ky, $lop);
     }
@@ -182,7 +182,7 @@ class ur_DoAn
         return wp_insert_post($post);
     }
 
-    public static function update_do_an($post_id, $title, $metadata)
+    public static function update_do_an(int $post_id, string $title, $metadata)
     {
         try {
             // Update post title

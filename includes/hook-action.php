@@ -171,7 +171,7 @@ function add_custom_scripts()
     }
 }
 
-function change_quick_edit($column_name, $post_type, $taxanomy)
+function change_quick_edit(string $column_name, string $post_type, $taxanomy)
 {
     global $post;
 
@@ -246,7 +246,7 @@ function change_quick_edit($column_name, $post_type, $taxanomy)
     }
 }
 
-function save_quick_edit($post_id)
+function save_quick_edit(string|int $post_id)
 {
     // check inlint edit nonce
     if (isset($_POST['_inline_edit']) && !wp_verify_nonce($_POST['_inline_edit'], 'inlineeditnonce')) {

@@ -28,6 +28,9 @@ if (!defined('UR_DO_AN'))
 if (!defined('UR_INSTRUCTORS_META_KEY'))
     define('UR_INSTRUCTORS_META_KEY', 'ur_instructors');
 
+if (!defined('UR_CLASSES_META_KEY'))
+    define('UR_CLASSES_META_KEY', 'ur_classes');
+
 if (!defined('UR_REGISTER_DO_AN_META_KEY'))
     define('UR_REGISTER_DO_AN_META_KEY', 'ur_registration_do_an');
 
