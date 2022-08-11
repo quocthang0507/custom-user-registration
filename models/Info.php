@@ -20,10 +20,11 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if ($name != null && is_string($name)) {
             $instructors = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-            if ($instructors == null)
+            if ($instructors == null) // Nếu không tìm thấy
                 $instructors = array();
             array_push($instructors, $name);
-            $instructors = array_unique($instructors);
+            $instructors = array_unique($instructors); // Xóa trùng lặp
+            sort($instructors); // Sắp xếpxếp
 
             update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
             return true;
@@ -43,6 +44,7 @@ class ur_Info
                 $classes = array();
             array_push($classes, $class);
             $classes = array_unique($classes);
+            sort($classes);
 
             update_user_meta($id, UR_CLASSES_META_KEY, $classes);
             return true;
@@ -50,6 +52,9 @@ class ur_Info
         return false;
     }
 
+    /**
+     * Delete an instructor by index
+     */
     public static function delete_instructor(int $index)
     {
         $id = get_all_administrators()[0]->ID;
@@ -66,6 +71,9 @@ class ur_Info
         return false;
     }
 
+    /**
+     * Delete a class by index
+     */
     public static function delete_class(int $index)
     {
         $id = get_all_administrators()[0]->ID;

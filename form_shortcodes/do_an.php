@@ -8,6 +8,7 @@
  */
 
 require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 
 add_shortcode('ur_form_do_an', 'custom_registration_form_do_an_shortcode');
 
@@ -15,6 +16,7 @@ function registration_form()
 {
     $user = wp_get_current_user();
     $list_do_an = ur_DoAn::get_all_do_an_co_so();
+    $list_lop = ur_Info::get_all_classes();
 
 ?>
     <style>
@@ -50,9 +52,11 @@ function registration_form()
         <div>
             <label for="student_class">Lớp</label>
             <select name="student_class">
-                <option value="CTK43-PM">CTK43-PM</option>
-                <option value="CTK44A">CTK44A</option>
-                <option value="CTK44B">CTK44B</option>
+                <?php
+                foreach ($list_lop as $lop) {
+                    echo '<option value=' . $lop . '>' . $lop . '</option>';
+                }
+                ?>
             </select>
         </div>
         <div>

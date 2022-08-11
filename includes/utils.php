@@ -20,6 +20,9 @@ function date_to_string(string $rfc_3339)
     }
 }
 
+/**
+ * Get current url
+ */
 function get_current_url()
 {
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
@@ -34,6 +37,9 @@ function get_current_url()
     return $url;
 }
 
+/**
+ * Get data from an ajax request
+ */
 function parse_input()
 {
     $data = file_get_contents("php://input");
@@ -43,6 +49,9 @@ function parse_input()
     return $result;
 }
 
+/**
+ * Get all administrator accounts in wordpress
+ */
 function get_all_administrators()
 {
     $args = array(
