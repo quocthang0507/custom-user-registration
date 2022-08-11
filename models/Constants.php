@@ -28,6 +28,9 @@ if (!defined('UR_DO_AN'))
 if (!defined('UR_INSTRUCTORS_META_KEY'))
     define('UR_INSTRUCTORS_META_KEY', 'ur_instructors');
 
+if (!defined('UR_REGISTER_DO_AN_META_KEY'))
+    define('UR_REGISTER_DO_AN_META_KEY', 'ur_registration_do_an');
+
 // Menu và các trang quản trị
 
 if (!defined('MENU_QUAN_LY_DO_AN'))

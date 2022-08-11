@@ -52,10 +52,10 @@ add_action('save_post', 'save_quick_edit');
 function load_plugin_css_js()
 {
     // css
-    wp_register_style('style', plugins_url('custom-user-registration/css/style.css'), __FILE__);
-    wp_enqueue_style('style');
     wp_register_style('bootstrap', plugins_url('custom-user-registration/css/bootstrap.min.css'), __FILE__);
     wp_enqueue_style('bootstrap');
+    wp_register_style('style', plugins_url('custom-user-registration/css/style.css'), __FILE__);
+    wp_enqueue_style('style');
 
     // js
     wp_enqueue_script('script', plugins_url('custom-user-registration/js/script.js'), __FILE__);
