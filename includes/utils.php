@@ -14,7 +14,7 @@ function date_to_string(string $rfc_3339)
 {
     try {
         $datetime = strtotime($rfc_3339);
-        return date('d/m/Y h:i:s A', $datetime);
+        return date('d/m/Y H:i:s', $datetime);
     } catch (Exception $e) {
         return $rfc_3339;
     }

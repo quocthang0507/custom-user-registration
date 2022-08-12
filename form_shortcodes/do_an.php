@@ -17,71 +17,56 @@ add_shortcode('ur_form_do_an', 'register_an_shortcode');
 function registration_form(string $type = DO_AN_CO_SO)
 {
     $user = wp_get_current_user();
-    $list_do_an = ur_DoAn::get_all_do_an_co_so();
     $list_lop = ur_Info::get_all_classes();
+    $list_do_an = ur_DoAn::get_list_do_an_avaiable($type);
 
 ?>
     <style>
-        div {
-            margin-bottom: 2px;
-        }
-
-        input {
-            margin-bottom: 4px;
-        }
-
         .grid-container {
             display: grid;
             grid-template-columns: auto auto;
-            grid-gap: 10px;
         }
     </style>
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="POST">
         <div class="grid-container">
             <div>
-                <label for="last_name">Họ và tên đệm</label>
+                <p>Họ và tên đệm</p>
             </div>
             <div>
-                <input type="text" name="last_name" value="<?php echo $user->user_lastname; ?>" readonly disabled>
+                <p><?php echo $user->user_lastname; ?></p>
             </div>
             <div>
-                <label for="first_name">Tên</label>
+                <p>Tên</p>
             </div>
             <div>
-                <input type="text" name="first_name" value="<?php echo $user->user_firstname; ?>" readonly disabled>
+                <p><?php echo $user->user_firstname; ?></p>
             </div>
             <div>
-                <label for="student_id">Tên đăng nhập</label>
+                <p>Tên đăng nhập</p>
             </div>
             <div>
-                <input type="text" name="student_id" value="<?php echo $user->user_login; ?>" readonly disabled>
+                <p><?php echo $user->user_login; ?></p>
             </div>
             <div>
-                <label for="student_id">Mã số sinh viên</label>
+                <p>Mã số sinh viên</p>
             </div>
             <div>
-                <input type="text" name="student_id" value="<?php echo $user->user_registration_student_id; ?>" readonly disabled>
+                <p><?php echo $user->user_registration_student_id; ?></p>
             </div>
             <div>
-                <label for="student_id">Địa chỉ email</label>
+                <p>Địa chỉ email</p>
             </div>
             <div>
-                <input type="email" name="email" value="<?php echo $user->user_email; ?>" readonly disabled>
+                <p><?php echo $user->user_email; ?></p>
             </div>
             <div>
-                <label for="student_class">Lớp</label>
+                <p>Lớp</p>
             </div>
             <div>
-                <select name="student_class">
-                    <?php
-                    foreach ($list_lop as $lop) {
-                        echo '<option value=' . $lop . '>' . $lop . '</option>';
-                    }
-                    ?>
-                </select>
+                <p><?php echo $user->user_registration_class; ?></p>
             </div>
             <div>
-                <label for="type">Loại đồ án</label>
+                <p for="type">Loại đồ án</p>
             </div>
             <div>
                 <select name="type" id="cbxType">

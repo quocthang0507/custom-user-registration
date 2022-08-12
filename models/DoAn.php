@@ -7,6 +7,8 @@
  * @package CustomUserRegistration
  */
 
+use function PHPSTORM_META\type;
+
 require_once 'Constants.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
@@ -69,6 +71,9 @@ class ur_DoAn
         }
     }
 
+    /**
+     * Get do an by post id
+     */
     public static function get_do_an_by_id(int $post_id)
     {
         $post = get_post($post_id);
@@ -76,7 +81,10 @@ class ur_DoAn
         return new ur_DoAn($post, $metadata);
     }
 
-    public static function get_list_do_an(string $loai_do_an, string $nam_hoc, string $hoc_ky, string $lop)
+    /**
+     * Get list do an by multiple conditions
+     */
+    public static function get_list_do_an(string $type, string $schoolyear, string $semester, string $class)
     {
         $args = array(
             'post_type' => UR_DO_AN,
@@ -86,22 +94,22 @@ class ur_DoAn
                 'relation' => 'AND',
                 array(
                     'key' => UR_DO_AN . '_schoolyear',
-                    'value' => $nam_hoc,
+                    'value' => $schoolyear,
                     'compare' => '='
                 ),
                 array(
                     'key' => UR_DO_AN . '_semester',
-                    'value' => $hoc_ky,
+                    'value' => $semester,
                     'compare' => '='
                 ),
                 array(
                     'key' => UR_DO_AN . '_class',
-                    'value' => $lop,
+                    'value' => $class,
                     'compare' => '='
                 ),
                 array(
                     'key' => UR_DO_AN . '_type',
-                    'value' => $loai_do_an,
+                    'value' => $type,
                     'compare' => '='
                 ),
             )
@@ -118,17 +126,30 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_all_do_an_chuyen_nganh()
+    public static function get_list_do_an_avaiable(string $type)
     {
         $args = array(
             'post_type' => UR_DO_AN,
             'post_status' => 'publish',
             'posts_per_page' => -1,
             'meta_query' => array(
+                'relation' => 'AND',
                 array(
                     'key' => UR_DO_AN . '_type',
-                    'value' => DO_AN_CHUYEN_NGANH,
+                    'value' => $type,
                     'compare' => '='
+                ),
+                array(
+                    'key' => UR_DO_AN . '_start_date',
+                    'value' => date('Y-m-d\TH:i'),
+                    'compare' => '<=',
+                    'type' => 'DATE'
+                ),
+                array(
+                    'key' => UR_DO_AN . '_end_date',
+                    'value' => date('Y-m-d\TH:i'),
+                    'compare' => '>=',
+                    'type' => 'DATE'
                 )
             )
         );
@@ -143,11 +164,44 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_list_do_an_chuyen_nganh(string $nam_hoc, string $hoc_ky, string $lop)
+    /**
+     * Get all do an chuyen nganh
+     */
+    public static function get_all_do_an_chuyen_nganh()
     {
-        return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $nam_hoc, $hoc_ky, $lop);
+        $args = array(
+            'post_type' => UR_DO_AN,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => UR_DO_AN . '_type',
+                    'value' => DO_AN_CHUYEN_NGANH,
+                    'compare' => '='
+                )
+            )
+        );
+        $posts = get_posts($args);
+        $result = array();
+        foreach ($posts as $post) {
+            $obj = self::get_do_an_by_id($post->ID);
+            if ($obj != null)
+                array_push($result, $obj);
+        }
+        return $result;
     }
 
+    /**
+     * Get list do an chuyen nganh by multiple conditions
+     */
+    public static function get_list_do_an_chuyen_nganh(string $schoolyear, string $semester, string $class)
+    {
+        return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $schoolyear, $semester, $class);
+    }
+
+    /**
+     * Get all do an co so
+     */
     public static function get_all_do_an_co_so()
     {
         $args = array(
@@ -172,16 +226,25 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_list_do_an_co_so(string $nam_hoc, string $hoc_ky, string $lop)
+    /**
+     * Get list do an co so by multiple conditions
+     */
+    public static function get_list_do_an_co_so(string $schoolyear, string $semester, string $class)
     {
-        return self::get_list_do_an(DO_AN_CO_SO, $nam_hoc, $hoc_ky, $lop);
+        return self::get_list_do_an(DO_AN_CO_SO, $schoolyear, $semester, $class);
     }
 
+    /**
+     * Insert do an
+     */
     public static function insert_do_an($post)
     {
         return wp_insert_post($post);
     }
 
+    /**
+     * Update do an
+     */
     public static function update_do_an(int $post_id, $title, $metadata)
     {
         try {
