@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = !ur_Info::add_class($class);
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    $data = parse_input();
+    $data = parse_input_ajax();
     $id = $data['delete_id'];
     if (str_starts_with($id, 'gvhd')) {
         $id = (int)str_replace('gvhd', '', $id);
@@ -74,7 +74,7 @@ $list_classes = ur_Info::get_all_classes();
                 </div>
                 <div class="row m-2">
                     <label for="list-instructors" class="form-label">Danh sách GVHD</label>
-                    <ol class="list-group list-group-numbered" id="list-instructors">
+                    <ol class="list-group list-group-numbered overflow-auto" id="list-instructors">
                         <?php
                         if (count($list_instructors) == 0)
                             echo '<li class="list-group-item d-flex justify-content-between align-items-start"><div class="ms-2 me-auto">Danh sách trống</div></li>';
@@ -111,7 +111,7 @@ $list_classes = ur_Info::get_all_classes();
                 </div>
                 <div class="row m-2">
                     <label for="list-classes" class="form-label">Danh sách lớp</label>
-                    <ol class="list-group list-group-numbered" id="list-instructors">
+                    <ol class="list-group list-group-numbered overflow-auto" id="list-instructors">
                         <?php
                         if (count($list_classes) == 0)
                             echo '<li class="list-group-item d-flex justify-content-between align-items-start"><div class="ms-2 me-auto">Danh sách trống</div></li>';

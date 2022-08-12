@@ -182,7 +182,7 @@ class ur_DoAn
         return wp_insert_post($post);
     }
 
-    public static function update_do_an(int $post_id, string $title, $metadata)
+    public static function update_do_an(int $post_id, $title, $metadata)
     {
         try {
             // Update post title

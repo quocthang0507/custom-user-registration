@@ -15,6 +15,7 @@
 
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 
 /**
  * add_action( string $hook_name, callable $callback, int $priority = 10, int $accepted_args = 1 
@@ -181,6 +182,8 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
     $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
     $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
 
+    $list_instructors = ur_Info::get_all_instructors();
+
     if ($post_type == UR_DO_AN) {
         switch ($column_name) {
             case UR_DO_AN . '_instructor':
@@ -190,7 +193,16 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                         <div class="inline-edit-group wp-clearfix">
                             <label class="inline-edit-instructor alignleft">
                                 <span class="title">Giảng viên hướng dẫn:</span>
-                                <input type="text" name="<?php echo UR_DO_AN; ?>_instructor" class="inline-edit-instructor-input" value="<?php echo $instructor; ?>">
+                                <select class="form-control" name="<?php echo UR_DO_AN; ?>_instructor" aria-label="GVHD" title="GVHD">
+                                    <?php
+                                    foreach ($list_instructors as $item) {
+                                        if ($item == $instructor)
+                                            echo '<option value="' . $item . '" selected>' . $item . '</option>';
+                                        else
+                                            echo '<option value="' . $item . '">' . $item . '</option>';
+                                    }
+                                    ?>
+                                </select>
                             </label>
                         </div>
                     </div>

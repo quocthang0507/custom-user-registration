@@ -40,13 +40,23 @@ function get_current_url()
 /**
  * Get data from an ajax request
  */
-function parse_input()
+function parse_input_ajax()
 {
     $data = file_get_contents("php://input");
     if ($data == false)
         return array();
     parse_str($data, $result);
     return $result;
+}
+
+/**
+ * Get parameter from a url string
+ */
+function parse_url_param(string $url, string $param)
+{
+    $url_components = parse_url($url);
+    parse_str($url_components['query'], $params);
+    return $params[$param];
 }
 
 /**
@@ -58,4 +68,20 @@ function get_all_administrators()
         'role__in' => array('administrator')
     );
     return get_users($args);
+}
+
+/**
+ * Remove duplicate from array of strings without case sensitive
+ */
+function array_unique_incasesensitive($array_of_string)
+{
+    return array_intersect_key($array_of_string, array_unique(array_map('strtolower', $array_of_string)));
+}
+
+/**
+ * Sort an array of strings without case sensitive
+ */
+function sort_incasesensitive($array_of_string)
+{
+    usort($array_of_string, 'strnatcasecmp');
 }

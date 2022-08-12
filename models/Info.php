@@ -23,8 +23,8 @@ class ur_Info
             if ($instructors == null) // Nếu không tìm thấy
                 $instructors = array();
             array_push($instructors, $name);
-            $instructors = array_unique($instructors); // Xóa trùng lặp
-            sort($instructors); // Sắp xếpxếp
+            $instructors = array_unique_incasesensitive($instructors); // Xóa trùng lặp
+            sort_incasesensitive($instructors); // Sắp xếpxếp
 
             update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
             return true;
@@ -43,8 +43,8 @@ class ur_Info
             if ($classes == null)
                 $classes = array();
             array_push($classes, $class);
-            $classes = array_unique($classes);
-            sort($classes);
+            $classes = array_unique_incasesensitive($classes);
+            sort_incasesensitive($classes);
 
             update_user_meta($id, UR_CLASSES_META_KEY, $classes);
             return true;

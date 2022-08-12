@@ -10,6 +10,7 @@
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 require_once UR_PLUGIN_INCLUDES_DIR . './utils.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 
 function init_ur_do_an()
 {
@@ -101,6 +102,9 @@ function ur_do_an_output()
     $class = get_post_meta($id, UR_DO_AN . '_class', true);
     $type = get_post_meta($id, UR_DO_AN . '_type', true);
 
+    $list_instructors = ur_Info::get_all_instructors();
+    $list_classes = ur_Info::get_all_classes();
+
 ?>
     <!--Metabox hiển thị khi phía dưới ở trang Thêm mới Đồ án-->
     <form>
@@ -119,7 +123,16 @@ function ur_do_an_output()
             <div class="row mb-1">
                 <div class="col">
                     <label class="form-label">Giảng viên hướng dẫn</label>
-                    <input class="form-control" type="text" name="<?php echo UR_DO_AN; ?>_instructor" value="<?php echo $instructor; ?>" aria-label="GVHD" title="GVHD">
+                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_instructor" aria-label="GVHD" title="GVHD">
+                        <?php
+                        foreach ($list_instructors as $item) {
+                            if ($item == $instructor)
+                                echo '<option value="' . $item . '" selected>' . $item . '</option>';
+                            else
+                                echo '<option value="' . $item . '">' . $item . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div class="col">
                     <label class="form-label">Số sinh viên tối đa</label>
@@ -166,7 +179,16 @@ function ur_do_an_output()
                 </div>
                 <div class="col">
                     <label class="form-label">Lớp</label>
-                    <input class="form-control" type="text" name="<?php echo UR_DO_AN; ?>_class" value="<?php echo $class; ?>" aria-label="Lớp" title="Lớp">
+                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp">
+                        <?php
+                        foreach ($list_classes as $item) {
+                            if ($item == $class)
+                                echo '<option value="' . $item . '" selected>' . $item . '</option>';
+                            else
+                                echo '<option value="' . $item . '">' . $item . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
         </div>

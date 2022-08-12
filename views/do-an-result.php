@@ -7,11 +7,15 @@
  * @package CustomUserRegistration
  */
 
-require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
-
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
+
+require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
+
+$list_instructors = ur_Info::get_all_instructors();
+$list_classes = ur_Info::get_all_classes();
 
 ?>
 
@@ -25,7 +29,14 @@ if (!defined('ABSPATH')) {
                 <div class="row mb-1">
                     <div class="col">
                         <label for="instructor" class="form-label">Giảng viên hướng dẫn:</label>
-                        <input type="text" id="instructor" name="<?php echo UR_DO_AN; ?>_instructor" class="inline-edit-instructor-input">
+                        <select class="form-control" name="<?php echo UR_DO_AN; ?>_instructor" aria-label="GVHD" title="GVHD">
+                            <option value="0">Tất cả</option>
+                            <?php
+                            foreach ($list_instructors as $item) {
+                                echo '<option value="' . $item . '">' . $item . '</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="col">
                         <label for="type" class="form-label">Loại đồ án:</label>
@@ -39,10 +50,13 @@ if (!defined('ABSPATH')) {
                 <div class="row mb-1">
                     <div class="col">
                         <label for="class" class="form-label">Lớp:</label>
-                        <select class="form-control" name="<?php echo UR_DO_AN; ?>_class">
+                        <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp">
                             <option value="0">Tất cả</option>
-                            <option value="CTK42-PM">CTK42-PM</option>
-                            <option value="CTK42-MMT">CTK42-MMT</option>
+                            <?php
+                            foreach ($list_classes as $item) {
+                                echo '<option value="' . $item . '">' . $item . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="col">
@@ -51,6 +65,7 @@ if (!defined('ABSPATH')) {
                             <option value="0">Tất cả</option>
                             <option value="HK1">HK1</option>
                             <option value="HK2">HK2</option>
+                            <option value="HK3">HK3</option>
                         </select>
                     </div>
                 </div>
