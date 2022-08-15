@@ -15,25 +15,28 @@ require_once 'Constants.php';
 class ur_DangKy
 {
     public string $registered_date;
-    public string $registered_user_id;
+    public int $registered_user_id;
 
-    public static function register(string $user_id, string $post_id)
+    public static function register(int $user_id, int $post_id)
     {
         $dang_ky = new ur_DangKy();
         $dang_ky->registered_date = date('Y-m-d\TH:i');
         $dang_ky->registered_user_id = $user_id;
 
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        // Nếu chưa đăng ký hoặc danh sách trống
-        if ($registered_students == null) {
-            $registered_students = array();
-            array_push($registered_students, $dang_ky);
-        }
-        // Nếu đã có người đăng ký thì không cho đăng ký 2 lần trên cùng 1 đồ án
-
+        $type = get_post_meta($post_id, UR_DO_AN . '_type', true);
+        // Nếu đã đăng ký thì không cho đăng ký 2 lần trên cùng 1 đồ án
         // Và không được đăng ký nhiều đồ án cùng loại (cơ sở hoặc chuyên ngành) trong cùng một học kỳ
-
-        update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
+        if (!self::is_user_registered_elsewhere($user_id, $type)) {
+            // Nếu chưa đăng ký hoặc danh sách trống
+            if ($registered_students == null) {
+                $registered_students = array();
+            }
+            array_push($registered_students, $dang_ky);
+            update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -47,7 +50,10 @@ class ur_DangKy
         return 0;
     }
 
-    public static function is_user_already_registered(string $user_id, string $post_id)
+    /**
+     * Is user already registered this do an?
+     */
+    public static function is_user_already_registered(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
         if ($registered_students == null || !is_array($registered_students))
@@ -59,7 +65,16 @@ class ur_DangKy
         return false;
     }
 
-    public static function is_user_registered_elsewhere(string $user_id, string $type)
+    /**
+     * Is user already do an in elsewhere?
+     */
+    public static function is_user_registered_elsewhere(int $user_id, string $type)
     {
+        $list_do_an = ur_DoAn::get_list_do_an_available($type, true); // Lấy danh sách đồ án chỉ có id và tên trong thời gian đăng ký
+        foreach ($list_do_an as $do_an) {
+            if (self::is_user_already_registered($user_id, $do_an->ID))
+                return true;
+        }
+        return false;
     }
 }

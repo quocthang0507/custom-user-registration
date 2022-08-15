@@ -42,7 +42,7 @@ function registration_form(string $type = DO_AN_CO_SO)
 {
     $user = wp_get_current_user();
     $list_lop = ur_Info::get_all_classes();
-    $list_do_an = ur_DoAn::get_list_do_an_avaiable($type);
+    $list_do_an = ur_DoAn::get_list_do_an_available($type);
 
 ?>
     <style>

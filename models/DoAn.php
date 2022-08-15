@@ -30,7 +30,7 @@ class ur_DoAn
     /**
      * PHP doesn't have overloading
      */
-    public function __construct($post, $metadata)
+    public function __construct($post, $metadata, bool $only_id = false)
     {
         $description = UR_DO_AN . '_description';
         $instructor = UR_DO_AN . '_instructor';
@@ -42,8 +42,12 @@ class ur_DoAn
         $semester = UR_DO_AN . '_semester';
         $class = UR_DO_AN . '_class';
         $type = UR_DO_AN . '_type';
-
-        if ($metadata == null) {
+        // Chỉ tạo đối tượng có id và tên
+        if ($only_id) {
+            $this->ID = $post->ID;
+            $this->post_title = $post->post_title;
+        } else if ($metadata == null) {
+            // Nếu thông tin gửi qua phương thức POST
             $this->ID = sanitize_text_field($post['ID']);
             $this->post_title = sanitize_text_field($post['post_title']);
             $this->description = sanitize_text_field($post[$description]);
@@ -57,6 +61,7 @@ class ur_DoAn
             $this->class = sanitize_text_field($post[$class]);
             $this->type = sanitize_text_field($post[$type]);
         } else {
+            // Nếu thông tin có cả metadata
             $this->ID = $post->ID;
             $this->post_title = $post->post_title;
             $this->description = $metadata->$description[0];
@@ -83,7 +88,7 @@ class ur_DoAn
         return 0;
     }
 
-    public function is_time_avaiable()
+    public function is_time_available()
     {
         $current_date = new DateTime();
         $start_date = new DateTime($this->start_date);
@@ -91,17 +96,19 @@ class ur_DoAn
         return $current_date >= $start_date && $current_date <= $end_date;
     }
 
-    public function is_avaiable()
+    public function is_available()
     {
-        return $this->is_time_avaiable() && $this->get_count_registration() < $this->max_students;
+        return $this->is_time_available() && $this->get_count_registration() < $this->max_students;
     }
 
     /**
      * Get do an by post id
      */
-    public static function get_do_an_by_id(int $post_id)
+    public static function get_do_an_by_id(int $post_id, bool $only_id = false)
     {
         $post = get_post($post_id);
+        if ($only_id)
+            return new ur_DoAn($post, null, true);
         $metadata = (object)get_post_meta($post_id);
         return new ur_DoAn($post, $metadata);
     }
@@ -151,7 +158,10 @@ class ur_DoAn
         return $result;
     }
 
-    public static function get_list_do_an_avaiable(string $type)
+    /**
+     * Get list of do an available
+     */
+    public static function get_list_do_an_available(string $type, bool $only_id = false)
     {
         $args = array(
             'post_type' => UR_DO_AN,
@@ -182,7 +192,7 @@ class ur_DoAn
         $posts = get_posts($args);
         $result = array();
         foreach ($posts as $post) {
-            $obj = self::get_do_an_by_id($post->ID);
+            $obj = self::get_do_an_by_id($post->ID, $only_id);
             if ($obj != null)
                 array_push($result, $obj);
         }
