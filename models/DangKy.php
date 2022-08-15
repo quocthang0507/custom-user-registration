@@ -17,6 +17,9 @@ class ur_DangKy
     public string $registered_date;
     public int $registered_user_id;
 
+    /**
+     * User register a do an
+     */
     public static function register(int $user_id, int $post_id)
     {
         $dang_ky = new ur_DangKy();
@@ -36,6 +39,21 @@ class ur_DangKy
             update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
             return true;
         }
+        return false;
+    }
+
+    public static function unregister(int $user_id, int $post_id)
+    {
+        $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
+        if ($registered_students == null || !is_array($registered_students))
+            return false;
+        foreach ($registered_students as $index => $registration) {
+            if ($registration->registered_user_id == $user_id) {
+                unset($registered_students[$index]);
+                break;
+            }
+        }
+        update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
         return false;
     }
 
