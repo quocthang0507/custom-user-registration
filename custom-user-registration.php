@@ -40,6 +40,6 @@ define('UR_PLUGIN_INCLUDES_DIR', UR_PATH . '/includes');
 require_once UR_PLUGIN_INCLUDES_DIR . '/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
 require_once UR_PATH . '/includes/hook-filter.php';
-require_once UR_PLUGIN_PAGES_DIR . '/do_an.php';
+require_once UR_PLUGIN_PAGES_DIR . '/sc_do_an.php';
 
 init_ur_do_an();

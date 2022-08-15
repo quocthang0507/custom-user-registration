@@ -24,7 +24,7 @@ class ur_Info
                 $instructors = array();
             array_push($instructors, $name);
             $instructors = array_unique_incasesensitive($instructors); // Xóa trùng lặp
-            sort_incasesensitive($instructors); // Sắp xếpxếp
+            sort_incasesensitive($instructors); // Sắp xếp
 
             update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
             return true;

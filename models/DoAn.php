@@ -25,6 +25,7 @@ class ur_DoAn
     public $schoolyear;
     public $class;
     public $type;
+    // public $registration;
 
     /**
      * PHP doesn't have overloading
@@ -69,6 +70,30 @@ class ur_DoAn
             $this->class = $metadata->$class[0];
             $this->type = $metadata->$type[0];
         }
+    }
+
+    /**
+     * Return number of registration
+     */
+    public function get_count_registration()
+    {
+        $registered_students = get_post_meta($this->ID, UR_REGISTER_DO_AN_META_KEY, true);
+        if ($registered_students != null && is_array($registered_students))
+            return count($registered_students);
+        return 0;
+    }
+
+    public function is_time_avaiable()
+    {
+        $current_date = new DateTime();
+        $start_date = new DateTime($this->start_date);
+        $end_date = new DateTime($this->end_date);
+        return $current_date >= $start_date && $current_date <= $end_date;
+    }
+
+    public function is_avaiable()
+    {
+        return $this->is_time_avaiable() && $this->get_count_registration() < $this->max_students;
     }
 
     /**

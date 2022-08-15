@@ -16,6 +16,7 @@
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
+require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 
 /**
  * add_action( string $hook_name, callable $callback, int $priority = 10, int $accepted_args = 1 
@@ -95,7 +96,7 @@ function custom_columns($column)
             echo date_to_string($date);
             break;
         case UR_DO_AN . '_status':
-            echo '0';
+            echo ur_DangKy::get_count_registration_by_id($post->ID);
             break;
     }
 }

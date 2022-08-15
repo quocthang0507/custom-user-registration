@@ -10,6 +10,8 @@
 if (!defined('REGISTER_FORM_ACTION'))
     define('REGISTER_FORM_ACTION', 'register_form');
 
+// Meta keys
+
 if (!defined('DO_AN_CO_SO'))
     define('DO_AN_CO_SO', 'do_an_co_so');
 
@@ -32,7 +34,7 @@ if (!defined('UR_CLASSES_META_KEY'))
     define('UR_CLASSES_META_KEY', 'ur_classes');
 
 if (!defined('UR_REGISTER_DO_AN_META_KEY'))
-    define('UR_REGISTER_DO_AN_META_KEY', 'ur_registration_do_an');
+    define('UR_REGISTER_DO_AN_META_KEY', UR_DO_AN . '_registration');
 
 // Menu và các trang quản trị
 

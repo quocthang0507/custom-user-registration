@@ -55,8 +55,11 @@ function parse_input_ajax()
 function parse_url_param(string $url, string $param)
 {
     $url_components = parse_url($url);
-    parse_str($url_components['query'], $params);
-    return $params[$param];
+    if (isset($url_components['query'])) {
+        parse_str($url_components['query'], $params);
+        return $params[$param];
+    }
+    return null;
 }
 
 /**
