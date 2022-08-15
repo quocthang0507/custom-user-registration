@@ -20,11 +20,11 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if ($name != null && is_string($name)) {
             $instructors = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-            if ($instructors == null) // Nếu không tìm thấy
+            if (is_null($instructors)) // Nếu không tìm thấy
                 $instructors = array();
             array_push($instructors, $name);
             $instructors = array_unique_incasesensitive($instructors); // Xóa trùng lặp
-            sort_incasesensitive($instructors); // Sắp xếp
+            sort_incasesensitive_lastname($instructors); // Sắp xếp
 
             update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
             return true;
@@ -40,7 +40,7 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if ($class != null && is_string($class)) {
             $classes = get_user_meta($id, UR_CLASSES_META_KEY, true);
-            if ($classes == null)
+            if (is_null($classes))
                 $classes = array();
             array_push($classes, $class);
             $classes = array_unique_incasesensitive($classes);
@@ -58,15 +58,14 @@ class ur_Info
     public static function delete_instructor(int $index)
     {
         $id = get_all_administrators()[0]->ID;
-        if ($index != null && is_integer($index)) {
+        if (!is_null($index)) {
             $instructors = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-            if ($instructors == null)
+            if ($instructors != null) {
+                unset($instructors[$index]);
+                $instructors = array_values($instructors);
+                update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
                 return true;
-            if ($index < 0 || $index >= count($instructors))
-                return false;
-            unset($instructors[$index]);
-            update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
-            return true;
+            }
         }
         return false;
     }
@@ -77,15 +76,14 @@ class ur_Info
     public static function delete_class(int $index)
     {
         $id = get_all_administrators()[0]->ID;
-        if ($index != null && is_integer($index)) {
+        if (!is_null($index)) {
             $classes = get_user_meta($id, UR_CLASSES_META_KEY, true);
-            if ($classes == null)
+            if ($classes != null) {
+                unset($classes[$index]);
+                $classes = array_values($classes); // Reset indexes
+                update_user_meta($id, UR_CLASSES_META_KEY, $classes);
                 return true;
-            if ($index < 0 || $index >= count($classes))
-                return false;
-            unset($classes[$index]);
-            update_user_meta($id, UR_CLASSES_META_KEY, $classes);
-            return true;
+            }
         }
         return false;
     }
@@ -95,15 +93,12 @@ class ur_Info
      */
     public static function get_all_instructors()
     {
-        $admins = get_all_administrators();
-        $instructors = array();
-        foreach ($admins as $admin) {
-            $result = get_user_meta($admin->ID, UR_INSTRUCTORS_META_KEY, true);
-            if ($result != null) {
-                $instructors = array_merge($instructors, $result);
-            }
+        $id = get_all_administrators()[0]->ID;
+        $result = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
+        if ($result != null && is_array($result)) {
+            return $result;
         }
-        return $instructors;
+        return array();
     }
 
     /**
@@ -111,14 +106,11 @@ class ur_Info
      */
     public static function get_all_classes()
     {
-        $admins = get_all_administrators();
-        $classes = array();
-        foreach ($admins as $admin) {
-            $result = get_user_meta($admin->ID, UR_CLASSES_META_KEY, true);
-            if ($result != null) {
-                $classes = array_merge($classes, $result);
-            }
+        $id = get_all_administrators()[0]->ID;
+        $result = get_user_meta($id, UR_CLASSES_META_KEY, true);
+        if ($result != null && is_array($result)) {
+            return $result;
         }
-        return $classes;
+        return array();
     }
 }

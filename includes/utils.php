@@ -76,7 +76,7 @@ function get_all_administrators()
 /**
  * Remove duplicate from array of strings without case sensitive
  */
-function array_unique_incasesensitive($array_of_string)
+function array_unique_incasesensitive(array $array_of_string)
 {
     return array_intersect_key($array_of_string, array_unique(array_map('strtolower', $array_of_string)));
 }
@@ -84,7 +84,22 @@ function array_unique_incasesensitive($array_of_string)
 /**
  * Sort an array of strings without case sensitive
  */
-function sort_incasesensitive($array_of_string)
+function sort_incasesensitive(array &$array_of_string)
 {
     usort($array_of_string, 'strnatcasecmp');
+}
+
+function last_name_compare(string $full_name_a, string $full_name_b)
+{
+    // Split string by ' ' and get the last word
+    $a = explode(' ', $full_name_a);
+    $b = explode(' ', $full_name_b);
+    $last_a = end($a);
+    $last_b = end($b);
+    return strcasecmp($last_a, $last_b);
+}
+
+function sort_incasesensitive_lastname(array &$array_of_fullname)
+{
+    uasort($array_of_fullname, 'last_name_compare');
 }

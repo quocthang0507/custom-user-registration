@@ -19,20 +19,20 @@ $error = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add_instructor'])) {
-        $instructor = $_POST['add_instructor'];
+        $instructor = trim($_POST['add_instructor']);
         $error = !ur_Info::add_instructor($instructor);
     } else if (isset($_POST['add_class'])) {
-        $class = $_POST['add_class'];
+        $class = trim($_POST['add_class']);
         $error = !ur_Info::add_class($class);
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $data = parse_input_ajax();
     $id = $data['delete_id'];
     if (str_starts_with($id, 'gvhd')) {
-        $id = (int)str_replace('gvhd', '', $id);
+        $id = str_replace('gvhd', '', $id);
         ur_Info::delete_instructor($id);
     } else if (str_starts_with($id, 'lop')) {
-        $id = (int)str_replace('lop', '', $id);
+        $id = str_replace('lop', '', $id);
         ur_Info::delete_class($id);
     }
     http_response_code(200);
@@ -60,7 +60,7 @@ $list_classes = ur_Info::get_all_classes();
             <!--GVHD-->
             <div class="col-6 border border-end-0">
                 <div class="row m-2">
-                    <form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?post_type=' . UR_DO_AN . '&page=' . UR_DO_AN . '-info'; ?>">
+                    <form method="post" action="<?php echo get_current_url(); ?>">
                         <div class="row">
                             <label for="add_instructor" class="col-auto col-form-label">Giảng viên hướng dẫn</label>
                             <div class="col-5">

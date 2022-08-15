@@ -37,7 +37,7 @@ class ur_DangKy
         // Và không được đăng ký nhiều đồ án cùng loại (cơ sở hoặc chuyên ngành) trong cùng một học kỳ
         if (!self::is_user_registered_elsewhere($user_id, $type)) {
             // Nếu chưa đăng ký hoặc danh sách trống
-            if ($registered_students == null) {
+            if (is_null($registered_students)) {
                 $registered_students = array();
             }
             array_push($registered_students, $dang_ky);
@@ -81,7 +81,7 @@ class ur_DangKy
     public static function is_user_already_registered(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_students == null || !is_array($registered_students))
+        if (is_null($registered_students) || !is_array($registered_students))
             return false;
         foreach ($registered_students as $registration) {
             if ($registration->registered_user_id == $user_id)
@@ -109,7 +109,7 @@ class ur_DangKy
     public static function get_list_registered_students(int $post_id)
     {
         $registered_student_ids = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_student_ids == null || !is_array($registered_student_ids))
+        if (is_null($registered_student_ids) || !is_array($registered_student_ids))
             $registered_students = array();
         foreach ($registered_student_ids as $user_id) {
             $user = get_user_by('ID', $user_id);

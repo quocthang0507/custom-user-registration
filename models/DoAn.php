@@ -46,7 +46,7 @@ class ur_DoAn
         if ($only_id) {
             $this->ID = $post->ID;
             $this->post_title = $post->post_title;
-        } else if ($metadata == null) {
+        } else if (is_null($metadata)) {
             // Nếu thông tin gửi qua phương thức POST
             $this->ID = sanitize_text_field($post['ID']);
             $this->post_title = sanitize_text_field($post['post_title']);
