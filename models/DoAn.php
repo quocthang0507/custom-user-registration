@@ -88,7 +88,10 @@ class ur_DoAn
         return 0;
     }
 
-    public function is_time_available()
+    /**
+     * Check current datetime is available
+     */
+    public function is_available_date()
     {
         $current_date = new DateTime();
         $start_date = new DateTime($this->start_date);
@@ -96,13 +99,16 @@ class ur_DoAn
         return $current_date >= $start_date && $current_date <= $end_date;
     }
 
+    /**
+     * Check sure đồ án available for registering
+     */
     public function is_available()
     {
-        return $this->is_time_available() && $this->get_count_registration() < $this->max_students;
+        return $this->is_available_date() && $this->get_count_registration() < $this->max_students;
     }
 
     /**
-     * Get do an by post id
+     * Get đồ án by post id
      */
     public static function get_do_an_by_id(int $post_id, bool $only_id = false)
     {
@@ -114,7 +120,7 @@ class ur_DoAn
     }
 
     /**
-     * Get list do an by multiple conditions
+     * Get list đồ án by multiple conditions
      */
     public static function get_list_do_an(string $type, string $schoolyear, string $semester, string $class)
     {
@@ -159,7 +165,7 @@ class ur_DoAn
     }
 
     /**
-     * Get list of do an available
+     * Get list of đồ án available
      */
     public static function get_list_do_an_available(string $type, bool $only_id = false)
     {
@@ -200,7 +206,7 @@ class ur_DoAn
     }
 
     /**
-     * Get all do an chuyen nganh
+     * Get all đồ án chuyen nganh
      */
     public static function get_all_do_an_chuyen_nganh()
     {
@@ -227,7 +233,7 @@ class ur_DoAn
     }
 
     /**
-     * Get list do an chuyen nganh by multiple conditions
+     * Get list đồ án chuyen nganh by multiple conditions
      */
     public static function get_list_do_an_chuyen_nganh(string $schoolyear, string $semester, string $class)
     {
@@ -235,7 +241,7 @@ class ur_DoAn
     }
 
     /**
-     * Get all do an co so
+     * Get all đồ án co so
      */
     public static function get_all_do_an_co_so()
     {
@@ -262,7 +268,7 @@ class ur_DoAn
     }
 
     /**
-     * Get list do an co so by multiple conditions
+     * Get list đồ án co so by multiple conditions
      */
     public static function get_list_do_an_co_so(string $schoolyear, string $semester, string $class)
     {
@@ -270,7 +276,7 @@ class ur_DoAn
     }
 
     /**
-     * Insert do an
+     * Insert đồ án
      */
     public static function insert_do_an($post)
     {
@@ -278,7 +284,7 @@ class ur_DoAn
     }
 
     /**
-     * Update do an
+     * Update đồ án
      */
     public static function update_do_an(int $post_id, $title, $metadata)
     {

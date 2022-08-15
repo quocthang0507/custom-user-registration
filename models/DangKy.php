@@ -18,10 +18,15 @@ class ur_DangKy
     public int $registered_user_id;
 
     /**
-     * User register a do an
+     * User registers a đồ án
      */
     public static function register(int $user_id, int $post_id)
     {
+        $do_an = ur_DoAn::get_do_an_by_id($post_id);
+        // Đồ án không thể đăng ký
+        if (!$do_an->is_available())
+            return false;
+
         $dang_ky = new ur_DangKy();
         $dang_ky->registered_date = date('Y-m-d\TH:i');
         $dang_ky->registered_user_id = $user_id;
@@ -42,23 +47,25 @@ class ur_DangKy
         return false;
     }
 
+    /**
+     * User unregisters a đồ án
+     */
     public static function unregister(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_students == null || !is_array($registered_students))
-            return false;
-        foreach ($registered_students as $index => $registration) {
-            if ($registration->registered_user_id == $user_id) {
-                unset($registered_students[$index]);
-                break;
+        if ($registered_students != null && is_array($registered_students)) {
+            foreach ($registered_students as $index => $registration) {
+                if ($registration->registered_user_id == $user_id) {
+                    unset($registered_students[$index]);
+                    break;
+                }
             }
+            update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
         }
-        update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
-        return false;
     }
 
     /**
-     * Return number of registration
+     * Return number of registrations
      */
     public static function get_count_registration_by_id(int $post_id)
     {
@@ -69,7 +76,7 @@ class ur_DangKy
     }
 
     /**
-     * Is user already registered this do an?
+     * Is user already registered this đồ án?
      */
     public static function is_user_already_registered(int $user_id, int $post_id)
     {
@@ -84,7 +91,7 @@ class ur_DangKy
     }
 
     /**
-     * Is user already do an in elsewhere?
+     * Is user already đồ án in elsewhere?
      */
     public static function is_user_registered_elsewhere(int $user_id, string $type)
     {
@@ -94,5 +101,20 @@ class ur_DangKy
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Return a list of user registerd đồ án
+     */
+    public static function get_list_registered_students(int $post_id)
+    {
+        $registered_student_ids = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
+        if ($registered_student_ids == null || !is_array($registered_student_ids))
+            $registered_students = array();
+        foreach ($registered_student_ids as $user_id) {
+            $user = get_user_by('ID', $user_id);
+            array_push($registered_students, $user);
+        }
+        return $registered_students;
     }
 }

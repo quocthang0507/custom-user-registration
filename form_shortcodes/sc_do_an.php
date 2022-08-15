@@ -137,10 +137,12 @@ function registration_form(string $type = DO_AN_CO_SO)
                     echo '<td>' . $do_an->get_count_registration() . '/' . $do_an->max_students . '</td>';
                     echo '<td>' . $do_an->references . '</td>';
                     echo '<td>' .
-                        '<div>' .
-                        '<button type="button" class="btn-register" onclick="action_post(' . $do_an->ID . ', \'register\');">Đăng ký ngay</button>' .
-                        '<button type="button" class="btn-unregister" onclick="action_post(' . $do_an->ID . ', \'unregister\');">Hủy đăng ký</button>' .
-                        '</div>' .
+                        '<div>';
+                    if (ur_DangKy::is_user_already_registered($user->ID, $do_an->ID))
+                        echo '<button type="button" class="btn-unregister" onclick="action_post(' . $do_an->ID . ', \'unregister\');">Hủy đăng ký</button>';
+                    else
+                        echo '<button type="button" class="btn-register" onclick="action_post(' . $do_an->ID . ', \'register\');">Đăng ký ngay</button>';
+                    echo '</div>' .
                         '</td>';
                 }
                 ?>
