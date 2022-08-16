@@ -35,7 +35,7 @@ define('UR_PLUGIN_PAGES_DIR', UR_PLUGIN_DIR . '/form_shortcodes');
 
 define('UR_PLUGIN_CSS_DIR', UR_PLUGIN_DIR . '/css');
 
-define('UR_PLUGIN_INCLUDES_DIR', UR_PATH . '/includes');
+define('UR_PLUGIN_INCLUDES_DIR', UR_PLUGIN_DIR . '/includes');
 
 require_once UR_PLUGIN_INCLUDES_DIR . '/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
