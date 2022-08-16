@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
-require_once UR_PLUGIN_INCLUDES_DIR . '/Utils.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 
 $error = false;
