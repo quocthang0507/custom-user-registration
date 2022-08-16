@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
-require_once UR_PLUGIN_INCLUDES_DIR . '/Utils.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
 $list_instructors = ur_Info::get_all_instructors();
 $list_classes = ur_Info::get_all_classes();
