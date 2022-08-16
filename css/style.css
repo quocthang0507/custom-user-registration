@@ -1,4 +1,28 @@
+/* Tat ca do an */
+
+.inline-edit-date,
+.inline-edit-author,
+.inline-edit-group {
+    display: none !important;
+}
+
+/* Lop va GVHD */
+
+.list-group {
+    max-height: 420px;
+}
+
 .list-group-numbered {
     padding-left: 0;
     margin-left: 0;
+}
+
+.list-group-item {
+    margin-bottom: 0;
+}
+
+/* Danh sach dang ky */
+
+.card {
+    max-width: none;
 }

@@ -83,7 +83,7 @@ class ur_DoAn
     public function get_count_registration()
     {
         $registered_students = get_post_meta($this->ID, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_students != null && is_array($registered_students))
+        if (!is_null($registered_students) && is_array($registered_students))
             return count($registered_students);
         return 0;
     }
@@ -122,7 +122,7 @@ class ur_DoAn
     /**
      * Get list đồ án by multiple conditions
      */
-    public static function get_list_do_an(string $type, string $schoolyear, string $semester, string $class)
+    public static function get_list_do_an(string $type, string $instructor, string $schoolyear, string $semester, string $class)
     {
         $args = array(
             'post_type' => UR_DO_AN,
@@ -158,7 +158,7 @@ class ur_DoAn
         $result = array();
         foreach ($posts as $post) {
             $arr = self::get_do_an_by_id($post->ID);
-            if ($arr != null)
+            if (!is_null($arr))
                 array_push($result, $arr);
         }
         return $result;
@@ -199,80 +199,10 @@ class ur_DoAn
         $result = array();
         foreach ($posts as $post) {
             $obj = self::get_do_an_by_id($post->ID, $only_id);
-            if ($obj != null)
+            if (!is_null($obj))
                 array_push($result, $obj);
         }
         return $result;
-    }
-
-    /**
-     * Get all đồ án chuyen nganh
-     */
-    public static function get_all_do_an_chuyen_nganh()
-    {
-        $args = array(
-            'post_type' => UR_DO_AN,
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'meta_query' => array(
-                array(
-                    'key' => UR_DO_AN . '_type',
-                    'value' => DO_AN_CHUYEN_NGANH,
-                    'compare' => '='
-                )
-            )
-        );
-        $posts = get_posts($args);
-        $result = array();
-        foreach ($posts as $post) {
-            $obj = self::get_do_an_by_id($post->ID);
-            if ($obj != null)
-                array_push($result, $obj);
-        }
-        return $result;
-    }
-
-    /**
-     * Get list đồ án chuyen nganh by multiple conditions
-     */
-    public static function get_list_do_an_chuyen_nganh(string $schoolyear, string $semester, string $class)
-    {
-        return self::get_list_do_an(DO_AN_CHUYEN_NGANH, $schoolyear, $semester, $class);
-    }
-
-    /**
-     * Get all đồ án co so
-     */
-    public static function get_all_do_an_co_so()
-    {
-        $args = array(
-            'post_type' => UR_DO_AN,
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'meta_query' => array(
-                array(
-                    'key' => UR_DO_AN . '_type',
-                    'value' => DO_AN_CO_SO,
-                    'compare' => '='
-                )
-            )
-        );
-        $posts = get_posts($args);
-        $result = array();
-        foreach ($posts as $post) {
-            $obj = self::get_do_an_by_id($post->ID);
-            if ($obj != null)
-                array_push($result, $obj);
-        }
-        return $result;
-    }
-
-    /**
-     * Get list đồ án co so by multiple conditions
-     */
-    public static function get_list_do_an_co_so(string $schoolyear, string $semester, string $class)
-    {
-        return self::get_list_do_an(DO_AN_CO_SO, $schoolyear, $semester, $class);
     }
 
     /**
@@ -290,7 +220,7 @@ class ur_DoAn
     {
         try {
             // Update post title
-            if ($title != null) {
+            if (!is_null($title)) {
                 $data = array(
                     'ID' => $post_id,
                     'post_title' => $title,
@@ -299,7 +229,7 @@ class ur_DoAn
             }
 
             // Update metadata post
-            if ($metadata != null) {
+            if (!is_null($metadata)) {
                 update_post_meta($post_id, UR_DO_AN . '_description', $metadata->description);
                 update_post_meta($post_id, UR_DO_AN . '_instructor', $metadata->instructor);
                 update_post_meta($post_id, UR_DO_AN . '_max_students', $metadata->max_students);

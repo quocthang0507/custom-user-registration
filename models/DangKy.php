@@ -53,7 +53,7 @@ class ur_DangKy
     public static function unregister(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_students != null && is_array($registered_students)) {
+        if (!is_null($registered_students) && is_array($registered_students)) {
             foreach ($registered_students as $index => $registration) {
                 if ($registration->registered_user_id == $user_id) {
                     unset($registered_students[$index]);
@@ -70,7 +70,7 @@ class ur_DangKy
     public static function get_count_registration_by_id(int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if ($registered_students != null && is_array($registered_students))
+        if (!is_null($registered_students) && is_array($registered_students))
             return count($registered_students);
         return 0;
     }
