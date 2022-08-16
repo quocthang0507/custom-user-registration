@@ -1,6 +1,6 @@
 # User Registration Plugin For Wordpress
 
-> *Plugin Name*: User Registration  
+> *Plugin Name*: Custom User Registration  
 *Plugin URI*: https://github.com/quocthang0507/custom-user-regirstration  
 *Description*: A custom registration form  
 *Version*: 1.0.0  
