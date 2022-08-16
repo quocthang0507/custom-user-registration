@@ -153,9 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             echo '<td>' . $do_an->references . '</td>';
                             echo '<td class="text-center">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
                             foreach ($list_students as $student) {
-                                echo $student->user_registration_student_id .
-                                    '_' .
-                                    $student->last_name . ' ' . $student->first_name;
+                                echo $student->user_registration_student_id . '_' .
+                                    $student->last_name . ' ' . $student->first_name . '<br>';
                             }
                             echo '</td>';
                             echo '</tr>';
