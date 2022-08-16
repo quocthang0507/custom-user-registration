@@ -120,17 +120,22 @@ function registration_form(string $type = DO_AN_CO_SO)
     <div>
         <h3>DANH SÁCH ĐỀ TÀI CÓ THỂ ĐĂNG KÝ</h3>
         <table class="table">
-            <tr>
-                <th>Tên đề tài</th>
-                <th>Mô tả/yêu cầu đề tài</th>
-                <th>Giảng viên hướng dẫn</th>
-                <th>Số sinh viên đã đăng ký</th>
-                <th>Tài liệu tham khảo</th>
-                <th>Hành động</th>
-            </tr>
-            <tr>
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên đề tài</th>
+                    <th scope="col">Mô tả/yêu cầu đề tài</th>
+                    <th scope="col">Giảng viên hướng dẫn</th>
+                    <th scope="col">Số sinh viên đã đăng ký</th>
+                    <th scope="col">Tài liệu tham khảo</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php
-                foreach ($list_do_an as $do_an) {
+                foreach ($list_do_an as $index => $do_an) {
+                    echo '<tr>';
+                    echo '<th scope="row">' . $index + 1 . '</th>';
                     echo '<td>' . $do_an->post_title . '</td>';
                     echo '<td>' . $do_an->description . '</td>';
                     echo '<td>' . $do_an->instructor . '</td>';
@@ -144,9 +149,10 @@ function registration_form(string $type = DO_AN_CO_SO)
                         echo '<button type="button" class="btn-register" onclick="action_post(' . $do_an->ID . ', \'register\');">Đăng ký ngay</button>';
                     echo '</div>' .
                         '</td>';
+                    echo '</tr>';
                 }
                 ?>
-            </tr>
+            </tbody>
         </table>
     </div>
 

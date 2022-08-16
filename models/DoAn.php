@@ -122,35 +122,48 @@ class ur_DoAn
     /**
      * Get list đồ án by multiple conditions
      */
-    public static function get_list_do_an(string $type, string $instructor, string $schoolyear, string $semester, string $class)
+    public static function get_list_do_an(string $type = 'all', string $instructor = 'all', string $schoolyear = 'all', string $semester = 'all', string $class = 'all')
     {
+        // Initialize criteria
+        $criteria = array(
+            'relation' => 'AND',
+        );
+        if ($type != "all")
+            array_push($criteria, array(
+                'key' => UR_DO_AN . '_type',
+                'value' => $type,
+                'compare' => '='
+            ));
+        if ($instructor != "all")
+            array_push($criteria, array(
+                'key' => UR_DO_AN . '_instructor',
+                'value' => $instructor,
+                'compare' => '='
+            ));
+        if ($schoolyear != "all")
+            array_push($criteria, array(
+                'key' => UR_DO_AN . '_schoolyear',
+                'value' => $schoolyear,
+                'compare' => '='
+            ));
+        if ($semester != "all")
+            array_push($criteria, array(
+                'key' => UR_DO_AN . '_semester',
+                'value' => $semester,
+                'compare' => '='
+            ));
+        if ($class != "all")
+            array_push($criteria, array(
+                'key' => UR_DO_AN . '_class',
+                'value' => $class,
+                'compare' => '='
+            ));
+
         $args = array(
             'post_type' => UR_DO_AN,
             'post_status' => 'publish',
             'posts_per_page' => -1,
-            'meta_query' => array(
-                'relation' => 'AND',
-                array(
-                    'key' => UR_DO_AN . '_schoolyear',
-                    'value' => $schoolyear,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => UR_DO_AN . '_semester',
-                    'value' => $semester,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => UR_DO_AN . '_class',
-                    'value' => $class,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => UR_DO_AN . '_type',
-                    'value' => $type,
-                    'compare' => '='
-                ),
-            )
+            'meta_query' => $criteria
         );
         // Cách 1
         $query = new WP_Query($args);

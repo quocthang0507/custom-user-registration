@@ -108,13 +108,13 @@ class ur_DangKy
      */
     public static function get_list_registered_students(int $post_id)
     {
-        $registered_student_ids = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if (is_null($registered_student_ids) || !is_array($registered_student_ids))
-            $registered_students = array();
-        foreach ($registered_student_ids as $user_id) {
-            $user = get_user_by('ID', $user_id);
-            array_push($registered_students, $user);
-        }
-        return $registered_students;
+        $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
+        $result = array();
+        if (!is_null($registered_students) && is_array($registered_students))
+            foreach ($registered_students as $registration) {
+                $user = get_user_by('id', $registration->registered_user_id);
+                array_push($result, $user);
+            }
+        return $result;
     }
 }
