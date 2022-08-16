@@ -20,7 +20,7 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if (!is_null($name) && is_string($name)) {
             $instructors = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-            if (is_null($instructors)) // Nếu không tìm thấy
+            if ($instructors == null) // Nếu không tìm thấy
                 $instructors = array();
             array_push($instructors, $name);
             $instructors = array_unique_incasesensitive($instructors); // Xóa trùng lặp
@@ -40,7 +40,7 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if (!is_null($class) && is_string($class)) {
             $classes = get_user_meta($id, UR_CLASSES_META_KEY, true);
-            if (is_null($classes))
+            if ($classes == null)
                 $classes = array();
             array_push($classes, $class);
             $classes = array_unique_incasesensitive($classes);
