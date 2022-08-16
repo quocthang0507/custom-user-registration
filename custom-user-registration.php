@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Custom User Registration
-PLugin URI: https://github.com/quocthang0507/user-registration
+PLugin URI: https://github.com/quocthang0507/custom-user-registration
 Description: A custom registration form
 Version: 1.0.0
 Author: La Quoc Thang
