@@ -49,7 +49,7 @@ $list_classes = ur_Info::get_all_classes();
     <hr class="wp-header-end">
     <p>
         <i>Tên lớp và tên giảng viên hướng dẫn sẽ xuất hiện khi tạo đồ án.</i>
-        <i>Thêm hoặc xóa các thông tin bên dưới không ảnh hưởng đến các đồ án đã tạo.</i>
+        <i>Thêm hoặc xóa các thông tin bên dưới <u>không ảnh hưởng</u> đến các đồ án đã tạo.</i>
     </p>
     <?php
     if ($error)

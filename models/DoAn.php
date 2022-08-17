@@ -182,6 +182,8 @@ class ur_DoAn
      */
     public static function get_list_do_an_available(string $type, bool $only_id = false)
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
         $args = array(
             'post_type' => UR_DO_AN,
             'post_status' => 'publish',
@@ -197,13 +199,11 @@ class ur_DoAn
                     'key' => UR_DO_AN . '_start_date',
                     'value' => date('Y-m-d\TH:i'),
                     'compare' => '<=',
-                    'type' => 'DATE'
                 ),
                 array(
                     'key' => UR_DO_AN . '_end_date',
                     'value' => date('Y-m-d\TH:i'),
                     'compare' => '>=',
-                    'type' => 'DATE'
                 )
             )
         );

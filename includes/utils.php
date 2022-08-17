@@ -14,7 +14,7 @@ function date_to_string(string $rfc_3339)
 {
     try {
         $datetime = strtotime($rfc_3339);
-        return date('d/m/Y H:i:s', $datetime);
+        return date('d/m/Y H:i', $datetime);
     } catch (Exception $e) {
         return $rfc_3339;
     }
@@ -102,4 +102,9 @@ function last_name_compare(string $full_name_a, string $full_name_b)
 function sort_incasesensitive_lastname(array &$array_of_fullname)
 {
     uasort($array_of_fullname, 'last_name_compare');
+}
+
+function is_null_or_whitespace(string $str)
+{
+    return $str === null || trim($str) === '';
 }

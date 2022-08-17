@@ -108,6 +108,14 @@ function add_sub_menus()
 {
     add_submenu_page(
         'edit.php?post_type=ur_do_an',
+        IMPORT_DO_AN,
+        IMPORT_DO_AN,
+        'manage_options',
+        'ur_do_an-import',
+        'link_to_import_page',
+    );
+    add_submenu_page(
+        'edit.php?post_type=ur_do_an',
         INFO_DO_AN,
         INFO_DO_AN,
         'manage_options',
@@ -122,6 +130,12 @@ function add_sub_menus()
         'ur_do_an-result',
         'link_to_result_page',
     );
+}
+
+function link_to_import_page()
+{
+    do_action('ur_do_an_import_start');
+    include UR_PLUGIN_VIEWS_DIR . '/do-an-import.php';
 }
 
 function link_to_info_page()
@@ -158,11 +172,11 @@ function add_custom_scripts()
             <script type="text/javascript">
                 jQuery(document).ready(function($) {
                     let change_date_div = $(
-                        '<div class="alignleft actions" style="display: none;" id="change_datetime">' +
-                        '<label>Ngày bắt đầu:</label>' +
-                        '<input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" value="">' +
-                        '<label>Ngày bắt đầu:</label>' +
-                        '<input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" aria-label="Ngày kết thúc" title="Ngày kết thúc" value="">' +
+                        '<div class="alignleft actions bulk-datetime" style="display: none;" id="change_datetime">' +
+                        '<label class="me-2">Ngày bắt đầu:</label>' +
+                        '<input class="me-2" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" value="">' +
+                        '<label class="me-2">Ngày bắt đầu:</label>' +
+                        '<input type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" aria-label="Ngày kết thúc" title="Ngày kết thúc" value="">' +
                         '</div>'
                     );
                     change_date_div.insertAfter('#bulk-action-selector-top');

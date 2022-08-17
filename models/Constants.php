@@ -64,3 +64,6 @@ if (!defined('REGISTERED_DO_AN'))
 
 if (!defined('INFO_DO_AN'))
     define('INFO_DO_AN', 'Lớp & GVHD');
+
+if (!defined('IMPORT_DO_AN'))
+    define('IMPORT_DO_AN', 'Nhập danh sách');

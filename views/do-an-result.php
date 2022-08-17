@@ -34,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <h1 class="wp-heading-inline">Danh sách đăng ký đồ án</h1>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4 col-lg-4">
             <div class="card">
                 <form method="POST" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data">
                     Tìm kiếm theo:
                     <div class="card-body">
-                        <div class="row mb-1">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <label class="form-label">Giảng viên hướng dẫn:</label>
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_instructor" aria-label="GVHD" title="GVHD" id="cbxInstructor">
                                     <option value="all">Tất cả</option>
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6">
                                 <label class="form-label">Loại đồ án:</label>
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_type" aria-label="Loại" title="Loại" id="cbxType">
                                     <option value="all">Tất cả</option>
@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-1">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col-lg-4">
                                 <label class="form-label">Lớp:</label>
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp" id="cbxClass">
                                     <option value="all" selected>Tất cả</option>
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-4">
                                 <label class="form-label">Năm học</label>
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_schoolyear" aria-label="Năm học" title="Năm học" id="cbxSchoolyear">
                                     <option value="all" selected>Tất cả</option>
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-4">
                                 <label class="form-label">Học kỳ:</label>
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_semester" aria-label="Học kỳ" title="Học kỳ" id="cbxSemester">
                                     <option value="all">Tất cả</option>
@@ -115,53 +115,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </div>
                     </div>
                     <div class="text-center">
-                        <input type="button" name="reset" value="Tất cả" class="btn btn-secondary btn-sm" id="btnReset">
-                        <input type="submit" name="submit" value="Tìm kiếm" class="btn btn-primary btn-sm" id="btnSubmit">
-                        <input type="button" name="export" value="Xuất danh sách đăng ký" class="btn btn-success btn-sm">
+                        <input type="button" name="reset" value="Tất cả" class="btn btn-secondary btn-sm m-1" id="btnReset">
+                        <input type="submit" name="submit" value="Tìm kiếm" class="btn btn-primary btn-sm m-1" id="btnSubmit">
+                        <input type="button" name="export" value="Xuất danh sách đăng ký" class="btn btn-success btn-sm m-1">
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-sm-8">
-            <div class="card">
-                <div class="text-center">
+        <div class="col-md-8 col-lg-8">
+            <div>
+                <div class="text-center mt-4">
                     <h3>DANH SÁCH ĐỒ ÁN</h3>
                 </div>
-                <table class="table table-bordered table-hover caption-top">
-                    <caption>Danh sách này có <?php echo count($list_do_an); ?> đề tài</caption>
-                    <thead>
-                        <tr class="align-middle text-center">
-                            <th scope="col">STT</th>
-                            <th scope="col">Loại</th>
-                            <th scope="col">Tên đề tài</th>
-                            <th scope="col">Mô tả/yêu cầu đề tài</th>
-                            <th scope="col">Giảng viên hướng dẫn</th>
-                            <th scope="col">Tài liệu tham khảo</th>
-                            <th scope="col">Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($list_do_an as $index => $do_an) {
-                            $list_students = ur_DangKy::get_list_registered_students($do_an->ID);
-                            echo '<tr class="align-middle">';
-                            echo '<th scope="row" class="text-center">' . $index + 1 . '</th>';
-                            echo '<td>' . ($do_an->type == DO_AN_CO_SO ? 'Đồ án cơ sở' : 'Đồ án chuyên ngành') . '</td>';
-                            echo '<td>' . $do_an->post_title . '</td>';
-                            echo '<td>' . $do_an->description . '</td>';
-                            echo '<td class="text-center">' . $do_an->instructor . '</td>';
-                            echo '<td>' . $do_an->references . '</td>';
-                            echo '<td class="text-center">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
-                            foreach ($list_students as $student) {
-                                echo $student->user_registration_student_id . '_' .
-                                    $student->last_name . ' ' . $student->first_name . '<br>';
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover caption-top">
+                        <caption>Danh sách này có <?php echo count($list_do_an); ?> đề tài</caption>
+                        <thead>
+                            <tr class="align-middle text-center">
+                                <th scope="col">STT</th>
+                                <th scope="col">Loại</th>
+                                <th scope="col">Tên đề tài</th>
+                                <th scope="col">Mô tả/yêu cầu đề tài</th>
+                                <th scope="col">Giảng viên hướng dẫn</th>
+                                <th scope="col">Tài liệu tham khảo</th>
+                                <th scope="col">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($list_do_an as $index => $do_an) {
+                                $list_students = ur_DangKy::get_list_registered_students($do_an->ID);
+                                echo '<tr class="align-middle">';
+                                echo '<th scope="row" class="text-center">' . $index + 1 . '</th>';
+                                echo '<td>' . ($do_an->type == DO_AN_CO_SO ? 'Đồ án cơ sở' : 'Đồ án chuyên ngành') . '</td>';
+                                echo '<td>' . $do_an->post_title . '</td>';
+                                echo '<td>' . $do_an->description . '</td>';
+                                echo '<td class="text-center">' . $do_an->instructor . '</td>';
+                                echo '<td>' . $do_an->references . '</td>';
+                                echo '<td class="text-center">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
+                                echo '<ol class="list-group list-group-numbered">';
+                                foreach ($list_students as $student) {
+                                    echo '<li>' . $student->user_registration_student_id . '_' . $student->last_name . ' ' . $student->first_name . '</li>';
+                                }
+                                echo '</ol>';
+                                echo '</td>';
+                                echo '</tr>';
                             }
-                            echo '</td>';
-                            echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

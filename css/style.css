@@ -6,6 +6,10 @@
     display: none !important;
 }
 
+.bulk-datetime {
+    font-size: smaller;
+}
+
 /* Lop va GVHD */
 
 .list-group {
@@ -25,4 +29,15 @@
 
 .card {
     max-width: none;
+}
+
+.list-group-numbered {
+    list-style-type: decimal;
+    counter-reset: section;
+}
+
+ol li {
+    position: relative;
+    left: 10px;
+    text-align: left;
 }
