@@ -16,6 +16,11 @@ require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 
 $list_classes = ur_Info::get_all_classes();
 
+if (isset($_POST['submit'])) {
+    // if its text file is not large
+    $content = file_get_contents($_FILES['file_to_upload']['tmp_name']);
+}
+
 ?>
 
 <div class="wrap">
@@ -62,8 +67,8 @@ $list_classes = ur_Info::get_all_classes();
     </table>
     <div class="card">
         <div class="card-body">
-            <form method="post" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data">
-                <div class="row">
+            <form id="form-input-file" method="post" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data">
+                <div class="row mb-2">
                     <div class="col-lg-3 col-md-3">
                         <div class="row">
                             <label class="col-sm-auto col-form-label">Loại đồ án:</label>
@@ -82,7 +87,6 @@ $list_classes = ur_Info::get_all_classes();
                             <label class="col-sm-auto col-form-label">Lớp:</label>
                             <div class="col-sm">
                                 <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp" id="cbxClass">
-                                    <option value="all" selected>Tất cả</option>
                                     <?php
                                     foreach ($list_classes as $item) {
                                         echo '<option value="' . $item . '">' . $item . '</option>';
@@ -122,9 +126,12 @@ $list_classes = ur_Info::get_all_classes();
                     </div>
                 </div>
                 <div class="row">
-                    <label for="formFile" class="col-sm-auto col-form-label">Đường dẫn đến tập tin</label>
-                    <div class="col">
-                        <input class="form-control" type="file" id="formFile">
+                    <div class="input-file">
+                        <input type="file" id="formFile" name="file_to_upload">
+                        <div>
+                            <p id="input-file-name">Kéo thả tập tin vào đây</p>
+                            <p><small>Kích thước tối đa: 2MB</small></p>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center mt-4">
@@ -135,5 +142,27 @@ $list_classes = ur_Info::get_all_classes();
     </div>
 </div>
 <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('#formFile').change(function(e) {
+            var acceptedExts = ['csv', 'txt'];
+            if (e.target.files.length != 0) {
+                if ($.inArray($(this).val().split('.').pop().toLowerCase(), acceptedExts) == -1) {
+                    alert("Chỉ chấp nhận các tập tin có phần mở rộng là .csv hoặc .txt!");
+                    $('#formFile').val('');
+                    $('#input-file-name').text('Kéo thả tập tin vào đây');
+                } else {
+                    let filename = e.target.files[0].name;
+                    $('#input-file-name').text(filename);
+                }
+            }
+        });
 
+        $('#form-input-file').submit(function(e) {
+            if ($('#formFile').get(0).files.length === 0) {
+                e.preventDefault();
+                alert('Phải chọn tập tin trước!');
+            } else if (!confirm('Bạn có chắc chắn?')) {} else
+                e.preventDefault();
+        });
+    });
 </script>
