@@ -31,13 +31,29 @@
     max-width: none;
 }
 
-.list-group-numbered {
+.order-list {
     list-style-type: decimal;
     counter-reset: section;
 }
 
-ol li {
+.order-list>li {
     position: relative;
     left: 10px;
     text-align: left;
+}
+
+/* Nhap danh sach */
+
+.unorder-list {
+    list-style: initial;
+}
+
+.unorder-list>li {
+    list-style: initial;
+    margin-left: -10px;
+    margin-bottom: 0px;
+}
+
+.unorder-list>li>p {
+    margin-bottom: 0px;
 }

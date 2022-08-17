@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                 echo '<td class="text-center">' . $do_an->instructor . '</td>';
                                 echo '<td>' . $do_an->references . '</td>';
                                 echo '<td class="text-center">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
-                                echo '<ol class="list-group list-group-numbered">';
+                                echo '<ol class="list-group list-group-numbered order-list">';
                                 foreach ($list_students as $student) {
                                     echo '<li>' . $student->user_registration_student_id . '_' . $student->last_name . ' ' . $student->first_name . '</li>';
                                 }
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     jQuery(document).ready(function($) {
         $('#btnReset').click(function() {
             $('#cbxInstructor').val('all');
