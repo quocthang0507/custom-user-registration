@@ -108,3 +108,12 @@ function is_null_or_whitespace(string $str)
 {
     return $str === null || trim($str) === '';
 }
+
+function is_one_null_or_whitespace(...$array_of_str)
+{
+    foreach ($array_of_str as $str) {
+        if (is_null_or_whitespace($str))
+            return true;
+    }
+    return false;
+}

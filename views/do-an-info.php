@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $data = parse_input_ajax();
-    $id = $data['delete_id'];
+    $id = isset($data['delete_id']) ? $data['delete_id'] : '';
     if (str_starts_with($id, 'gvhd')) {
         $id = str_replace('gvhd', '', $id);
         ur_Info::delete_instructor($id);
