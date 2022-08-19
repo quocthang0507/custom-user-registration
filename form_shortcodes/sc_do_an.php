@@ -28,6 +28,9 @@ function custom_registration_function()
                 ur_DangKy::register($user->ID, $post_id);
             } else if ($action == 'unregister') {
                 ur_DangKy::unregister($user->ID, $post_id);
+            } else {
+                http_response_code(400);
+                exit(0);
             }
             http_response_code(200);
             exit(0);

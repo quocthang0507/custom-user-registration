@@ -136,7 +136,7 @@ function ur_do_an_output()
                 </div>
                 <div class="col">
                     <label class="form-label">Số sinh viên tối đa</label>
-                    <input class="form-control" type="number" name="<?php echo UR_DO_AN; ?>_max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đađa">
+                    <input class="form-control" type="number" name="<?php echo UR_DO_AN; ?>_max_students" min="0" max="10" value="<?php echo $max_students; ?>" aria-label="Số SV tối đa" title="Số SV tối đa" required>
                 </div>
             </div>
             <div class="mb-1">
@@ -146,11 +146,11 @@ function ur_do_an_output()
             <div class="row mb-1">
                 <div class="col">
                     <label class="form-label">Ngày bắt đầu đăng ký</label>
-                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
+                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu" required>
                 </div>
                 <div class="col">
                     <label class="form-label">Ngày kết thúc đăng ký</label>
-                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc">
+                    <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_end_date" value="<?php echo $end_date; ?>" aria-label="Ngày kết thúc" title="Ngày kết thúc" required>
                 </div>
             </div>
             <div class="row mb-1">

@@ -27,6 +27,7 @@ class ur_DangKy
         if (!$do_an->is_available())
             return false;
 
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dang_ky = new ur_DangKy();
         $dang_ky->registered_date = date('Y-m-d\TH:i');
         $dang_ky->registered_user_id = $user_id;
@@ -37,7 +38,7 @@ class ur_DangKy
         // Và không được đăng ký nhiều đồ án cùng loại (cơ sở hoặc chuyên ngành) trong cùng một học kỳ
         if (!self::is_user_registered_elsewhere($user_id, $type)) {
             // Nếu chưa đăng ký hoặc danh sách trống
-            if (is_null($registered_students)) {
+            if ($registered_students == null) {
                 $registered_students = array();
             }
             array_push($registered_students, $dang_ky);

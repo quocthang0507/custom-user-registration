@@ -14,17 +14,17 @@ require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
 class ur_DoAn
 {
-    public $ID;
-    public $post_title;
-    public $description;
-    public $instructor;
-    public $max_students;
-    public $references;
-    public $start_date;
-    public $end_date;
-    public $schoolyear;
-    public $class;
-    public $type;
+    public int $ID;
+    public string $post_title;
+    public string $description;
+    public string $instructor;
+    public int $max_students;
+    public string $references;
+    public string $start_date;
+    public string $end_date;
+    public string $schoolyear;
+    public string $class;
+    public string $type;
     // public $registration;
 
     /**
@@ -93,6 +93,7 @@ class ur_DoAn
      */
     public function is_available_date()
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $current_date = new DateTime();
         $start_date = new DateTime($this->start_date);
         $end_date = new DateTime($this->end_date);

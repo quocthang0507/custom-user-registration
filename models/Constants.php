@@ -67,3 +67,14 @@ if (!defined('INFO_DO_AN'))
 
 if (!defined('IMPORT_DO_AN'))
     define('IMPORT_DO_AN', 'Nhập danh sách');
+
+// Message
+
+if (!defined('DO_AN_UNAVAILABLE'))
+    define('DO_AN_UNAVAILABLE', 'Đồ án không khả dụng');
+
+if (!defined('DO_AN_HAS_REGISTERED'))
+    define('DO_AN_HAS_REGISTERED', 'Đồ án đã đăng ký rồi');
+
+if (!defined('DO_AN_INTERNAL_ERROR'))
+    define('DO_AN_INTERNAL_ERROR', 'Đồ án không thể đăng ký do lỗi hệ thống');
