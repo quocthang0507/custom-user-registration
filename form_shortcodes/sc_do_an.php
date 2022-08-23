@@ -167,6 +167,7 @@ function registration_form(string $type = DO_AN_CO_SO)
                         location.reload();
                     },
                     error: function(xhr) {
+                        alert('Đã có lỗi xảy ra!');
                         console.error(xhr);
                     }
                 });

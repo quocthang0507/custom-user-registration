@@ -115,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </div>
                     </div>
                     <div class="text-center">
-                        <input type="button" name="reset" value="Tất cả" class="btn btn-secondary btn-sm m-1" id="btnReset">
                         <input type="submit" name="submit" value="Tìm kiếm" class="btn btn-primary btn-sm m-1" id="btnSubmit">
+                        <input type="button" name="reset" value="Tất cả" class="btn btn-secondary btn-sm m-1" id="btnReset">
                         <input type="button" name="export" value="Xuất danh sách đăng ký" class="btn btn-success btn-sm m-1">
                     </div>
                 </form>
