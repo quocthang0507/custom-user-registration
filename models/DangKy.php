@@ -36,7 +36,7 @@ class ur_DangKy
         $type = get_post_meta($post_id, UR_DO_AN . '_type', true);
         // Nếu đã đăng ký thì không cho đăng ký 2 lần trên cùng 1 đồ án
         // Và không được đăng ký nhiều đồ án cùng loại (cơ sở hoặc chuyên ngành) trong cùng một học kỳ
-        if (!self::is_user_registered_elsewhere($user_id, $type)) {
+        if ($type != null && !self::is_user_registered_elsewhere($user_id, $type)) {
             // Nếu chưa đăng ký hoặc danh sách trống
             if ($registered_students == null) {
                 $registered_students = array();
@@ -54,7 +54,7 @@ class ur_DangKy
     public static function unregister(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if (!is_null($registered_students) && is_array($registered_students)) {
+        if ($registered_students != null && is_array($registered_students)) {
             foreach ($registered_students as $index => $registration) {
                 if ($registration->registered_user_id == $user_id) {
                     unset($registered_students[$index]);
@@ -62,7 +62,9 @@ class ur_DangKy
                 }
             }
             update_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, $registered_students);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -71,7 +73,7 @@ class ur_DangKy
     public static function get_count_registration_by_id(int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if (!is_null($registered_students) && is_array($registered_students))
+        if ($registered_students != null && is_array($registered_students))
             return count($registered_students);
         return 0;
     }
@@ -82,7 +84,7 @@ class ur_DangKy
     public static function is_user_already_registered(int $user_id, int $post_id)
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
-        if (is_null($registered_students) || !is_array($registered_students))
+        if ($registered_students == null || !is_array($registered_students))
             return false;
         foreach ($registered_students as $registration) {
             if ($registration->registered_user_id == $user_id)
@@ -111,7 +113,7 @@ class ur_DangKy
     {
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
         $result = array();
-        if (!is_null($registered_students) && is_array($registered_students))
+        if ($registered_students != null && is_array($registered_students))
             foreach ($registered_students as $registration) {
                 $user = get_user_by('id', $registration->registered_user_id);
                 array_push($result, $user);

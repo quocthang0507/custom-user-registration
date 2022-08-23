@@ -15,6 +15,7 @@
 
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/rest-api.php';
 require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
 require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 
@@ -50,6 +51,8 @@ add_action('admin_head-edit.php', 'add_custom_scripts');
 add_action('quick_edit_custom_box', 'change_quick_edit', 10, 3);
 // Save quick edit fields
 add_action('save_post', 'save_quick_edit');
+// Custom endpoint Rest API
+add_action('rest_api_init', 'register_api');
 
 function load_plugin_css_js()
 {
@@ -277,4 +280,17 @@ function save_quick_edit(string|int $post_id)
     update_post_meta($post_id, UR_DO_AN . '_start_date', $start_date);
     update_post_meta($post_id, UR_DO_AN . '_end_date', $end_date);
 }
+
+function register_api()
+{
+    register_rest_route(
+        'api/v1', // prefix with version
+        '/registration/', // name of the route
+        array(
+            'methods' => array('POST'),
+            'callback' => 'registration',
+        )
+    );
+}
+
 ?>

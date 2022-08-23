@@ -37,6 +37,17 @@ function get_current_url()
     return $url;
 }
 
+function get_website_domain()
+{
+    global $_SERV‌​ER;
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+        $url = "https://";
+    else
+        $url = "http://";
+    $url .= $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']);
+    return $url;
+}
+
 /**
  * Get data from an ajax request
  */

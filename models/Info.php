@@ -60,7 +60,7 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if (!is_null($index)) {
             $instructors = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-            if (!is_null($instructors)) {
+            if ($instructors != null) {
                 unset($instructors[$index]);
                 $instructors = array_values($instructors);
                 update_user_meta($id, UR_INSTRUCTORS_META_KEY, $instructors);
@@ -78,7 +78,7 @@ class ur_Info
         $id = get_all_administrators()[0]->ID;
         if (!is_null($index)) {
             $classes = get_user_meta($id, UR_CLASSES_META_KEY, true);
-            if (!is_null($classes)) {
+            if ($classes != null) {
                 unset($classes[$index]);
                 $classes = array_values($classes); // Reset indexes
                 update_user_meta($id, UR_CLASSES_META_KEY, $classes);
@@ -95,7 +95,7 @@ class ur_Info
     {
         $id = get_all_administrators()[0]->ID;
         $result = get_user_meta($id, UR_INSTRUCTORS_META_KEY, true);
-        if (!is_null($result) && is_array($result)) {
+        if ($result != null && is_array($result)) {
             return $result;
         }
         return array();
@@ -108,7 +108,7 @@ class ur_Info
     {
         $id = get_all_administrators()[0]->ID;
         $result = get_user_meta($id, UR_CLASSES_META_KEY, true);
-        if (!is_null($result) && is_array($result)) {
+        if ($result != null && is_array($result)) {
             return $result;
         }
         return array();

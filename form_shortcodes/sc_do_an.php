@@ -17,25 +17,7 @@ add_shortcode('ur_form_do_an', 'register_an_shortcode');
 
 function custom_registration_function()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $data = parse_input_ajax();
-        if (isset($data['action']) && isset($data['post_id'])) {
-            $user = wp_get_current_user();
-            $action = $data['action'];
-            $post_id = $data['post_id'];
-
-            if ($action == 'register') {
-                ur_DangKy::register($user->ID, $post_id);
-            } else if ($action == 'unregister') {
-                ur_DangKy::unregister($user->ID, $post_id);
-            } else {
-                http_response_code(400);
-                exit(0);
-            }
-            http_response_code(200);
-            exit(0);
-        }
-    } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $current_url = get_current_url();
         $type = parse_url_param($current_url, 'type');
         registration_form($type ? $type : DO_AN_CO_SO);
@@ -169,18 +151,23 @@ function registration_form(string $type = DO_AN_CO_SO)
 
         function action_post(post_id, action) {
             jQuery(document).ready(function($) {
+                let _nonce = "<?php echo wp_create_nonce('wp_rest'); ?>";
+
                 $.ajax({
-                    url: document.location.href,
+                    url: '<?php echo get_website_domain() . '/wp-json/api/v1/registration'; ?>',
                     type: 'POST',
                     data: {
                         action: action,
                         post_id: post_id
                     },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-WP-Nonce', _nonce);
+                    },
                     success: function(response) {
                         location.reload();
                     },
-                    error: function(error) {
-                        console.error(error);
+                    error: function(xhr) {
+                        console.error(xhr);
                     }
                 });
             });

@@ -46,7 +46,7 @@ class ur_DoAn
         if ($only_id) {
             $this->ID = $post->ID;
             $this->post_title = $post->post_title;
-        } else if (is_null($metadata)) {
+        } else if ($metadata == null) {
             // Nếu thông tin gửi qua phương thức POST
             $this->ID = sanitize_text_field($post['ID']);
             $this->post_title = sanitize_text_field($post['post_title']);
@@ -83,7 +83,7 @@ class ur_DoAn
     public function get_count_registration()
     {
         $registered_students = get_post_meta($this->ID, UR_REGISTER_DO_AN_META_KEY, true);
-        if (!is_null($registered_students) && is_array($registered_students))
+        if ($registered_students != null && is_array($registered_students))
             return count($registered_students);
         return 0;
     }
@@ -172,7 +172,7 @@ class ur_DoAn
         $result = array();
         foreach ($posts as $post) {
             $arr = self::get_do_an_by_id($post->ID);
-            if (!is_null($arr))
+            if ($arr != null)
                 array_push($result, $arr);
         }
         return $result;
@@ -213,7 +213,7 @@ class ur_DoAn
         $result = array();
         foreach ($posts as $post) {
             $obj = self::get_do_an_by_id($post->ID, $only_id);
-            if (!is_null($obj))
+            if ($obj != null)
                 array_push($result, $obj);
         }
         return $result;
@@ -234,7 +234,7 @@ class ur_DoAn
     {
         try {
             // Update post title
-            if (!is_null($title)) {
+            if ($title != null) {
                 $data = array(
                     'ID' => $post_id,
                     'post_title' => $title,
@@ -243,7 +243,7 @@ class ur_DoAn
             }
 
             // Update metadata post
-            if (!is_null($metadata)) {
+            if ($metadata != null) {
                 update_post_meta($post_id, UR_DO_AN . '_description', $metadata->description);
                 update_post_meta($post_id, UR_DO_AN . '_instructor', $metadata->instructor);
                 update_post_meta($post_id, UR_DO_AN . '_max_students', $metadata->max_students);
