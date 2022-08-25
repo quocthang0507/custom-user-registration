@@ -23,6 +23,7 @@ class ur_DoAn
     public string $start_date;
     public string $end_date;
     public string $schoolyear;
+    public string $semester;
     public string $class;
     public string $type;
     // public $registration;
@@ -106,6 +107,79 @@ class ur_DoAn
     public function is_available()
     {
         return $this->is_available_date() && $this->get_count_registration() < $this->max_students;
+    }
+
+    /**
+     * Insert đồ án and return true when success
+     */
+    public function insert_do_an()
+    {
+        $description = UR_DO_AN . '_description';
+        $instructor = UR_DO_AN . '_instructor';
+        $max_students = UR_DO_AN . '_max_students';
+        $references = UR_DO_AN . '_references';
+        $start_date = UR_DO_AN . '_start_date';
+        $end_date = UR_DO_AN . '_end_date';
+        $schoolyear = UR_DO_AN . '_schoolyear';
+        $semester = UR_DO_AN . '_semester';
+        $class = UR_DO_AN . '_class';
+        $type = UR_DO_AN . '_type';
+
+        $do_an = array( // default is the current user id
+            'post_title' => $this->post_title,
+            'post_type' => UR_DO_AN,
+            'post_status' => 'publish',
+            'meta_input' => array(
+                $description => $this->description,
+                $instructor => $this->instructor,
+                $max_students => $this->max_students,
+                $references => $this->references,
+                $start_date => $this->start_date,
+                $end_date => $this->end_date,
+                $schoolyear => $this->schoolyear,
+                $semester => $this->semester,
+                $class => $this->class,
+                $type => $this->type,
+            )
+        );
+        // Insert to database
+        $return =  wp_insert_post($do_an);
+        return !is_wp_error($return) || $return > 0;
+    }
+
+    /**
+     * If start_date (or end_date if start_date = false) null, this function will return a date
+     */
+    private function generate_date_for_null_field(string $schoolyear, string $semester, bool $start_date = true)
+    {
+    }
+
+    /**
+     * Convert array (data in csv file) to object
+     */
+    public function arr_to_obj(array $arr, string $type, string $class, string $schoolyear, string $semester, string $start_date = null, string $end_date = null)
+    {
+        /*
+        Array
+        (
+            [0] => Tên đồ án
+            [1] => Mô tả/yêu cầu
+            [2] => Số sinh viên
+            [3] => Tài liệu tham khảo
+            [4] => Giảng viên hướng dẫn
+        )         
+        */
+        $this->post_title = $arr[0];
+        $this->description = $arr[1];
+        $this->max_students = $arr[2];
+        $this->references = $arr[3];
+        $this->instructor = $arr[4];
+        $this->type = $type;
+        $this->class = $class;
+        $this->schoolyear = $schoolyear;
+        $this->semester = $semester;
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
     }
 
     /**
@@ -217,14 +291,6 @@ class ur_DoAn
                 array_push($result, $obj);
         }
         return $result;
-    }
-
-    /**
-     * Insert đồ án
-     */
-    public static function insert_do_an($post)
-    {
-        return wp_insert_post($post);
     }
 
     /**

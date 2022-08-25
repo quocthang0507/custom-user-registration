@@ -110,16 +110,25 @@ function last_name_compare(string $full_name_a, string $full_name_b)
     return strcasecmp($last_a, $last_b);
 }
 
+/**
+ * Sort an array of full name
+ */
 function sort_incasesensitive_lastname(array &$array_of_fullname)
 {
     uasort($array_of_fullname, 'last_name_compare');
 }
 
+/**
+ * Check string null or whitespace
+ */
 function is_null_or_whitespace(string $str)
 {
     return $str === null || trim($str) === '';
 }
 
+/**
+ * Check array null or whitespace
+ */
 function is_one_null_or_whitespace(...$array_of_str)
 {
     foreach ($array_of_str as $str) {
@@ -127,4 +136,48 @@ function is_one_null_or_whitespace(...$array_of_str)
             return true;
     }
     return false;
+}
+
+/**
+ * Read csv file with multiple lines in a column
+ */
+function read_csv(string $file_name)
+{
+    $csv = array();
+    if (($handle = fopen($file_name, 'r')) !== false) {
+        while (($row = fgetcsv($handle, 0, ",")) !== false) {
+            array_push($csv, $row);
+        }
+        fclose($handle);
+    }
+    return $csv;
+}
+
+/**
+ * Đổi chuỗi có dấu thành không dấu
+ */
+function remove_vi_diacritics($str)
+{
+    $unicode = array(
+        'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+        'd' => 'đ',
+        'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+        'i' => 'í|ì|ỉ|ĩ|ị',
+        'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+        'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+        'y' => 'ý|ỳ|ỷ|ỹ|ỵ',
+        'A' => 'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+        'D' => 'Đ',
+        'E' => 'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+        'I' => 'Í|Ì|Ỉ|Ĩ|Ị',
+        'O' => 'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+        'U' => 'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+        'Y' => 'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+    );
+
+    foreach ($unicode as $nonUnicode => $uni) {
+        $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+    }
+    $str = str_replace(' ', '_', $str);
+    return $str;
 }

@@ -37,9 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         exit();
     } else {
         $file_name = $_FILES['file_to_upload']['tmp_name'];
-        $csv = array_map('str_getcsv', file($file_name));
-        echo '<script>alert("Thành công!")</script>';
+        $csv = read_csv($file_name);
+        print("<pre>" . print_r($csv, true) . "</pre>");
+        // echo '<script>alert("Thành công!")</script>';
         // return admin_url('edit.php?post_type=' . UR_DO_AN);
+        exit();
     }
 }
 
@@ -148,18 +150,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-lg-4 col-md-4">
+                    <div class="col-auto">
                         <div class="row">
-                            <label class="col-sm-auto col-form-label">Ngày bắt đầu đăng ký</label>
-                            <div class="col-sm">
+                            <label class="col-auto col-form-label">Ngày bắt đầu đăng ký</label>
+                            <div class="col-auto">
                                 <input class="form-control" name="<?php echo UR_DO_AN; ?>_start_date" type="datetime-local" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4">
+                    <div class="col-auto">
                         <div class="row">
-                            <label class="col-sm-auto col-form-label">Ngày kết thúc đăng ký</label>
-                            <div class="col-sm">
+                            <label class="col-auto col-form-label">Ngày kết thúc đăng ký</label>
+                            <div class="col-auto">
                                 <input class="form-control" name="<?php echo UR_DO_AN; ?>_end_date" type="datetime-local" aria-label="Ngày kết thúc" title="Ngày kết thúc">
                             </div>
                         </div>
@@ -186,17 +188,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
-        $('input[type="datetime-local"]').change(function(e) {
-
-        });
+        function reset() {
+            $('#formFile').val('');
+            $('#input-file-name').text('Kéo thả tập tin vào đây');
+        }
 
         $('#formFile').change(function(e) {
             var acceptedExts = ['csv', 'txt'];
+
             if (e.target.files.length != 0) {
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), acceptedExts) == -1) {
                     alert("Chỉ chấp nhận các tập tin có phần mở rộng là .csv hoặc .txt!");
-                    $('#formFile').val('');
-                    $('#input-file-name').text('Kéo thả tập tin vào đây');
+                    reset();
+                } else if (e.target.files[0].size > 2048000) {
+                    alert('Tập tin có kích thước lớn hơn 2MB!');
+                    reset();
                 } else {
                     let filename = e.target.files[0].name;
                     $('#input-file-name').text(filename);
@@ -208,13 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             let files = $('#formFile').get(0).files;
             // Only one file should upload and its size is less than 2048KB
             if (files.length !== 0) {
-                if (files[0].size <= 2048) {
-                    if (confirm('Bạn có chắc chắn?')) {} else
-                        e.preventDefault();
-                } else {
-                    alert('Tập tin có kích thước lớn hơn 2MB!');
-                    e.preventDefault();
-                }
+
             } else {
                 alert('Bạn chưa chọn tập tin nào!');
                 e.preventDefault();
