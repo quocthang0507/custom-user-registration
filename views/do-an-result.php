@@ -145,14 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php
                             foreach ($list_do_an as $index => $do_an) {
                                 $list_students = ur_DangKy::get_list_registered_students($do_an->ID);
-                                echo '<tr class="align-middle">';
+                                echo '<tr class="align-top">';
                                 echo '<th scope="row" class="text-center">' . $index + 1 . '</th>';
                                 echo '<td>' . ($do_an->type == DO_AN_CO_SO ? 'Đồ án cơ sở' : 'Đồ án chuyên ngành') . '</td>';
-                                echo '<td>' . $do_an->post_title . '</td>';
-                                echo '<td>' . $do_an->description . '</td>';
+                                echo '<td class="f-2">' . $do_an->post_title . '</td>';
+                                echo '<td class="f-4">' . $do_an->description . '</td>';
                                 echo '<td class="text-center">' . $do_an->instructor . '</td>';
-                                echo '<td>' . $do_an->references . '</td>';
-                                echo '<td class="text-center">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
+                                echo '<td class="f-2">' . $do_an->references . '</td>';
+                                echo '<td class="text-center f-1">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
                                 echo '<ol class="list-group list-group-numbered order-list">';
                                 foreach ($list_students as $student) {
                                     echo '<li>' . $student->user_registration_student_id . '_' . $student->last_name . ' ' . $student->first_name . '</li>';

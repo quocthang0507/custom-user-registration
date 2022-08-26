@@ -42,6 +42,35 @@
     text-align: left;
 }
 
+.table td.f-4,
+.table th.f-4 {
+    max-width: 400px;
+    min-width: 400px;
+    white-space: break-spaces;
+}
+
+.table td.f-3,
+.table th.f-3 {
+    max-width: 300px;
+    min-width: 300px;
+    white-space: break-spaces;
+}
+
+.table td.f-2,
+.table th.f-2 {
+    max-width: 200px;
+    min-width: 200px;
+    white-space: break-spaces;
+}
+
+.table td.f-1,
+.table th.f-1 {
+    max-width: 100px;
+    min-width: 100px;
+    white-space: break-spaces;
+}
+
+
 /* Nhap danh sach */
 
 .unorder-list {

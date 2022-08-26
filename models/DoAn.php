@@ -116,7 +116,7 @@ class ur_DoAn
      */
     public function insert_do_an()
     {
-        // Adding meta_values in wp_insert_post not working
+        // Adding meta_keys in wp_insert_post not working
         $meta_input = array(
             'description' => $this->description,
             'instructor' => $this->instructor,
@@ -135,8 +135,9 @@ class ur_DoAn
             'post_type' => UR_DO_AN,
             'post_status' => 'publish',
         );
-        // Insert to database
+        // Insert đồ án to database
         $id =  wp_insert_post($do_an);
+        // Insert meta_keys to database
         if ($id > 0)
             $this::update_do_an($id, null, (object)$meta_input);
         // print('<pre>' . print_r($do_an) . '</pre>');
