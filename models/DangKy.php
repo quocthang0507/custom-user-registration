@@ -29,7 +29,7 @@ class ur_DangKy
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dang_ky = new ur_DangKy();
-        $dang_ky->registered_date = date('Y-m-d\TH:i');
+        $dang_ky->registered_date = date(rfc_3339);
         $dang_ky->registered_user_id = $user_id;
 
         $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);

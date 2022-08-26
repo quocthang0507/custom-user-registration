@@ -7,6 +7,8 @@
  * @package CustomUserRegistration
  */
 
+require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
+
 /**
  * Returns a new string from datetime
  */
@@ -14,7 +16,7 @@ function date_to_string(string $rfc_3339)
 {
     try {
         $datetime = strtotime($rfc_3339);
-        return date('d/m/Y H:i', $datetime);
+        return date(vi_datetime, $datetime);
     } catch (Exception $e) {
         return $rfc_3339;
     }

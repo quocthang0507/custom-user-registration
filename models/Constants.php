@@ -78,3 +78,14 @@ if (!defined('DO_AN_HAS_REGISTERED'))
 
 if (!defined('DO_AN_INTERNAL_ERROR'))
     define('DO_AN_INTERNAL_ERROR', 'Đồ án không thể đăng ký do lỗi hệ thống');
+
+// Constants for datetime
+
+if (!defined('rfc_3339'))
+    define('rfc_3339', 'Y-m-d\TH:i');
+
+if (!defined('vi_datetime'))
+    define('vi_datetime', 'd/m/Y H:i');
+
+if (!defined('iso_date'))
+    define('iso_date', 'd/m/Y H:i');

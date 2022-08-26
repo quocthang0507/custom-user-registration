@@ -148,10 +148,26 @@ class ur_DoAn
     }
 
     /**
-     * If start_date (or end_date if start_date = false) null, this function will return a date
+     * If start_date (or end_date if is_start_date = false) field is null, this function will return a date
      */
-    private function generate_date_for_null_field(string $schoolyear, string $semester, bool $start_date = true)
+    private function generate_date_for_null_field(string $schoolyear, string $semester, bool $is_start_date = true)
     {
+        $years = explode('-', $schoolyear);
+        switch ($semester) {
+            case 'HK1':
+                $timestamp = strtotime("{$years[0]}-09-01");
+                break;
+            case 'HK2':
+                $timestamp = strtotime("{$years[1]}-03-01");
+                break;
+            case 'HK3':
+                $timestamp = strtotime("{$years[1]}-07-01");
+                break;
+            default:
+                $timestamp = date(iso_date);
+                break;
+        }
+        return date(rfc_3339, $timestamp);
     }
 
     /**
@@ -178,8 +194,14 @@ class ur_DoAn
         $this->class = $class;
         $this->schoolyear = $schoolyear;
         $this->semester = $semester;
-        $this->start_date = $start_date;
-        $this->end_date = $end_date;
+        if ($start_date == null)
+            $this->start_date = $this->generate_date_for_null_field($schoolyear, $semester, true);
+        else
+            $this->start_date = $start_date;
+        if ($end_date == null)
+            $this->end_date = $this->generate_date_for_null_field($schoolyear, $semester, false);
+        else
+            $this->end_date = $end_date;
     }
 
     /**
@@ -272,12 +294,12 @@ class ur_DoAn
                 ),
                 array(
                     'key' => UR_DO_AN . '_start_date',
-                    'value' => date('Y-m-d\TH:i'),
+                    'value' => date(rfc_3339),
                     'compare' => '<=',
                 ),
                 array(
                     'key' => UR_DO_AN . '_end_date',
-                    'value' => date('Y-m-d\TH:i'),
+                    'value' => date(rfc_3339),
                     'compare' => '>=',
                 )
             )
