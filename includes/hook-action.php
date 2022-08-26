@@ -53,6 +53,8 @@ add_action('quick_edit_custom_box', 'change_quick_edit', 10, 3);
 add_action('save_post', 'save_quick_edit');
 // Custom endpoint Rest API
 add_action('rest_api_init', 'register_api');
+// Custom filter by meta data
+add_action('load-edit.php', 'load_custom_filter_metadata');
 
 function load_plugin_css_js()
 {
@@ -291,6 +293,27 @@ function register_api()
             'callback' => 'registration',
         )
     );
+}
+
+function load_custom_filter_metadata()
+{
+    global $typenow;
+
+    if ($typenow == UR_DO_AN) {
+        add_filter('posts_where', 'do_an_where_query');
+    }
+}
+
+function do_an_where_query($where)
+{
+    global $wpdb;
+    $meta_key = UR_DO_AN . '_type';
+
+    if (isset($_GET['type']) && !empty($_GET['type'])) {
+        $type = $_GET['type'];
+        $where .= " AND ID IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key='$meta_key' AND meta_value='$type' )";
+    }
+    return $where;
 }
 
 ?>

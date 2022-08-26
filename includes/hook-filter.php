@@ -38,6 +38,7 @@ add_filter('manage_edit-' . UR_DO_AN . '_sortable_columns', 'sortable_columns_ur
 add_filter('request', 'sort_columns_ur_do_an');
 add_filter('bulk_actions-edit-' . UR_DO_AN, 'add_bulk_action');
 add_filter('handle_bulk_actions-edit-' . UR_DO_AN, 'change_datetime', 10, 3);
+add_filter('views_edit-' . UR_DO_AN, 'add_meta_view', 10, 1);
 
 /**
  * Add new columns and hide specific columns
@@ -142,4 +143,11 @@ function change_datetime($redirect_url, $action, $post_ids)
         $redirect_url = add_query_arg('changed_datetime', count($post_ids), $redirect_url);
     }
     return $redirect_url;
+}
+
+function add_meta_view($views)
+{
+    $views['metakey_dacs'] = '<a href="edit.php?type=' . DO_AN_CO_SO . '&post_type=' . UR_DO_AN . '">Đồ án cơ sở</a>';
+    $views['metakey_dacn'] = '<a href="edit.php?type=' . DO_AN_CHUYEN_NGANH . '&post_type=' . UR_DO_AN . '">Đồ án chuyên ngành</a>';
+    return $views;
 }
