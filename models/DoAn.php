@@ -44,37 +44,39 @@ class ur_DoAn
         $class = UR_DO_AN . '_class';
         $type = UR_DO_AN . '_type';
         // Chỉ tạo đối tượng có id và tên
-        if ($only_id) {
-            $this->ID = $post->ID;
-            $this->post_title = $post->post_title;
-        } else if ($metadata == null) {
-            // Nếu thông tin gửi qua phương thức POST
-            $this->ID = sanitize_text_field($post['ID']);
-            $this->post_title = sanitize_text_field($post['post_title']);
-            $this->description = sanitize_text_field($post[$description]);
-            $this->instructor = sanitize_text_field($post[$instructor]);
-            $this->max_students = sanitize_text_field($post[$max_students]);
-            $this->references = sanitize_text_field($post[$references]);
-            $this->start_date = sanitize_text_field($post[$start_date]);
-            $this->end_date = sanitize_text_field($post[$end_date]);
-            $this->schoolyear = sanitize_text_field($post[$schoolyear]);
-            $this->semester = sanitize_text_field($post[$semester]);
-            $this->class = sanitize_text_field($post[$class]);
-            $this->type = sanitize_text_field($post[$type]);
-        } else {
-            // Nếu thông tin có cả metadata
-            $this->ID = $post->ID;
-            $this->post_title = $post->post_title;
-            $this->description = $metadata->$description[0];
-            $this->instructor = $metadata->$instructor[0];
-            $this->max_students = $metadata->$max_students[0];
-            $this->references = $metadata->$references[0];
-            $this->start_date = $metadata->$start_date[0];
-            $this->end_date = $metadata->$end_date[0];
-            $this->schoolyear = $metadata->$schoolyear[0];
-            $this->semester = $metadata->$semester[0];
-            $this->class = $metadata->$class[0];
-            $this->type = $metadata->$type[0];
+        if ($post != null) {
+            if ($only_id) {
+                $this->ID = $post->ID;
+                $this->post_title = $post->post_title;
+            } else if ($metadata == null) {
+                // Nếu thông tin gửi qua phương thức POST
+                $this->ID = sanitize_text_field($post['ID']);
+                $this->post_title = sanitize_text_field($post['post_title']);
+                $this->description = sanitize_text_field($post[$description]);
+                $this->instructor = sanitize_text_field($post[$instructor]);
+                $this->max_students = sanitize_text_field($post[$max_students]);
+                $this->references = sanitize_text_field($post[$references]);
+                $this->start_date = sanitize_text_field($post[$start_date]);
+                $this->end_date = sanitize_text_field($post[$end_date]);
+                $this->schoolyear = sanitize_text_field($post[$schoolyear]);
+                $this->semester = sanitize_text_field($post[$semester]);
+                $this->class = sanitize_text_field($post[$class]);
+                $this->type = sanitize_text_field($post[$type]);
+            } else {
+                // Nếu thông tin có cả metadata
+                $this->ID = $post->ID;
+                $this->post_title = $post->post_title;
+                $this->description = $metadata->$description[0];
+                $this->instructor = $metadata->$instructor[0];
+                $this->max_students = $metadata->$max_students[0];
+                $this->references = $metadata->$references[0];
+                $this->start_date = $metadata->$start_date[0];
+                $this->end_date = $metadata->$end_date[0];
+                $this->schoolyear = $metadata->$schoolyear[0];
+                $this->semester = $metadata->$semester[0];
+                $this->class = $metadata->$class[0];
+                $this->type = $metadata->$type[0];
+            }
         }
     }
 
@@ -114,37 +116,30 @@ class ur_DoAn
      */
     public function insert_do_an()
     {
-        $description = UR_DO_AN . '_description';
-        $instructor = UR_DO_AN . '_instructor';
-        $max_students = UR_DO_AN . '_max_students';
-        $references = UR_DO_AN . '_references';
-        $start_date = UR_DO_AN . '_start_date';
-        $end_date = UR_DO_AN . '_end_date';
-        $schoolyear = UR_DO_AN . '_schoolyear';
-        $semester = UR_DO_AN . '_semester';
-        $class = UR_DO_AN . '_class';
-        $type = UR_DO_AN . '_type';
+        // Adding meta_values in wp_insert_post not working
+        $meta_input = array(
+            'description' => $this->description,
+            'instructor' => $this->instructor,
+            'max_students' => $this->max_students,
+            'references' => $this->references,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'schoolyear' => $this->schoolyear,
+            'semester' => $this->semester,
+            'class' => $this->class,
+            'type' => $this->type,
+        );
 
         $do_an = array( // default is the current user id
             'post_title' => $this->post_title,
             'post_type' => UR_DO_AN,
             'post_status' => 'publish',
-            'meta_input' => array(
-                $description => $this->description,
-                $instructor => $this->instructor,
-                $max_students => $this->max_students,
-                $references => $this->references,
-                $start_date => $this->start_date,
-                $end_date => $this->end_date,
-                $schoolyear => $this->schoolyear,
-                $semester => $this->semester,
-                $class => $this->class,
-                $type => $this->type,
-            )
         );
         // Insert to database
-        $return =  wp_insert_post($do_an);
-        return !is_wp_error($return) || $return > 0;
+        $id =  wp_insert_post($do_an);
+        if ($id > 0)
+            $this::update_do_an($id, null, (object)$meta_input);
+        // print('<pre>' . print_r($do_an) . '</pre>');
     }
 
     /**
@@ -155,13 +150,13 @@ class ur_DoAn
         $years = explode('-', $schoolyear);
         switch ($semester) {
             case 'HK1':
-                $timestamp = strtotime("{$years[0]}-09-01");
+                $timestamp = $is_start_date ? strtotime("$years[0]-09-01") : strtotime("$years[0]-12-01");
                 break;
             case 'HK2':
-                $timestamp = strtotime("{$years[1]}-03-01");
+                $timestamp = $is_start_date ? strtotime("$years[1]-03-01") : strtotime("$years[1]-06-01");
                 break;
             case 'HK3':
-                $timestamp = strtotime("{$years[1]}-07-01");
+                $timestamp = $is_start_date ? strtotime("$years[1]-07-01") : strtotime("$years[1]-09-01");
                 break;
             default:
                 $timestamp = date(iso_date);
@@ -185,11 +180,11 @@ class ur_DoAn
             [4] => Giảng viên hướng dẫn
         )         
         */
-        $this->post_title = $arr[0];
-        $this->description = $arr[1];
-        $this->max_students = $arr[2];
-        $this->references = $arr[3];
-        $this->instructor = $arr[4];
+        $this->post_title = trim($arr[0]);
+        $this->description = trim($arr[1]);
+        $this->max_students = trim($arr[2]);
+        $this->references = trim($arr[3]);
+        $this->instructor = trim($arr[4]);
         $this->type = $type;
         $this->class = $class;
         $this->schoolyear = $schoolyear;

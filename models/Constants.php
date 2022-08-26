@@ -88,4 +88,4 @@ if (!defined('vi_datetime'))
     define('vi_datetime', 'd/m/Y H:i');
 
 if (!defined('iso_date'))
-    define('iso_date', 'd/m/Y H:i');
+    define('iso_date', 'Y-m-d');

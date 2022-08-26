@@ -183,3 +183,8 @@ function remove_vi_diacritics($str)
     $str = str_replace(' ', '_', $str);
     return $str;
 }
+
+function is_not_null($var)
+{
+    return isset($var) && !empty($var);
+}

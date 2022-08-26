@@ -13,6 +13,7 @@ if (!defined('ABSPATH')) {
 
 require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 require_once UR_PLUGIN_MODELS_DIR . '/Info.php';
+require_once UR_PLUGIN_MODELS_DIR . '/DoAn.php';
 require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -21,7 +22,7 @@ $list_classes = ur_Info::get_all_classes();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     // If file is empty or it has an error
-    if (empty($_FILES) || $_FILES['file_to_upload']['size'] == 0 || $_FILES['file_to_upload']['error'] != 0) {
+    if (empty($_FILES) || $_FILES['file_to_upload']['size'] == 0 || $_FILES['file_to_upload']['error'] != 0 || $_FILES['file_to_upload']['size'] > 1048) {
         http_response_code(400); // Bad request
         exit();
     }
@@ -29,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $class = isset($_POST[UR_DO_AN . '_class']) ? $_POST[UR_DO_AN . '_class'] : '';
     $schoolyear = isset($_POST[UR_DO_AN . '_schoolyear']) ? $_POST[UR_DO_AN . '_schoolyear'] : '';
     $semester = isset($_POST[UR_DO_AN . '_semester']) ? $_POST[UR_DO_AN . '_semester'] : '';
-    $start_date = isset($_POST[UR_DO_AN . '_start_date']) ? $_POST[UR_DO_AN . '_start_date'] : '';
-    $end_date = isset($_POST[UR_DO_AN . '_end_date']) ? $_POST[UR_DO_AN . '_end_date'] : '';
+    $start_date = is_not_null($_POST[UR_DO_AN . '_start_date']) ? $_POST[UR_DO_AN . '_start_date'] : null;
+    $end_date = is_not_null($_POST[UR_DO_AN . '_end_date']) ? $_POST[UR_DO_AN . '_end_date'] : null;
 
     if (is_one_null_or_whitespace($type, $class, $schoolyear, $semester)) {
         http_response_code(400); // Bad request
@@ -38,10 +39,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     } else {
         $file_name = $_FILES['file_to_upload']['tmp_name'];
         $csv = read_csv($file_name);
-        print("<pre>" . print_r($csv, true) . "</pre>");
-        // echo '<script>alert("Thành công!")</script>';
-        // return admin_url('edit.php?post_type=' . UR_DO_AN);
-        exit();
+
+        array_shift($csv); // remove first item (title)
+        foreach ($csv as $row) {
+            $do_an = new ur_DoAn(null, null);
+            $do_an->arr_to_obj($row, $type, $class, $schoolyear, $semester, $start_date, $end_date);
+            $do_an->insert_do_an();
+        }
+
+        // print("<pre>" . print_r($csv, true) . "</pre>");
+        // exit();
     }
 }
 
@@ -175,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <input type="file" id="formFile" name="file_to_upload" required>
                         <div>
                             <p id="input-file-name">Kéo thả tập tin vào đây</p>
-                            <p><small>Kích thước tối đa: 2MB</small></p>
+                            <p><small>Kích thước tối đa: 1MB</small></p>
                         </div>
                     </div>
                 </div>
@@ -200,8 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), acceptedExts) == -1) {
                     alert("Chỉ chấp nhận các tập tin có phần mở rộng là .csv hoặc .txt!");
                     reset();
-                } else if (e.target.files[0].size > 2048000) {
-                    alert('Tập tin có kích thước lớn hơn 2MB!');
+                } else if (e.target.files[0].size > 1024000) {
+                    alert('Tập tin có kích thước lớn hơn 1MB!');
                     reset();
                 } else {
                     let filename = e.target.files[0].name;

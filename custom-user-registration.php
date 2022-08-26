@@ -37,6 +37,17 @@ define('UR_PLUGIN_CSS_DIR', UR_PLUGIN_DIR . '/css');
 
 define('UR_PLUGIN_INCLUDES_DIR', UR_PLUGIN_DIR . '/includes');
 
+function ur_do_an_activate()
+{
+}
+
+function ur_do_an_deactivate()
+{
+}
+
+register_activation_hook(__FILE__, 'ur_do_an_activate');
+register_deactivation_hook(__FILE__, 'ur_do_an_deactivate');
+
 require_once UR_PLUGIN_INCLUDES_DIR . '/generate-do-an-post-type.php';
 require_once UR_PATH . '/includes/hook-action.php';
 require_once UR_PATH . '/includes/hook-filter.php';
