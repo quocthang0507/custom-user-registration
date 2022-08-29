@@ -8,6 +8,7 @@
  */
 
 require_once 'Constants.php';
+require_once UR_PLUGIN_INCLUDES_DIR . '/utils.php';
 
 /**
  * Metadata for DoAn post type
@@ -16,6 +17,23 @@ class ur_DangKy
 {
     public string $registered_date;
     public int $registered_user_id;
+
+    public function __construct(object $obj)
+    {
+        $this->registered_date = $obj->registered_date;
+        $this->registered_user_id = $obj->registered_user_id;
+    }
+
+    public function ToString()
+    {
+        $user = get_user_by('id', $this->registered_user_id);
+        if ($user != false) {
+            $str = $user->user_registration_student_id . '_' . $user->last_name . ' ' . $user->first_name;
+            $str .= "(" . date_to_string($this->registered_date) . ")";
+            return $str;
+        }
+        return null;
+    }
 
     /**
      * User registers a đồ án
@@ -119,5 +137,17 @@ class ur_DangKy
                 array_push($result, $user);
             }
         return $result;
+    }
+
+    public static function get_string_registered_students(int $post_id)
+    {
+        $registered_students = get_post_meta($post_id, UR_REGISTER_DO_AN_META_KEY, true);
+        $result = '';
+        if ($registered_students != null && is_array($registered_students))
+            foreach ($registered_students as $registration) {
+                $obj = new ur_DangKy((object) $registration);
+                $result .= $obj->ToString() + '\n';
+            }
+        return trim($result);
     }
 }

@@ -140,7 +140,7 @@ class ur_DoAn
         // Insert meta_keys to database
         if ($id > 0)
             $this::update_do_an($id, null, (object)$meta_input);
-        // print('<pre>' . print_r($do_an) . '</pre>');
+        return $id > 0;
     }
 
     /**
@@ -198,6 +198,22 @@ class ur_DoAn
             $this->end_date = $this->generate_date_for_null_field($schoolyear, $semester, false);
         else
             $this->end_date = $end_date;
+    }
+
+    public function ToString()
+    {
+        $str = '"' . $this->post_title . '",';
+        $str .= '"' . $this->description . '",';
+        $str .= $this->max_students . ',';
+        $str .= '"' . $this->references . '",';
+        $str .= '"' . $this->instructor . '",';
+        $str .= '"' . $this->type . '",';
+        $str .= '"' . $this->class . '",';
+        $str .= '"' . $this->schoolyear . '",';
+        $str .= '"' . $this->semester . '",';
+        $str .= '"' . $this->start_date . '",';
+        $str .= '"' . $this->end_date . '",';
+        return $str;
     }
 
     /**

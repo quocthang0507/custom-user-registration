@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                 echo '<td class="f-2">' . $do_an->post_title . '</td>';
                                 echo '<td class="f-4">' . $do_an->description . '</td>';
                                 echo '<td class="text-center">' . $do_an->instructor . '</td>';
-                                echo '<td class="f-2">' . $do_an->references . '</td>';
+                                echo '<td class="f-2 dont-break-out">' . $do_an->references . '</td>';
                                 echo '<td class="text-center f-1">(' . $do_an->get_count_registration() . ' SV/' . $do_an->max_students . ' SV đã đăng ký)<br>';
                                 echo '<ol class="list-group list-group-numbered order-list">';
                                 foreach ($list_students as $student) {

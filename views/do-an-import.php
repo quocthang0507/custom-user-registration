@@ -39,13 +39,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     } else {
         $file_name = $_FILES['file_to_upload']['tmp_name'];
         $csv = read_csv($file_name);
+        $errors = array();
 
         array_shift($csv); // remove first item (title)
-        foreach ($csv as $row) {
-            $do_an = new ur_DoAn(null, null);
-            $do_an->arr_to_obj($row, $type, $class, $schoolyear, $semester, $start_date, $end_date);
-            $do_an->insert_do_an();
+        foreach ($csv as $index => $row) {
+            if (is_one_null_or_whitespace($row[0], $row[1], $row[2], $row[3], $row[4]))
+                array_push($errors, $index + 1);
+            else {
+                $do_an = new ur_DoAn(null, null);
+                $do_an->arr_to_obj($row, $type, $class, $schoolyear, $semester, $start_date, $end_date);
+                $result = $do_an->insert_do_an();
+                if (!$result)
+                    array_push($errors, $index + 1);
+            }
         }
+
+        if (count($errors) > 0)
+            echo '<script>alert("Lỗi xảy ra ở các dòng: ' . join(', ', $errors) . '. Đã bỏ qua những dòng này.");</script>';
 
         // print("<pre>" . print_r($csv, true) . "</pre>");
         // exit();
@@ -65,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             <p><i>Nên sử dụng định dạng <u>CSV UTF-8 (Comma delimited)</u> có trong Microsoft Excel.</i></p>
         </li>
         <li>
-            <p><i>Tập tin đồ án phải tuân thủ thứ tự các cột, bao gồm cả tên cột và các dòng dữ liệu, không có dòng hay cột trống.</i></p>
+            <p><i>Tập tin đồ án phải tuân thủ thứ tự các cột, bao gồm cả tên cột và các dòng dữ liệu, <u>không có dòng hay cột trống</u>.</i></p>
         </li>
     </ul>
     <h6>Ví dụ về mẫu thông tin danh sách đồ án</h6>
