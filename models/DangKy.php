@@ -18,10 +18,12 @@ class ur_DangKy
     public string $registered_date;
     public int $registered_user_id;
 
-    public function __construct(object $obj)
+    public function __construct(object $obj = null)
     {
-        $this->registered_date = $obj->registered_date;
-        $this->registered_user_id = $obj->registered_user_id;
+        if ($obj != null) {
+            $this->registered_date = $obj->registered_date;
+            $this->registered_user_id = $obj->registered_user_id;
+        }
     }
 
     public function ToString()

@@ -200,20 +200,37 @@ class ur_DoAn
             $this->end_date = $end_date;
     }
 
-    public function ToString()
+    public function ToString(bool $is_title = false)
     {
-        $str = '"' . $this->post_title . '",';
-        $str .= '"' . $this->description . '",';
-        $str .= $this->max_students . ',';
-        $str .= '"' . $this->references . '",';
-        $str .= '"' . $this->instructor . '",';
-        $str .= '"' . $this->type . '",';
-        $str .= '"' . $this->classes . '",';
-        $str .= '"' . $this->schoolyear . '",';
-        $str .= '"' . $this->semester . '",';
-        $str .= '"' . $this->start_date . '",';
-        $str .= '"' . $this->end_date . '",';
-        return $str;
+        if (!$is_title) {
+            $str = '"' . $this->post_title . '",';
+            $str .= '"' . $this->description . '",';
+            $str .= $this->max_students . ',';
+            $str .= '"' . $this->references . '",';
+            $str .= '"' . $this->instructor . '",';
+            $str .= '"' . $this->type . '",';
+            $str .= '"' . $this->classes . '",';
+            $str .= '"' . $this->schoolyear . '",';
+            $str .= '"' . $this->semester . '",';
+            $str .= '"' . $this->start_date . '",';
+            $str .= '"' . $this->end_date . '",';
+            $str .= '"' . ur_DangKy::get_string_registered_students($this->ID) . '"';
+            return $str;
+        } else {
+            $str = '"Tên đồ án",';
+            $str .= '"Mô tả/ yêu cầu",';
+            $str .= '"Số sinh viên",';
+            $str .= '"Tài liệu tham khảo",';
+            $str .= '"Giảng viên hướng dẫn",';
+            $str .= '"Loại đồ án",';
+            $str .= '"Lớp",';
+            $str .= '"Năm học",';
+            $str .= '"Học kỳ",';
+            $str .= '"Ngày bắt đầu đăng ký",';
+            $str .= '"Ngày kết thúc đăng ký",';
+            $str .= '"Danh sách đăng ký"';
+            return $str;
+        }
     }
 
     /**

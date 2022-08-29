@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <div class="row">
         <div class="col-md-4 col-lg-4">
             <div class="card">
-                <form method="POST" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data">
+                <form method="POST" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data" id="form">
                     Tìm kiếm theo:
                     <div class="card-body">
                         <div class="row">
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     <div class="text-center">
                         <input type="submit" name="submit" value="Tìm kiếm" class="btn btn-primary btn-sm m-1" id="btnSubmit">
                         <input type="button" name="reset" value="Tất cả" class="btn btn-secondary btn-sm m-1" id="btnReset">
-                        <input type="button" name="export" value="Xuất danh sách đăng ký" class="btn btn-success btn-sm m-1">
+                        <input type="button" name="export" value="Xuất danh sách đăng ký" class="btn btn-success btn-sm m-1" id="btnExport">
                     </div>
                 </form>
             </div>
@@ -178,6 +178,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             $('#cbxSemester').val('all');
             $('#cbxSchoolyear').val('all');
             $('#btnSubmit').click();
+        });
+
+        $('#btnExport').click(function() {
+            let _nonce = "<?php echo wp_create_nonce('wp_rest'); ?>";
+            
+            const form = document.getElementById('form');
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: '<?php echo get_website_domain() . '/wp-json/api/v1/export_to_file'; ?>',
+                type: 'POST',
+                data: formData,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', _nonce);
+                },
+                success: function(response) {
+
+                },
+                error: function(xhr) {
+                    alert('Đã có lỗi xảy ra!');
+                    console.error(xhr);
+                }
+            });
         });
     });
 </script>

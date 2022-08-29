@@ -194,21 +194,14 @@ function add_custom_scripts()
 
 function change_quick_edit(string $column_name, string $post_type, $taxanomy)
 {
-    global $post;
-
-    $id = $post->ID;
-    $instructor = get_post_meta($id, UR_DO_AN . '_instructor', true);
-    $type = get_post_meta($id, UR_DO_AN . '_type', true);
-    $classes = explode(', ', get_post_meta($id, UR_DO_AN . '_class', true));
-    $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
-    $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
-
-    $list_instructors = ur_Info::get_all_instructors();
-    $list_classes = ur_Info::get_all_classes();
-
     if ($post_type == UR_DO_AN) {
+        global $post;
+        $id = $post->ID;
+
         switch ($column_name) {
             case UR_DO_AN . '_instructor':
+                $instructor = get_post_meta($id, UR_DO_AN . '_instructor', true);
+                $list_instructors = ur_Info::get_all_instructors();
             ?>
                 <fieldset class="inline-edit-col-right" id="edit-instructor">
                     <legend><span class="title">Thông tin đồ án</span></legend>
@@ -230,6 +223,7 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                 <?php
                 break;
             case UR_DO_AN . '_type':
+                $type = get_post_meta($id, UR_DO_AN . '_type', true);
                 ?>
                     <div class="row">
                         <label class="col-4 form-label">Loại:</label>
@@ -243,6 +237,8 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                 <?php
                 break;
             case UR_DO_AN . '_class':
+                $classes = explode(', ', get_post_meta($id, UR_DO_AN . '_class', true));
+                $list_classes = ur_Info::get_all_classes();
                 ?>
                     <div class="row">
                         <label class="col-4 form-label">Lớp:
@@ -264,6 +260,7 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                 <?php
                 break;
             case UR_DO_AN . '_start_date':
+                $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
                 ?>
                     <div class="row mt-2">
                         <label class="col-4 form-label">Ngày bắt đầu đăng ký:</label>
@@ -274,6 +271,7 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                 <?php
                 break;
             case UR_DO_AN . '_end_date':
+                $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
                 ?>
                     <div class="row">
                         <label class="col-4 form-label">Ngày kết thúc đăng ký:</label>
@@ -314,8 +312,16 @@ function register_api()
         'api/v1', // prefix with version
         '/registration/', // name of the route
         array(
-            'methods' => array('POST'),
+            'methods' => 'POST',
             'callback' => 'registration',
+        )
+    );
+    register_rest_route(
+        'api/v1',
+        '/export/',
+        array(
+            'methods' => 'POST',
+            'callback' => 'export_to_file',
         )
     );
 }

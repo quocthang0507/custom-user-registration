@@ -30,3 +30,21 @@ function registration(WP_REST_Request $request)
     }
     return $response;
 }
+
+function export_to_file(WP_REST_Request $request)
+{
+    $response = new WP_REST_Response(array());
+    $response->set_status(400); // bad request
+
+    if (!is_user_logged_in()) {
+        $response->set_status(401); // unauthorized
+        return $response;
+    }
+
+    $instructor = isset($request[UR_DO_AN . '_instructor']) ? $request[UR_DO_AN . '_instructor'] : 'all';
+    $type = isset($request[UR_DO_AN . '_type']) ? $request[UR_DO_AN . '_type'] : 'all';
+    $class = isset($request[UR_DO_AN . '_class']) ? $request[UR_DO_AN . '_class'] : 'all';
+    $semester = isset($request[UR_DO_AN . '_semester']) ? $request[UR_DO_AN . '_semester'] : 'all';
+    $schoolyear = isset($request[UR_DO_AN . '_schoolyear']) ? $request[UR_DO_AN . '_schoolyear'] : 'all';
+
+}
