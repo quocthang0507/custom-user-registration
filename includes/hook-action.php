@@ -199,10 +199,12 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
     $id = $post->ID;
     $instructor = get_post_meta($id, UR_DO_AN . '_instructor', true);
     $type = get_post_meta($id, UR_DO_AN . '_type', true);
+    $classes = explode(', ', get_post_meta($id, UR_DO_AN . '_class', true));
     $start_date = get_post_meta($id, UR_DO_AN . '_start_date', true);
     $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
 
     $list_instructors = ur_Info::get_all_instructors();
+    $list_classes = ur_Info::get_all_classes();
 
     if ($post_type == UR_DO_AN) {
         switch ($column_name) {
@@ -240,9 +242,30 @@ function change_quick_edit(string $column_name, string $post_type, $taxanomy)
                     </div>
                 <?php
                 break;
-            case UR_DO_AN . '_start_date':
+            case UR_DO_AN . '_class':
                 ?>
                     <div class="row">
+                        <label class="col-4 form-label">Lớp:
+                            <p><i>(Nhấn giữ Ctrl để chọn nhiều lớp)</i></p>
+                        </label>
+                        <div class="col">
+                            <select class="form-control" name="<?php echo UR_DO_AN; ?>_class[]" multiple aria-label="Lớp" title="Lớp">
+                                <?php
+                                foreach ($list_classes as $item) {
+                                    if (in_array($item, $classes))
+                                        echo '<option value="' . $item . '" selected>' . $item . '</option>';
+                                    else
+                                        echo '<option value="' . $item . '">' . $item . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                <?php
+                break;
+            case UR_DO_AN . '_start_date':
+                ?>
+                    <div class="row mt-2">
                         <label class="col-4 form-label">Ngày bắt đầu đăng ký:</label>
                         <div class="col">
                             <input class="form-control" type="datetime-local" name="<?php echo UR_DO_AN; ?>_start_date" value="<?php echo $start_date; ?>" aria-label="Ngày bắt đầu" title="Ngày bắt đầu">
@@ -274,11 +297,13 @@ function save_quick_edit(string|int $post_id)
 
     $instructor = !empty($_POST[UR_DO_AN . '_instructor']) ? $_POST[UR_DO_AN . '_instructor'] : '';
     $type = !empty($_POST[UR_DO_AN . '_type']) ? $_POST[UR_DO_AN . '_type'] : '';
+    $classes = !empty($_POST[UR_DO_AN . '_class']) ? $_POST[UR_DO_AN . '_class'] : array();
     $start_date = !empty($_POST[UR_DO_AN . '_start_date']) ? $_POST[UR_DO_AN . '_start_date'] : '';
     $end_date = !empty($_POST[UR_DO_AN . '_end_date']) ? $_POST[UR_DO_AN . '_end_date'] : '';
 
     update_post_meta($post_id, UR_DO_AN . '_instructor', $instructor);
     update_post_meta($post_id, UR_DO_AN . '_type', $type);
+    update_post_meta($post_id, UR_DO_AN . '_class', implode(', ', $classes));
     update_post_meta($post_id, UR_DO_AN . '_start_date', $start_date);
     update_post_meta($post_id, UR_DO_AN . '_end_date', $end_date);
 }

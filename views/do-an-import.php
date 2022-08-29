@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         }
 
         if (count($errors) > 0)
-            echo '<script>alert("Lỗi xảy ra ở các dòng: ' . join(', ', $errors) . '. Đã bỏ qua những dòng này.");</script>';
+            echo '<script>alert("Lỗi xảy ra ở các dòng: ' . implode(', ', $errors) . '. Đã bỏ qua những dòng này.");</script>';
 
         // print("<pre>" . print_r($csv, true) . "</pre>");
         // exit();
@@ -125,9 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     </div>
                     <div class="col-lg-3 col-md-3">
                         <div class="row">
-                            <label class="col-sm-auto col-form-label">Lớp:</label>
+                            <label class="col-sm-auto col-form-label">Lớp:
+                                <p><i>(Nhấn giữ Ctrl để chọn nhiều lớp)</i></p>
+                            </label>
                             <div class="col-sm">
-                                <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp" id="cbxClass" required>
+                                <select class="form-control" name="<?php echo UR_DO_AN; ?>_class[]" multiple aria-label="Lớp" title="Lớp" id="cbxClass" required>
                                     <?php
                                     foreach ($list_classes as $item) {
                                         echo '<option value="' . $item . '">' . $item . '</option>';
@@ -166,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </div>
                     </div>
                 </div>
-                <div class="row mb-2">
+                <div class="row mt-2 mb-2">
                     <div class="col-auto">
                         <div class="row">
                             <label class="col-auto col-form-label">Ngày bắt đầu đăng ký</label>

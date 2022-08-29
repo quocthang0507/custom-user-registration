@@ -24,7 +24,7 @@ class ur_DoAn
     public string $end_date;
     public string $schoolyear;
     public string $semester;
-    public string $class;
+    public string $classes;
     public string $type;
     // public $registration;
 
@@ -41,7 +41,7 @@ class ur_DoAn
         $end_date = UR_DO_AN . '_end_date';
         $schoolyear = UR_DO_AN . '_schoolyear';
         $semester = UR_DO_AN . '_semester';
-        $class = UR_DO_AN . '_class';
+        $classes = UR_DO_AN . '_class';
         $type = UR_DO_AN . '_type';
         // Chỉ tạo đối tượng có id và tên
         if ($post != null) {
@@ -60,7 +60,7 @@ class ur_DoAn
                 $this->end_date = sanitize_text_field($post[$end_date]);
                 $this->schoolyear = sanitize_text_field($post[$schoolyear]);
                 $this->semester = sanitize_text_field($post[$semester]);
-                $this->class = sanitize_text_field($post[$class]);
+                $this->classes = implode(', ', $post[$classes]);
                 $this->type = sanitize_text_field($post[$type]);
             } else {
                 // Nếu thông tin có cả metadata
@@ -74,7 +74,7 @@ class ur_DoAn
                 $this->end_date = $metadata->$end_date[0];
                 $this->schoolyear = $metadata->$schoolyear[0];
                 $this->semester = $metadata->$semester[0];
-                $this->class = $metadata->$class[0];
+                $this->classes = $metadata->$classes[0];
                 $this->type = $metadata->$type[0];
             }
         }
@@ -126,7 +126,7 @@ class ur_DoAn
             'end_date' => $this->end_date,
             'schoolyear' => $this->schoolyear,
             'semester' => $this->semester,
-            'class' => $this->class,
+            'classes' => $this->classes,
             'type' => $this->type,
         );
 
@@ -169,7 +169,7 @@ class ur_DoAn
     /**
      * Convert array (data in csv file) to object
      */
-    public function arr_to_obj(array $arr, string $type, string $class, string $schoolyear, string $semester, string $start_date = null, string $end_date = null)
+    public function arr_to_obj(array $arr, string $type, string $classes, string $schoolyear, string $semester, string $start_date = null, string $end_date = null)
     {
         /*
         Array
@@ -187,7 +187,7 @@ class ur_DoAn
         $this->references = trim($arr[3]);
         $this->instructor = trim($arr[4]);
         $this->type = $type;
-        $this->class = $class;
+        $this->classes = $classes;
         $this->schoolyear = $schoolyear;
         $this->semester = $semester;
         if ($start_date == null)
@@ -208,7 +208,7 @@ class ur_DoAn
         $str .= '"' . $this->references . '",';
         $str .= '"' . $this->instructor . '",';
         $str .= '"' . $this->type . '",';
-        $str .= '"' . $this->class . '",';
+        $str .= '"' . $this->classes . '",';
         $str .= '"' . $this->schoolyear . '",';
         $str .= '"' . $this->semester . '",';
         $str .= '"' . $this->start_date . '",';
@@ -352,7 +352,7 @@ class ur_DoAn
                 update_post_meta($post_id, UR_DO_AN . '_end_date', $metadata->end_date);
                 update_post_meta($post_id, UR_DO_AN . '_schoolyear', $metadata->schoolyear);
                 update_post_meta($post_id, UR_DO_AN . '_semester', $metadata->semester);
-                update_post_meta($post_id, UR_DO_AN . '_class', $metadata->class);
+                update_post_meta($post_id, UR_DO_AN . '_class', $metadata->classes);
                 update_post_meta($post_id, UR_DO_AN . '_type', $metadata->type);
             }
         } catch (Exception $e) {

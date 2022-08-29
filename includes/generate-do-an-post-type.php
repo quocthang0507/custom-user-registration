@@ -99,7 +99,8 @@ function ur_do_an_output()
     $end_date = get_post_meta($id, UR_DO_AN . '_end_date', true);
     $schoolyear = get_post_meta($id, UR_DO_AN . '_schoolyear', true);
     $semester = get_post_meta($id, UR_DO_AN . '_semester', true);
-    $class = get_post_meta($id, UR_DO_AN . '_class', true);
+    $temp = get_post_meta($id, UR_DO_AN . '_class', true);
+    $classes = $temp != null ? explode(', ', $temp) : array();
     $type = get_post_meta($id, UR_DO_AN . '_type', true);
 
     $list_instructors = ur_Info::get_all_instructors();
@@ -178,11 +179,13 @@ function ur_do_an_output()
                     </select>
                 </div>
                 <div class="col">
-                    <label class="form-label">Lớp</label>
-                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_class" aria-label="Lớp" title="Lớp">
+                    <label class="form-label">Lớp
+                        <i>(Nhấn giữ Ctrl để chọn nhiều lớp)</i>
+                    </label>
+                    <select class="form-control" name="<?php echo UR_DO_AN; ?>_class[]" multiple aria-label="Lớp" title="Lớp">
                         <?php
                         foreach ($list_classes as $item) {
-                            if ($item == $class)
+                            if (in_array($item, $classes))
                                 echo '<option value="' . $item . '" selected>' . $item . '</option>';
                             else
                                 echo '<option value="' . $item . '">' . $item . '</option>';
