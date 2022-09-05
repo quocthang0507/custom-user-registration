@@ -1,6 +1,7 @@
 <?php
 
 require_once UR_PLUGIN_MODELS_DIR . '/DangKy.php';
+require_once UR_PLUGIN_MODELS_DIR . '/Constants.php';
 
 function registration(WP_REST_Request $request)
 {
@@ -31,14 +32,11 @@ function registration(WP_REST_Request $request)
     return $response;
 }
 
-function export_to_file(WP_REST_Request $request)
+function export_result(WP_REST_Request $request)
 {
-    $response = new WP_REST_Response(array());
-    $response->set_status(400); // bad request
-
     if (!is_user_logged_in()) {
-        $response->set_status(401); // unauthorized
-        return $response;
+        header('HTTP/1.0 401 Unauthorized');
+        exit;
     }
 
     $instructor = isset($request[UR_DO_AN . '_instructor']) ? $request[UR_DO_AN . '_instructor'] : 'all';
@@ -47,4 +45,23 @@ function export_to_file(WP_REST_Request $request)
     $semester = isset($request[UR_DO_AN . '_semester']) ? $request[UR_DO_AN . '_semester'] : 'all';
     $schoolyear = isset($request[UR_DO_AN . '_schoolyear']) ? $request[UR_DO_AN . '_schoolyear'] : 'all';
 
+    // Convert đồ án to string
+    $list_do_an = ur_DoAn::get_list_do_an($type, $instructor, $schoolyear, $semester, $class);
+    $do_an = new ur_DoAn(null, null);
+    $text = $do_an->ToString(true); // export csv's title
+    foreach ($list_do_an as $do_an) {
+        $text .= PHP_EOL . $do_an->ToString();
+    }
+
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    $filename = 'doan_' . date(vi_datetime) . '.csv';
+    header("Access-Control-Expose-Headers: Content-Disposition", false);
+    header('Content-type: text/csv');
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    
+    $csv_file = fopen('php://output', 'w');
+    fwrite($csv_file, $text);
+    fclose($csv_file);
+
+    exit;
 }

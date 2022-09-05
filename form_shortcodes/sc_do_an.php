@@ -154,7 +154,7 @@ function registration_form(string $type = DO_AN_CO_SO)
                 let _nonce = "<?php echo wp_create_nonce('wp_rest'); ?>";
 
                 $.ajax({
-                    url: '<?php echo get_website_domain() . '/wp-json/api/v1/registration'; ?>',
+                    url: '<?php echo get_site_url() . '/wp-json/api/v1/registration'; ?>',
                     type: 'POST',
                     data: {
                         action: action,

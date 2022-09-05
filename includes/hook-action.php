@@ -320,8 +320,8 @@ function register_api()
         'api/v1',
         '/export/',
         array(
-            'methods' => 'POST',
-            'callback' => 'export_to_file',
+            'methods' => 'GET',
+            'callback' => 'export_result',
         )
     );
 }

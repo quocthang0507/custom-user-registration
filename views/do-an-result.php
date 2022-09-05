@@ -182,25 +182,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
         $('#btnExport').click(function() {
             let _nonce = "<?php echo wp_create_nonce('wp_rest'); ?>";
-            
+
             const form = document.getElementById('form');
             const formData = new FormData(form);
+            const queryString = new URLSearchParams(formData).toString();
+            const url = '<?php echo get_site_url() ?>' + '/wp-json/api/v1/export?' + queryString + '&_wpnonce=' + _nonce;
 
-            $.ajax({
-                url: '<?php echo get_website_domain() . '/wp-json/api/v1/export_to_file'; ?>',
-                type: 'POST',
-                data: formData,
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', _nonce);
-                },
-                success: function(response) {
-
-                },
-                error: function(xhr) {
-                    alert('Đã có lỗi xảy ra!');
-                    console.error(xhr);
-                }
-            });
+            window.open(url, '_blank');
         });
     });
 </script>
