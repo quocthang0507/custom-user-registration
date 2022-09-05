@@ -60,8 +60,8 @@ function load_plugin_css_js()
 {
     // css
     wp_register_style('bootstrap', plugins_url('custom-user-registration/css/bootstrap.min.css'), __FILE__);
-    wp_enqueue_style('bootstrap');
     wp_register_style('style', plugins_url('custom-user-registration/css/style.css'), __FILE__);
+    wp_enqueue_style('bootstrap');
     wp_enqueue_style('style');
 
     // js

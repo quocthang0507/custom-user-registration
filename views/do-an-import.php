@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         if (count($errors) > 0)
             echo '<script>alert("Lỗi xảy ra ở các dòng: ' . implode(', ', $errors) . '. Đã bỏ qua những dòng này.");</script>';
 
-        // print("<pre>" . print_r($csv, true) . "</pre>");
+        // print("<pre>" . print_r($csv, true) ."</pre>");
         // exit();
     }
 }
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <h6>Ví dụ về mẫu thông tin danh sách đồ án</h6>
     <table class="table table-bordered">
         <thead>
-            <tr>
+            <tr class="align-top">
                 <th scope="col">Tên đồ án</th>
                 <th scope="col">Mô tả/yêu cầu</th>
                 <th scope="col">Số sinh viên</th>
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         <div class="card-body">
             <form id="form-input-file" method="post" action="<?php echo get_current_url(); ?>" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-lg-3 col-md-3">
+                    <div class="col-lg-4">
                         <div class="row">
                             <label class="col-sm-auto col-form-label">Loại đồ án:</label>
                             <div class="col-sm">
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3">
+                    <div class="col-lg-4">
                         <div class="row">
                             <label class="col-sm-auto col-form-label">Lớp:
                                 <p><i>(Nhấn giữ Ctrl để chọn nhiều lớp)</i></p>
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3">
+                    <div class="col-lg-4">
                         <div class="row">
                             <label class="col-sm-auto col-form-label">Năm học</label>
                             <div class="col-sm">
@@ -155,7 +155,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3">
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-auto">
                         <div class="row">
                             <label class="col-sm-auto col-form-label">Học kỳ</label>
                             <div class="col-sm">
@@ -167,8 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2 mb-2">
                     <div class="col-auto">
                         <div class="row">
                             <label class="col-auto col-form-label">Ngày bắt đầu đăng ký</label>

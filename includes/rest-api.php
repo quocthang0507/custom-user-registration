@@ -70,10 +70,10 @@ function find_students(WP_REST_Request $request)
     $response = new WP_REST_Response(array());
     $response->set_status(400); // bad request
 
-    // if (!is_user_logged_in()) {
-    //     $response->set_status(401); // unauthorized
-    //     return $response;
-    // }
+    if (!is_user_logged_in()) {
+        $response->set_status(401); // unauthorized
+        return $response;
+    }
 
     // Student id or full name
     if (isset($request['query'])) {
