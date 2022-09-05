@@ -68,7 +68,7 @@ if (!defined('INFO_DO_AN'))
 if (!defined('IMPORT_DO_AN'))
     define('IMPORT_DO_AN', 'Nhập danh sách');
 
-// Message
+// Messages
 
 if (!defined('DO_AN_UNAVAILABLE'))
     define('DO_AN_UNAVAILABLE', 'Đồ án không khả dụng');

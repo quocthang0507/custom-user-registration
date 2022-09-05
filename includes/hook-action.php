@@ -324,6 +324,14 @@ function register_api()
             'callback' => 'export_result',
         )
     );
+    register_rest_route(
+        'api/v1',
+        '/find_students/',
+        array(
+            'methods' => 'GET',
+            'callback' => 'find_students'
+        )
+    );
 }
 
 function load_custom_filter_metadata()
